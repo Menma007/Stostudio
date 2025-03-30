@@ -3,45 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Situs Saya</title>
+    <title>My GitHub Pages Site</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Slideshow -->
+    <!-- Hero Section -->
     <div class="hero">
         <div class="slides">
-            <div class="slide active" 
-                 style="background-image: url('assets/slide1.jpg');">
-                <div class="floating-text">Selamat Datang di Situs Saya</div>
-                <a class="floating-button" href="#about">Pelajari</a>
+            <div class="slide active" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');">
+                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <a class="floating-button" href="#">Learn More</a>
             </div>
-            <div class="slide" 
-                 style="background-image: url('assets/slide2.jpg');">
-                <div class="floating-text">Portofolio Karya</div>
-                <a class="floating-button" href="#portfolio">Lihat</a>
+            <div class="slide" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');">
+                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <a class="floating-button" href="#">Explore</a>
+            </div>
+            <div class="slide" style="background-image: url('https://example.com/image3.jpg');">
+                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <a class="floating-button" href="#">Contact Us</a>
             </div>
         </div>
         
-        <!-- Tombol Navigasi -->
         <button class="prev" onclick="prevSlide()">❮</button>
         <button class="next" onclick="nextSlide()">❯</button>
         
-        <!-- Dots -->
         <div class="dots">
             <span class="dot active" onclick="showSlide(0)"></span>
             <span class="dot" onclick="showSlide(1)"></span>
+            <span class="dot" onclick="showSlide(2)"></span>
         </div>
     </div>
 
-    <!-- Konten -->
+    <!-- Blog Section -->
     <div class="container">
-        <h2 id="about">Tentang Saya</h2>
-        <p>Halo! Saya seorang pemula yang sedang belajar GitHub Pages.</p>
-        
-        <h2 id="portfolio">Portofolio</h2>
-        <div class="portfolio-item">
-            <img src="assets/project1.jpg" alt="Proyek 1">
-            <h3>Proyek Pertama Saya</h3>
+        <div class="blog-posts">
+            <!-- Manual Posts Example -->
+            <article class="post">
+                <h2 class="post-title">Postingan Pertama</h2>
+                <div class="post-meta">
+                    <span class="post-date">28 Februari 2023</span>
+                    <span class="post-author">Oleh: Admin</span>
+                </div>
+                <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                </div>
+            </article>
         </div>
     </div>
 
