@@ -29,3 +29,5 @@ setInterval(nextSlide, 5000);
 document.addEventListener('DOMContentLoaded', () => {
     showSlide(0);
 });
+
+let isAutoPlayEnabled = false; // Ubah dari true ke false
