@@ -22,12 +22,7 @@ function prevSlide() {
     showSlide(slideIndex);
 }
 
-// Auto-advance slides every 5 seconds
-setInterval(nextSlide, 5000);
-
-// Initialize first slide
+// Inisialisasi awal tanpa auto-slide
 document.addEventListener('DOMContentLoaded', () => {
     showSlide(0);
 });
-
-let isAutoPlayEnabled = false; // Ubah dari true ke false
