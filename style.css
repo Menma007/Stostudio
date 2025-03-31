@@ -110,3 +110,37 @@ body {
 
 .prev { left: 10px; }
 .next { right: 10px; }
+
+}
+
+.hero {
+    height: 100vh;
+    position: relative;
+}
+
+/* Untuk mobile landscape */
+@media (max-height: 480px) and (orientation: landscape) {
+    .hero {
+        height: 150vh;
+    }
+}
+
+/* Untuk tablet */
+@media (max-width: 1024px) {
+    .floating-text {
+        left: 10px;
+        width: 80%;
+    }
+}
+
+/* Untuk mobile portrait */
+@media (max-width: 480px) and (orientation: portrait) {
+    .hero {
+        height: 70vh;
+    }
+    
+    .floating-button {
+        bottom: 10px;
+        right: 10px;
+    }
+}
