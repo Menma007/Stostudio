@@ -22,30 +22,34 @@ function prevSlide() {
     showSlide(slideIndex);
 }
 
-// Inisialisasi awal tanpa auto-slide
-document.addEventListener('DOMContentLoaded', () => {
-    showSlide(0);
-});
-
-// JavaScript untuk kontrol dinamis
-const dynamicBox = document.querySelector('.dynamic-box');
-
-function checkOrientation() {
-  if (window.matchMedia("(orientation: portrait)").matches) {
-    dynamicBox.style.display = 'block';
-  } else {
-    dynamicBox.style.display = 'none';
+document.addEventListener('DOMContentLoaded', function() {
+  const rotateIcon = document.querySelector('.rotate-icon');
+  
+  // Fungsi deteksi orientasi
+  function handleOrientation() {
+    // Method 1: Media Query
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+    
+    // Method 2: Fallback comparison
+    const isHeightGreater = window.innerHeight > window.innerWidth;
+    
+    if (isPortrait || isHeightGreater) {
+      rotateIcon.style.display = 'flex';
+      console.log('Portrait mode - Showing icon');
+    } else {
+      rotateIcon.style.display = 'none';
+      console.log('Landscape mode - Hiding icon');
+    }
   }
-}
 
-// Deteksi perubahan orientasi
-window.addEventListener('DOMContentLoaded', checkOrientation);
-window.addEventListener('orientationchange', checkOrientation);
+  // Initial check
+  handleOrientation();
 
-// Opsional: Efek klik
-dynamicBox.addEventListener('click', function() {
-  this.style.transform = 'translate(-50%, -50%) scale(0.9)';
-  setTimeout(() => {
-    this.style.transform = 'translate(-50%, -50%) scale(1)';
-  }, 300);
+  // Event listeners
+  window.addEventListener('orientationchange', handleOrientation);
+  
+  // Fallback for some devices
+  window.addEventListener('resize', function() {
+    setTimeout(handleOrientation, 300);
+  });
 });
