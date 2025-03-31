@@ -173,54 +173,31 @@ body {
   }
 }
 
-/* Tambahkan di style.css */
-.rotate-notification {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Latar transparan */
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px); /* Efek blur untuk elemen di belakang */
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.rotate-notification.active {
-  opacity: 1;
-}
-
+/* CSS */
 .rotate-icon {
-  width: 120px;
-  height: 120px;
-  animation: floatFade 2s ease-in-out;
-  opacity: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: none;
+  animation: pulse 2s infinite;
 }
 
-@keyframes floatFade {
-  0% {
-    transform: translateY(20px) rotate(0deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.9;
-  }
-  80% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-20px) rotate(90deg);
-    opacity: 0;
-  }
+.rotate-icon img {
+  width: 80px;
+  height: 80px;
 }
 
-/* Portrait mode */
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+}
+
+/* Tampilkan hanya di portrait mode */
 @media (orientation: portrait) {
-  body > *:not(.rotate-notification) {
-    filter: blur(2px); /* Efek blur halus pada konten */
+  .rotate-icon {
+    display: block;
   }
 }
