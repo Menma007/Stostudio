@@ -26,3 +26,23 @@ function prevSlide() {
 document.addEventListener('DOMContentLoaded', () => {
     showSlide(0);
 });
+
+// Tambahkan di script.js
+// Deteksi perubahan orientasi
+function handleOrientation() {
+  const notification = document.getElementById('rotate-notification');
+  
+  if (window.matchMedia("(orientation: portrait)").matches) {
+    notification.style.display = 'flex';
+  } else {
+    notification.style.display = 'none';
+    // Tampilkan kembali konten utama
+    document.querySelectorAll('body > *:not(.rotate-notification)').forEach(el => {
+      el.style.display = '';
+    });
+  }
+}
+
+// Jalankan saat pertama load dan saat orientasi berubah
+window.addEventListener('DOMContentLoaded', handleOrientation);
+window.addEventListener('orientationchange', handleOrientation);
