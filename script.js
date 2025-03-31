@@ -28,21 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Tambahkan di script.js
-// Deteksi perubahan orientasi
+let hasShownNotification = false;
+
 function handleOrientation() {
   const notification = document.getElementById('rotate-notification');
   
-  if (window.matchMedia("(orientation: portrait)").matches) {
+  if (window.matchMedia("(orientation: portrait)").matches && !hasShownNotification) {
     notification.style.display = 'flex';
+    // Setelah animasi selesai, sembunyikan
+    setTimeout(() => {
+      notification.style.display = 'none';
+      hasShownNotification = true;
+    }, 800); // Sesuai durasi animasi (0.8s)
   } else {
-    notification.style.display = 'none';
-    // Tampilkan kembali konten utama
+    // Tampilkan konten utama saat landscape
     document.querySelectorAll('body > *:not(.rotate-notification)').forEach(el => {
       el.style.display = '';
     });
   }
 }
 
-// Jalankan saat pertama load dan saat orientasi berubah
+// Deteksi perubahan orientasi
 window.addEventListener('DOMContentLoaded', handleOrientation);
 window.addEventListener('orientationchange', handleOrientation);
