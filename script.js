@@ -27,42 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(0);
 });
 
-// Tambahkan di script.js
-let hasShownNotification = false;
+// Opsional: Deteksi orientasi lebih akurat
+window.addEventListener('orientationchange', function() {
+  const icon = document.getElementById('rotate-icon');
+  icon.style.display = (window.orientation === 0 || window.orientation === 180) ? 'block' : 'none';
+});
 
-function showRotateNotification() {
-  if (hasShownNotification) return;
-  
-  const notification = document.getElementById('rotate-notification');
-  notification.style.display = 'flex';
-  notification.classList.add('active');
-  
-  setTimeout(() => {
-    notification.classList.remove('active');
-    setTimeout(() => {
-      notification.style.display = 'none';
-    }, 500); // Sesuai durasi fade out
-  }, 2000); // Durasi total notifikasi
-  
-  hasShownNotification = true;
-}
-
-// Deteksi orientasi
-function checkOrientation() {
-  if (window.matchMedia("(orientation: portrait)").matches) {
-    showRotateNotification();
-  } else {
-    document.querySelectorAll('body > *:not(.rotate-notification)').forEach(el => {
-      el.style.filter = 'none';
-    });
-  }
-}
-
-// Event listeners
-window.addEventListener('DOMContentLoaded', checkOrientation);
-window.addEventListener('orientationchange', checkOrientation);
-
-// Reset notifikasi saat reload
-window.addEventListener('beforeunload', () => {
-  hasShownNotification = false;
+// Inisialisasi awal
+window.addEventListener('DOMContentLoaded', function() {
+  const icon = document.getElementById('rotate-icon');
+  icon.style.display = (window.matchMedia("(orientation: portrait)").matches) ? 'block' : 'none';
 });
