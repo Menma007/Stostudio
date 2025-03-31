@@ -1,146 +1,174 @@
 /* Base Styles */
 body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    font-family: 'Roboto', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
-    margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: 'Roboto', sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  margin: 0;
 }
 
 /* Hero Section */
 .hero {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .slides {
-    display: flex;
-    width: 300vw;
-    transition: transform 0.5s ease-in-out;
+  display: flex;
+  width: 300vw;
+  transition: transform 0.5s ease-in-out;
 }
 
 .slide {
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    flex-shrink: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  flex-shrink: 0;
 }
 
 /* Floating Elements */
 .floating-text {
-    position: absolute;
-    top: -50px;
-    left: 20px;
-    width: 260px;
-    font-size: 16px;
-    color: white;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 15px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: top 1s ease-in-out, opacity 1s ease-in-out;
-    z-index: 3;
-    line-height: 1.4em;
+  position: absolute;
+  top: -50px;
+  left: 20px;
+  width: 260px;
+  font-size: 16px;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: top 1s ease-in-out, opacity 1s ease-in-out;
+  z-index: 3;
+  line-height: 1.4em;
 }
 
 .slide.active .floating-text {
-    top: 20px;
-    opacity: 1;
+  top: 20px;
+  opacity: 1;
 }
 
+/* Floating Button */
 .floating-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 16px;
-    opacity: 0;
-    transition: all 0.3s ease;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .slide.active .floating-button {
+  opacity: 1;
+  bottom: 20px;
+}
+
+/* Ripple Effect */
+.floating-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 10px solid rgba(255, 255, 255, 0.4);
+  border-radius: inherit;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.floating-button:hover::before {
+  animation: ripple 0.8s ease-out forwards;
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
-    bottom: 20px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
 }
 
 /* Navigation Controls */
 .dots {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 5;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .dot.active {
-    background: #007bff;
+  background: #007bff;
 }
 
 .prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.5);
-    color: black;
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    font-size: 24px;
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.5);
+  color: black;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  font-size: 24px;
+  z-index: 10;
 }
 
 .prev { left: 10px; }
 .next { right: 10px; }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .floating-text {
+    width: 80%;
+    left: 10px;
+    font-size: 14px;
+  }
+
+  .floating-button {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  .dots {
+    bottom: 10px;
+  }
 }
 
-.hero {
-    height: 100vh;
-    position: relative;
-}
+@media (max-width: 480px) {
+  .floating-text {
+    width: 90%;
+    padding: 10px;
+  }
 
-/* Untuk mobile landscape */
-@media (max-height: 480px) and (orientation: landscape) {
-    .hero {
-        height: 150vh;
-    }
-}
-
-/* Untuk tablet */
-@media (max-width: 1024px) {
-    .floating-text {
-        left: 10px;
-        width: 80%;
-    }
-}
-
-/* Untuk mobile portrait */
-@media (max-width: 480px) and (orientation: portrait) {
-    .hero {
-        height: 70vh;
-    }
-    
-    .floating-button {
-        bottom: 10px;
-        right: 10px;
-    }
+  .floating-button {
+    right: 10px;
+    bottom: 10px;
+  }
 }
