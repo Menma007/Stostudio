@@ -181,35 +181,37 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: #000;
   z-index: 1000;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
-  font-size: 1.5rem;
-  text-align: center;
 }
 
 .rotate-icon {
-  font-size: 4rem;
-  animation: blink 1.5s infinite;
-  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
+  animation: rotateOnce 0.8s ease-out;
+  opacity: 0;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; transform: rotate(30deg); }
+@keyframes rotateOnce {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
 }
 
-/* Tampilkan hanya di portrait mode */
-@media (orientation: portrait) and (max-width: 767px) {
+/* Portrait mode */
+@media (orientation: portrait) {
   .rotate-notification {
     display: flex;
   }
   
-  /* Sembunyikan konten utama */
   body > *:not(.rotate-notification) {
-    display: none;
+    display: none !important;
   }
 }
