@@ -174,30 +174,68 @@ body {
 }
 
 /* CSS */
-.rotate-icon {
+.dynamic-box {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
+  z-index: 1000;
   display: none;
-  animation: pulse 2s infinite;
-}
-
-.rotate-icon img {
-  width: 80px;
-  height: 80px;
-}
-
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
 }
 
 /* Tampilkan hanya di portrait mode */
 @media (orientation: portrait) {
-  .rotate-icon {
+  .dynamic-box {
     display: block;
   }
+}
+
+.rotate-icon {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  z-index: 2;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+.pulse-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: pulse 2s infinite ease-out;
+  z-index: 1;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes pulse {
+  0% {
+    width: 80px;
+    height: 80px;
+    opacity: 1;
+  }
+  100% {
+    width: 150px;
+    height: 150px;
+    opacity: 0;
+  }
+}
+
+/* Efek tambahan saat hover */
+.rotate-icon:hover {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) rotate(15deg); }
+  75% { transform: translate(-50%, -50%) rotate(-15deg); }
 }
