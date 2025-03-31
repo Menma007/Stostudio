@@ -117,10 +117,3 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
-
-.post {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-}
