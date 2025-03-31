@@ -30,24 +30,39 @@ document.addEventListener('DOMContentLoaded', () => {
 // Tambahkan di script.js
 let hasShownNotification = false;
 
-function handleOrientation() {
-  const notification = document.getElementById('rotate-notification');
+function showRotateNotification() {
+  if (hasShownNotification) return;
   
-  if (window.matchMedia("(orientation: portrait)").matches && !hasShownNotification) {
-    notification.style.display = 'flex';
-    // Setelah animasi selesai, sembunyikan
+  const notification = document.getElementById('rotate-notification');
+  notification.style.display = 'flex';
+  notification.classList.add('active');
+  
+  setTimeout(() => {
+    notification.classList.remove('active');
     setTimeout(() => {
       notification.style.display = 'none';
-      hasShownNotification = true;
-    }, 800); // Sesuai durasi animasi (0.8s)
+    }, 500); // Sesuai durasi fade out
+  }, 2000); // Durasi total notifikasi
+  
+  hasShownNotification = true;
+}
+
+// Deteksi orientasi
+function checkOrientation() {
+  if (window.matchMedia("(orientation: portrait)").matches) {
+    showRotateNotification();
   } else {
-    // Tampilkan konten utama saat landscape
     document.querySelectorAll('body > *:not(.rotate-notification)').forEach(el => {
-      el.style.display = '';
+      el.style.filter = 'none';
     });
   }
 }
 
-// Deteksi perubahan orientasi
-window.addEventListener('DOMContentLoaded', handleOrientation);
-window.addEventListener('orientationchange', handleOrientation);
+// Event listeners
+window.addEventListener('DOMContentLoaded', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+
+// Reset notifikasi saat reload
+window.addEventListener('beforeunload', () => {
+  hasShownNotification = false;
+});
