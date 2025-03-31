@@ -27,14 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(0);
 });
 
-// Opsional: Deteksi orientasi lebih akurat
-window.addEventListener('orientationchange', function() {
-  const icon = document.getElementById('rotate-icon');
-  icon.style.display = (window.orientation === 0 || window.orientation === 180) ? 'block' : 'none';
-});
+// JavaScript untuk kontrol dinamis
+const dynamicBox = document.querySelector('.dynamic-box');
 
-// Inisialisasi awal
-window.addEventListener('DOMContentLoaded', function() {
-  const icon = document.getElementById('rotate-icon');
-  icon.style.display = (window.matchMedia("(orientation: portrait)").matches) ? 'block' : 'none';
+function checkOrientation() {
+  if (window.matchMedia("(orientation: portrait)").matches) {
+    dynamicBox.style.display = 'block';
+  } else {
+    dynamicBox.style.display = 'none';
+  }
+}
+
+// Deteksi perubahan orientasi
+window.addEventListener('DOMContentLoaded', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+
+// Opsional: Efek klik
+dynamicBox.addEventListener('click', function() {
+  this.style.transform = 'translate(-50%, -50%) scale(0.9)';
+  setTimeout(() => {
+    this.style.transform = 'translate(-50%, -50%) scale(1)';
+  }, 300);
 });
