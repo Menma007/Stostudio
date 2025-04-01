@@ -239,3 +239,45 @@ body {
   25% { transform: translate(-50%, -50%) rotate(15deg); }
   75% { transform: translate(-50%, -50%) rotate(-15deg); }
 }
+
+.slide {
+  position: relative;
+}
+
+.slide-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.spline-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+spline-viewer {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active spline-viewer {
+  opacity: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .spline-container {
+    transform: scale(0.8);
+  }
+  
+  spline-viewer {
+    pointer-events: none; /* Nonaktifkan interaksi di mobile */
+  }
+}
