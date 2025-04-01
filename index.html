@@ -51,6 +51,30 @@
             <span class="dot" onclick="showSlide(1)"></span>
             <span class="dot" onclick="showSlide(2)"></span>
         </div>
+
+        <!-- Tambahkan di dalam div class="hero" setelah div slides -->
+        <div class="slider-controls">
+          <!-- Dynamic Arrows -->
+          <div class="arrows-container">
+            <button class="arrow-btn prev" onclick="prevSlide()">
+              <svg class="arrow-icon" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
+              </svg>
+            </button>
+            <button class="arrow-btn next" onclick="nextSlide()">
+              <svg class="arrow-icon" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Dots Navigation (Existing) -->
+          <div class="dots">
+            <span class="dot" onclick="showSlide(0)"></span>
+            <span class="dot" onclick="showSlide(1)"></span>
+            <span class="dot" onclick="showSlide(2)"></span>
+          </div>
+        </div>
     </div>
 
     <!-- Blog Section -->
