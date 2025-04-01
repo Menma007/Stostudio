@@ -1,11 +1,21 @@
 /* Base Styles */
+:root {
+  --primary-color: #007bff;
+  --text-color: #ffffff;
+  --bg-color: #000000;
+  --overlay-alpha: 0.6;
+  --transition-fast: 0.3s;
+  --transition-medium: 0.5s;
+  --transition-slow: 1s;
+}
+
 body {
   overflow-x: hidden;
-  overflow-y: auto;
-  font-family: 'Roboto', sans-serif;
-  background-color: #000000;
-  color: #ffffff;
   margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Hero Section */
@@ -14,211 +24,237 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  will-change: transform;
 }
 
 .slides {
   display: flex;
   width: 300vw;
-  transition: transform 0.5s ease-in-out;
+  height: 100%;
+  transition: transform var(--transition-medium) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide {
+  position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  flex-shrink: 0;
   background-size: cover;
   background-position: center;
-  position: relative;
-  flex-shrink: 0;
+  background-repeat: no-repeat;
+  isolation: isolate;
 }
 
-/* Dynamic Arrow Styles */
+/* Navigation Controls */
 .slider-controls {
   position: absolute;
   width: 100%;
   bottom: 30px;
-  z-index: 1000;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  pointer-events: none;
 }
 
 .arrows-container {
   display: flex;
   gap: 20px;
-  align-items: center;
+  pointer-events: auto;
 }
 
 .arrow-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.5);
-  background: rgba(0,0,0,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: all var(--transition-fast) ease;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.arrow-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.arrow-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .arrow-icon {
   width: 24px;
   height: 24px;
-  transition: transform 0.3s ease;
-}
-
-.arrow-btn:hover {
-  background: rgba(0,0,0,0.7);
-  border-color: rgba(255,255,255,0.8);
+  fill: currentColor;
+  transition: transform var(--transition-fast) ease;
 }
 
 .arrow-btn:hover .arrow-icon {
+  transform: translateX(var(--tx, 0));
+}
+
+.arrow-btn.prev:hover { --tx: -3px; }
+.arrow-btn.next:hover { --tx: 3px; }
+
+/* Dots Navigation */
+.dots {
+  display: flex;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+}
+
+.dot.active {
+  background: var(--primary-color);
   transform: scale(1.2);
+}
+
+/* Floating Content */
+.floating-content {
+  position: absolute;
+  z-index: 50;
+  transition: all var(--transition-slow) ease-out;
+}
+
+.floating-text {
+  top: -50px;
+  left: 20px;
+  width: min(260px, 90%);
+  padding: 15px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--text-color);
+  background: rgba(0, 0, 0, var(--overlay-alpha));
+  border-radius: 5px;
+  opacity: 0;
+}
+
+.floating-button {
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  color: var(--text-color);
+  background: var(--primary-color);
+  border-radius: 5px;
+  text-decoration: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.slide.active .floating-content {
+  opacity: 1;
+}
+.slide.active .floating-text { top: 20px; }
+.slide.active .floating-button { bottom: 20px; }
+
+/* Ripple Effect */
+.floating-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(1);
+  transition: all 0.8s ease-out;
+}
+
+.floating-button:hover::before {
+  opacity: 1;
+  transform: scale(3);
+}
+
+/* Spline Container */
+.spline-container {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .hero {
+    height: 60vh;
+  }
+
   .slider-controls {
     bottom: 20px;
   }
-  
+
   .arrow-btn {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
   }
-  
-  .arrow-icon {
-    width: 20px;
-    height: 20px;
+
+  .floating-text {
+    left: 5%;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .floating-button {
+    padding: 10px 18px;
+    right: 10px;
+    bottom: 15px;
   }
 }
 
 @media (max-width: 480px) {
   .slider-controls {
     bottom: 15px;
+    gap: 15px;
   }
-  
+
   .arrows-container {
-    gap: 10px;
+    gap: 15px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
   }
 }
 
-@media (orientation: landscape) {
-  .slider-controls {
-    bottom: 10px;
-  }
-  
-  .floating-button {
-    bottom: 10px;
-  }
-  
-  .floating-text {
-    top: 10px;
-  }
-}
-
-/* Floating Elements */
-.floating-text {
-  position: absolute;
-  top: -50px;
-  left: 20px;
-  width: 260px;
-  font-size: 16px;
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 15px;
-  border-radius: 5px;
-  opacity: 0;
-  transition: top 1s ease-in-out, opacity 1s ease-in-out;
-  z-index: 3;
-  line-height: 1.4em;
-}
-
-.slide.active .floating-text {
-  top: 20px;
-  opacity: 1;
-}
-
-/* Floating Button */
-.floating-button {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 16px;
-  opacity: 0;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.slide.active .floating-button {
-  opacity: 1;
-  bottom: 20px;
-}
-
-/* Ripple Effect */
-.floating-button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border: 10px solid rgba(255, 255, 255, 0.4);
-  border-radius: inherit;
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.floating-button:hover::before {
-  animation: ripple 0.8s ease-out forwards;
-}
-
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-  }
-}
-
-/* Mobile First Approach */
-@media (max-width: 767px) {
-  .hero {
-    height: 60vh !important;
-  }
-
-  .floating-text {
-    width: 90% !important;
-    left: 5% !important;
-    font-size: 14px !important;
-  }
-
-  .floating-button {
-    padding: 8px 16px !important;
-    right: 10px !important;
-    bottom: 10px !important;
-  }
-
-  /* Perbaikan z-index */
-  .prev, .next {
-    z-index: 1000;
-    transform: scale(0.8);
-  }
-}
-
-/* Portrait Mode Handling */
-@media (orientation: portrait) {
+@media (orientation: portrait) and (max-width: 768px) {
   .spline-container {
-    display: none !important;
+    display: none;
   }
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); }
+  to { transform: translateY(0); }
+}
+
+/* Utility Classes */
+.disabled {
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+}
+
+.active {
+  display: block !important;
+  animation: fadeIn var(--transition-slow) ease-out forwards;
 }
