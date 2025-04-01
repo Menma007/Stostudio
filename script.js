@@ -16,15 +16,11 @@ function handleOrientation() {
     
     orientationAlert.style.display = isPortrait ? 'flex' : 'none';
     hero.style.display = isPortrait ? 'none' : 'block';
-    
-    // Force reflow untuk trigger ulang transisi
-    void hero.offsetWidth;
 }
 
 // Slide Navigation
 function goToSlide(index) {
-    if (isAnimating || index === currentSlide) return;
-    if (index < 0 || index >= slides.length) return;
+    if (isAnimating || index < 0 || index >= slides.length) return;
     
     isAnimating = true;
     
@@ -46,14 +42,13 @@ function goToSlide(index) {
 
 // Update Controls
 function updateControls() {
-    // Update dots
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentSlide);
     });
     
-    // Update arrow buttons
-    prevBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
-    nextBtn.style.visibility = currentSlide === slides.length-1 ? 'hidden' : 'visible';
+    // Update arrow visibility
+    prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+    nextBtn.style.display = currentSlide === slides.length-1 ? 'none' : 'flex';
 }
 
 // Event Listeners
@@ -70,9 +65,8 @@ window.addEventListener('DOMContentLoaded', () => {
     slides.forEach((slide, index) => {
         slide.style.opacity = index === 0 ? 1 : 0;
     });
-    
-    handleOrientation();
     updateControls();
+    handleOrientation();
 });
 
 window.addEventListener('resize', handleOrientation);

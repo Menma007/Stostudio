@@ -10,8 +10,10 @@
 <body>
     <!-- Orientation Alert -->
     <div class="orientation-alert">
-        <img src="assets/rotate-icon.png" alt="Rotate Device" class="rotate-icon">
-        <p>Please rotate to landscape mode!</p>
+        <div class="blink-box">
+            <img src="assets/rotate-icon.png" alt="Rotate Device">
+            <p>Please rotate to landscape mode!</p>
+        </div>
     </div>
 
     <!-- Hero Section -->
@@ -41,14 +43,14 @@
             </div>
         </div>
 
-         <!-- Slider Controls -->
-         <div class="slider-controls">
+        <!-- Slider Controls -->
+        <div class="slider-controls">
             <button class="arrow-btn prev">
                 <svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/></svg>
             </button>
             
             <div class="dots-container">
-                <span class="dot"></span>
+                <span class="dot active"></span>
                 <span class="dot"></span>
                 <span class="dot"></span>
             </div>
