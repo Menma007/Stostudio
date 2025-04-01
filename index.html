@@ -1,92 +1,64 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Soto Studio - Creative Design Studio">
     <title>Soto Studio</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Preload important resources -->
-    <link rel="preload" href="assets/rotate-icon.png" as="image">
 </head>
 <body>
-     <!-- Orientation Indicator -->
+    <!-- Orientation Alert -->
     <div class="orientation-alert">
         <img src="assets/rotate-icon.png" alt="Rotate Device" class="rotate-icon">
         <p>Please rotate to landscape mode!</p>
     </div>
 
     <!-- Hero Section -->
-    <section class="hero" aria-label="Image slider">
+    <div class="hero">
         <div class="slides">
-            <!-- Slide 1 with Spline 3D -->
-            <div class="slide active" role="group" aria-roledescription="slide" aria-label="1 of 3">
-                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');" aria-hidden="true"></div>
-                
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
                 <div class="spline-container">
-                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js" async></script>
-                    <spline-viewer 
-                        url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode"
-                        loading="eager"
-                        aria-label="3D interactive scene"
-                    ></spline-viewer>
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+                    <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
                 </div>
-
-                <div class="slide-content">
-                    <p class="floating-text">Lorem ipsum dolor sit amet</p>
-                    <a class="floating-button" href="#" aria-label="Learn more about this feature">Learn More</a>
-                </div>
+                <div class="floating-text">Lorem ipsum dolor sit amet</div>
+                <a class="floating-button" href="#">Learn More</a>
             </div>
-
+            
             <!-- Slide 2 -->
-            <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 3" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');">
-                <div class="slide-content">
-                    <p class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a class="floating-button" href="#" aria-label="Explore our services">Explore</a>
-                </div>
+            <div class="slide" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg')">
+                <div class="floating-text">Lorem ipsum dolor sit amet</div>
+                <a class="floating-button" href="#">Explore</a>
             </div>
-
+            
             <!-- Slide 3 -->
-            <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 3" style="background-image: url('https://example.com/image3.jpg');">
-                <div class="slide-content">
-                    <p class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a class="floating-button" href="#" aria-label="Contact us for more information">Contact Us</a>
-                </div>
+            <div class="slide" style="background-image: url('https://example.com/image3.jpg')">
+                <div class="floating-text">Lorem ipsum dolor sit amet</div>
+                <a class="floating-button" href="#">Contact Us</a>
             </div>
         </div>
-        
+
         <!-- Slider Controls -->
         <div class="slider-controls">
-            <!-- Arrows Navigation -->
-            <div class="arrows-container">
-                <button class="arrow-btn prev" aria-label="Previous slide">
-                    <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="currentColor" d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
-                    </svg>
-                </button>
-                <button class="arrow-btn next" aria-label="Next slide">
-                    <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="currentColor" d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
-                    </svg>
-                </button>
+            <button class="arrow-btn prev">
+                <svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/></svg>
+            </button>
+            
+            <div class="dots-container">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
 
-            <!-- Dots Navigation -->
-            <div class="dots-container" role="tablist">
-                <button class="dot active" role="tab" aria-selected="true" aria-controls="slide-1" id="dot-1"></button>
-                <button class="dot" role="tab" aria-selected="false" aria-controls="slide-2" id="dot-2"></button>
-                <button class="dot" role="tab" aria-selected="false" aria-controls="slide-3" id="dot-3"></button>
-            </div>
+            <button class="arrow-btn next">
+                <svg viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+            </button>
         </div>
-    </section>
+    </div>
 
-    <!-- Blog Section -->
-    <section class="container blog-section" aria-label="Blog posts">
-        <div class="blog-posts">
-            <!-- Blog posts will be inserted here -->
-        </div>
-    </section>
-
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>
