@@ -1,89 +1,92 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Soto Studio - Creative Design Studio">
     <title>Soto Studio</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Preload important resources -->
+    <link rel="preload" href="assets/rotate-icon.png" as="image">
 </head>
 <body>
-<!-- Tambahkan di dalam <body> -->
-<div class="dynamic-box">
-  <img src="assets/rotate-icon.png" alt="Rotate Icon" class="rotate-icon">
-  <div class="pulse-circle"></div>
-</div>
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="slides">
-           <div class="slide active">
-  <!-- Background Image (Fallback) -->
-  <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');"></div>
-  
-  <!-- Spline 3D Viewer -->
-  <div class="spline-container">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-    <spline-viewer 
-      url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode"
-      loading="eager"
-    ></spline-viewer>
-  </div>
-
-  <!-- Konten lainnya -->
-  <div class="floating-text">Lorem ipsum dolor sit amet</div>
-  <a class="floating-button" href="#">Learn More</a>
-</div>
-            <div class="slide" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');">
-                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                <a class="floating-button" href="#">Explore</a>
-            </div>
-            <div class="slide" style="background-image: url('https://example.com/image3.jpg');">
-                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                <a class="floating-button" href="#">Contact Us</a>
-            </div>
-        </div>
-        
-        <button class="prev" onclick="prevSlide()">❮</button>
-        <button class="next" onclick="nextSlide()">❯</button>
-        
-        <div class="dots">
-            <span class="dot active" onclick="showSlide(0)"></span>
-            <span class="dot" onclick="showSlide(1)"></span>
-            <span class="dot" onclick="showSlide(2)"></span>
-        </div>
-
-        <!-- Tambahkan di dalam div class="hero" setelah div slides -->
-        <div class="slider-controls">
-          <!-- Dynamic Arrows -->
-          <div class="arrows-container">
-            <button class="arrow-btn prev" onclick="prevSlide()">
-              <svg class="arrow-icon" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
-              </svg>
-            </button>
-            <button class="arrow-btn next" onclick="nextSlide()">
-              <svg class="arrow-icon" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Dots Navigation (Existing) -->
-          <div class="dots">
-            <span class="dot" onclick="showSlide(0)"></span>
-            <span class="dot" onclick="showSlide(1)"></span>
-            <span class="dot" onclick="showSlide(2)"></span>
-          </div>
-        </div>
+    <!-- Dynamic Box Indicator -->
+    <div class="dynamic-box" aria-hidden="true">
+        <img src="assets/rotate-icon.png" alt="Rotate Icon" class="rotate-icon" loading="lazy">
+        <div class="pulse-circle"></div>
     </div>
+
+    <!-- Hero Section -->
+    <section class="hero" aria-label="Image slider">
+        <div class="slides">
+            <!-- Slide 1 with Spline 3D -->
+            <div class="slide active" role="group" aria-roledescription="slide" aria-label="1 of 3">
+                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');" aria-hidden="true"></div>
+                
+                <div class="spline-container">
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js" async></script>
+                    <spline-viewer 
+                        url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode"
+                        loading="eager"
+                        aria-label="3D interactive scene"
+                    ></spline-viewer>
+                </div>
+
+                <div class="slide-content">
+                    <p class="floating-text">Lorem ipsum dolor sit amet</p>
+                    <a class="floating-button" href="#" aria-label="Learn more about this feature">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 3" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');">
+                <div class="slide-content">
+                    <p class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a class="floating-button" href="#" aria-label="Explore our services">Explore</a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 3" style="background-image: url('https://example.com/image3.jpg');">
+                <div class="slide-content">
+                    <p class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a class="floating-button" href="#" aria-label="Contact us for more information">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slider Controls -->
+        <div class="slider-controls">
+            <!-- Arrows Navigation -->
+            <div class="arrows-container">
+                <button class="arrow-btn prev" aria-label="Previous slide">
+                    <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
+                    </svg>
+                </button>
+                <button class="arrow-btn next" aria-label="Next slide">
+                    <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Dots Navigation -->
+            <div class="dots-container" role="tablist">
+                <button class="dot active" role="tab" aria-selected="true" aria-controls="slide-1" id="dot-1"></button>
+                <button class="dot" role="tab" aria-selected="false" aria-controls="slide-2" id="dot-2"></button>
+                <button class="dot" role="tab" aria-selected="false" aria-controls="slide-3" id="dot-3"></button>
+            </div>
+        </div>
+    </section>
 
     <!-- Blog Section -->
-    <div class="container">
+    <section class="container blog-section" aria-label="Blog posts">
         <div class="blog-posts">
-            <!-- Manual Posts Example -->
+            <!-- Blog posts will be inserted here -->
         </div>
-    </div>
+    </section>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
