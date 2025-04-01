@@ -23,6 +23,8 @@ function showSlide(index) {
   dots.forEach((dot, i) => {
     dot.classList.toggle('active', i === index);
   });
+  
+  updateArrowState(); // Tambahkan ini di akhir fungsi
 }
 
 function nextSlide() {
@@ -32,6 +34,34 @@ function nextSlide() {
 function prevSlide() {
   showSlide(slideIndex - 1);
 }
+
+// Tambahkan fungsi untuk update arrow state
+function updateArrowState() {
+  const prevBtn = document.querySelector('.arrow-btn.prev');
+  const nextBtn = document.querySelector('.arrow-btn.next');
+  const totalSlides = document.querySelectorAll('.slide').length;
+
+  prevBtn.style.opacity = slideIndex === 0 ? '0.5' : '1';
+  nextBtn.style.opacity = slideIndex === totalSlides - 1 ? '0.5' : '1';
+  
+  prevBtn.style.cursor = slideIndex === 0 ? 'not-allowed' : 'pointer';
+  nextBtn.style.cursor = slideIndex === totalSlides - 1 ? 'not-allowed' : 'pointer';
+}
+
+// Tambahkan event listener untuk hover effect
+document.querySelectorAll('.arrow-btn').forEach(btn => {
+  btn.addEventListener('mouseenter', function() {
+    if(this.classList.contains('prev')) {
+      this.querySelector('.arrow-icon').style.transform = 'translateX(-3px)';
+    } else {
+      this.querySelector('.arrow-icon').style.transform = 'translateX(3px)';
+    }
+  });
+  
+  btn.addEventListener('mouseleave', function() {
+    this.querySelector('.arrow-icon').style.transform = 'translateX(0)';
+  });
+});
 
 // Event delegation untuk menghindari conflict dengan Spline
 document.addEventListener('click', function(e) {
