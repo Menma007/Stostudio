@@ -1,101 +1,120 @@
-// Versi final yang sudah diuji
-let slideIndex = 0;
-const transitionDuration = 500; // Sesuaikan dengan CSS
+// Slider Controller
+let currentSlide = 0;
+let isAnimating = false;
+const animationDuration = 1000;
 
-function showSlide(index) {
-  const slides = document.querySelectorAll('.slide');
-  const slidesContainer = document.querySelector('.slides');
-  const dots = document.querySelectorAll('.dot');
+// Element Selectors
+const slider = document.querySelector('.slides');
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+
+// Initialize Slider
+function initSlider() {
+  // Set initial positions
+  slider.style.transition = `transform ${animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+  updateControls();
   
-  // Validasi index
-  if (index < 0) index = slides.length - 1;
-  if (index >= slides.length) index = 0;
+  // Spline Viewer Isolation
+  isolateSplineEvents();
+}
+
+// Core Slide Function
+function goToSlide(index) {
+  if (isAnimating) return;
   
-  slideIndex = index;
+  // Validate index
+  const lastIndex = slides.length - 1;
+  index = Math.max(0, Math.min(index, lastIndex));
   
-  // Update tampilan
+  // Animation lock
+  isAnimating = true;
+  
+  // Update slide position
+  slider.style.transform = `translateX(-${index * 100}%)`;
+  currentSlide = index;
+  
+  // Update UI states
+  updateActiveSlide();
+  updateControls();
+  
+  // Reset animation lock
+  setTimeout(() => {
+    isAnimating = false;
+  }, animationDuration);
+}
+
+// Update Visual States
+function updateActiveSlide() {
   slides.forEach((slide, i) => {
-    slide.classList.toggle('active', i === index);
+    slide.classList.toggle('active', i === currentSlide);
+    slide.style.zIndex = i === currentSlide ? 1 : 0;
   });
+}
+
+// Control States
+function updateControls() {
+  // Button states
+  prevBtn.classList.toggle('disabled', currentSlide === 0);
+  nextBtn.classList.toggle('disabled', currentSlide === slides.length - 1);
   
-  slidesContainer.style.transform = `translateX(-${index * 100}vw)`;
-  
+  // Dot states
   dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === index);
+    dot.classList.toggle('active', i === currentSlide);
   });
-  
-  updateArrowState(); // Tambahkan ini di akhir fungsi
 }
 
-function nextSlide() {
-  showSlide(slideIndex + 1);
-}
-
-function prevSlide() {
-  showSlide(slideIndex - 1);
-}
-
-// Tambahkan fungsi untuk update arrow state
-function updateArrowState() {
-  const prevBtn = document.querySelector('.arrow-btn.prev');
-  const nextBtn = document.querySelector('.arrow-btn.next');
-  const totalSlides = document.querySelectorAll('.slide').length;
-
-  prevBtn.style.opacity = slideIndex === 0 ? '0.5' : '1';
-  nextBtn.style.opacity = slideIndex === totalSlides - 1 ? '0.5' : '1';
-  
-  prevBtn.style.cursor = slideIndex === 0 ? 'not-allowed' : 'pointer';
-  nextBtn.style.cursor = slideIndex === totalSlides - 1 ? 'not-allowed' : 'pointer';
-}
-
-// Tambahkan event listener untuk hover effect
-document.querySelectorAll('.arrow-btn').forEach(btn => {
-  btn.addEventListener('mouseenter', function() {
-    if(this.classList.contains('prev')) {
-      this.querySelector('.arrow-icon').style.transform = 'translateX(-3px)';
-    } else {
-      this.querySelector('.arrow-icon').style.transform = 'translateX(3px)';
-    }
+// Spline Event Isolation
+function isolateSplineEvents() {
+  document.querySelectorAll('spline-viewer').forEach(viewer => {
+    viewer.addEventListener('click', e => e.stopPropagation());
+    viewer.addEventListener('touchstart', e => e.stopPropagation());
   });
-  
-  btn.addEventListener('mouseleave', function() {
-    this.querySelector('.arrow-icon').style.transform = 'translateX(0)';
-  });
+}
+
+// Event Handlers
+function handlePrev() {
+  if (!prevBtn.classList.contains('disabled')) {
+    goToSlide(currentSlide - 1);
+  }
+}
+
+function handleNext() {
+  if (!nextBtn.classList.contains('disabled')) {
+    goToSlide(currentSlide + 1);
+  }
+}
+
+// Event Listeners
+prevBtn.addEventListener('click', handlePrev);
+nextBtn.addEventListener('click', handleNext);
+
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => goToSlide(index));
 });
 
-// Event delegation untuk menghindari conflict dengan Spline
-document.addEventListener('click', function(e) {
-  const target = e.target;
+// Touch Swipe Handling
+let touchStartX = 0;
+
+slider.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+});
+
+slider.addEventListener('touchend', e => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const diff = touchStartX - touchEndX;
   
-  if (target.closest('.prev')) {
-    e.preventDefault();
-    e.stopPropagation();
-    prevSlide();
-  }
-  
-  if (target.closest('.next')) {
-    e.preventDefault();
-    e.stopPropagation();
-    nextSlide();
-  }
-  
-  if (target.closest('.dot')) {
-    e.preventDefault();
-    e.stopPropagation();
-    const dotIndex = [...document.querySelectorAll('.dot')].indexOf(target.closest('.dot'));
-    showSlide(dotIndex);
+  if (Math.abs(diff) > 50) {
+    diff > 0 ? handleNext() : handlePrev();
   }
 });
 
-// Inisialisasi
-document.addEventListener('DOMContentLoaded', () => {
-  showSlide(0);
-  
-  // Isolasi event Spline viewer
-  const splineViewers = document.querySelectorAll('spline-viewer');
-  splineViewers.forEach(viewer => {
-    viewer.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-  });
+// Keyboard Navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') handlePrev();
+  if (e.key === 'ArrowRight') handleNext();
 });
+
+// Initialize
+document.addEventListener('DOMContentLoaded', initSlider);
