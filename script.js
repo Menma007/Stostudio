@@ -1,66 +1,71 @@
+// Versi final yang sudah diuji
 let slideIndex = 0;
+const transitionDuration = 500; // Sesuaikan dengan CSS
 
 function showSlide(index) {
-    const slides = document.querySelectorAll('.slide');
-    const dots = document.querySelectorAll('.dot');
-    
-    slideIndex = index;
-    
-    document.querySelector('.slides').style.transform = `translateX(-${index * 100}vw)`;
-    
-    slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-}
-  // Handle 3D viewer
-  document.querySelectorAll('spline-viewer').forEach(viewer => {
-    viewer.style.opacity = '0';
+  const slides = document.querySelectorAll('.slide');
+  const slidesContainer = document.querySelector('.slides');
+  const dots = document.querySelectorAll('.dot');
+  
+  // Validasi index
+  if (index < 0) index = slides.length - 1;
+  if (index >= slides.length) index = 0;
+  
+  slideIndex = index;
+  
+  // Update tampilan
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
   });
   
-  if(slides[index].querySelector('spline-viewer')) {
-    setTimeout(() => {
-      slides[index].querySelector('spline-viewer').style.opacity = '1';
-    }, 300);
-  }
+  slidesContainer.style.transform = `translateX(-${index * 100}vw)`;
+  
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
 }
 
 function nextSlide() {
-    slideIndex = (slideIndex + 1) % 3;
-    showSlide(slideIndex);
+  showSlide(slideIndex + 1);
 }
 
 function prevSlide() {
-    slideIndex = (slideIndex - 1 + 3) % 3;
-    showSlide(slideIndex);
+  showSlide(slideIndex - 1);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const rotateIcon = document.querySelector('.rotate-icon');
+// Event delegation untuk menghindari conflict dengan Spline
+document.addEventListener('click', function(e) {
+  const target = e.target;
   
-  // Fungsi deteksi orientasi
-  function handleOrientation() {
-    // Method 1: Media Query
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-    
-    // Method 2: Fallback comparison
-    const isHeightGreater = window.innerHeight > window.innerWidth;
-    
-    if (isPortrait || isHeightGreater) {
-      rotateIcon.style.display = 'flex';
-      console.log('Portrait mode - Showing icon');
-    } else {
-      rotateIcon.style.display = 'none';
-      console.log('Landscape mode - Hiding icon');
-    }
+  if (target.closest('.prev')) {
+    e.preventDefault();
+    e.stopPropagation();
+    prevSlide();
   }
-
-  // Initial check
-  handleOrientation();
-
-  // Event listeners
-  window.addEventListener('orientationchange', handleOrientation);
   
-  // Fallback for some devices
-  window.addEventListener('resize', function() {
-    setTimeout(handleOrientation, 300);
+  if (target.closest('.next')) {
+    e.preventDefault();
+    e.stopPropagation();
+    nextSlide();
+  }
+  
+  if (target.closest('.dot')) {
+    e.preventDefault();
+    e.stopPropagation();
+    const dotIndex = [...document.querySelectorAll('.dot')].indexOf(target.closest('.dot'));
+    showSlide(dotIndex);
+  }
+});
+
+// Inisialisasi
+document.addEventListener('DOMContentLoaded', () => {
+  showSlide(0);
+  
+  // Isolasi event Spline viewer
+  const splineViewers = document.querySelectorAll('spline-viewer');
+  splineViewers.forEach(viewer => {
+    viewer.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
   });
 });
