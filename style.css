@@ -190,3 +190,35 @@ body {
     opacity: 0;
   }
 }
+
+/* Mobile First Approach */
+@media (max-width: 767px) {
+  .hero {
+    height: 60vh !important;
+  }
+
+  .floating-text {
+    width: 90% !important;
+    left: 5% !important;
+    font-size: 14px !important;
+  }
+
+  .floating-button {
+    padding: 8px 16px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  /* Perbaikan z-index */
+  .prev, .next {
+    z-index: 1000;
+    transform: scale(0.8);
+  }
+}
+
+/* Portrait Mode Handling */
+@media (orientation: portrait) {
+  .spline-container {
+    display: none !important;
+  }
+}
