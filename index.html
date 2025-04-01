@@ -16,10 +16,23 @@
     <!-- Hero Section -->
     <div class="hero">
         <div class="slides">
-            <div class="slide active" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');">
-                <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                <a class="floating-button" href="#">Learn More</a>
-            </div>
+           <div class="slide active">
+  <!-- Background Image (Fallback) -->
+  <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');"></div>
+  
+  <!-- Spline 3D Viewer -->
+  <div class="spline-container">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+    <spline-viewer 
+      url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode"
+      loading="eager"
+    ></spline-viewer>
+  </div>
+
+  <!-- Konten lainnya -->
+  <div class="floating-text">Lorem ipsum dolor sit amet</div>
+  <a class="floating-button" href="#">Learn More</a>
+</div>
             <div class="slide" style="background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');">
                 <div class="floating-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
                 <a class="floating-button" href="#">Explore</a>
