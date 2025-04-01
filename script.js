@@ -11,19 +11,30 @@ const nextBtn = document.querySelector('.next');
 // Orientation Handler
 function handleOrientation() {
     const orientationAlert = document.querySelector('.orientation-alert');
+    const hero = document.querySelector('.hero');
     const isPortrait = window.matchMedia("(orientation: portrait)").matches;
     
     orientationAlert.style.display = isPortrait ? 'flex' : 'none';
-    document.querySelector('.hero').style.display = isPortrait ? 'none' : 'block';
+    hero.style.display = isPortrait ? 'none' : 'block';
+    
+    // Force reflow untuk trigger ulang transisi
+    void hero.offsetWidth;
 }
 
 // Slide Navigation
 function goToSlide(index) {
     if (isAnimating || index === currentSlide) return;
+    if (index < 0 || index >= slides.length) return;
     
     isAnimating = true;
+    
+    // Animasikan transisi
+    slides[currentSlide].style.opacity = 0;
     slides[currentSlide].classList.remove('active');
-    currentSlide = (index + slides.length) % slides.length;
+    
+    currentSlide = index;
+    
+    slides[currentSlide].style.opacity = 1;
     slides[currentSlide].classList.add('active');
     
     updateControls();
@@ -35,9 +46,14 @@ function goToSlide(index) {
 
 // Update Controls
 function updateControls() {
+    // Update dots
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentSlide);
     });
+    
+    // Update arrow buttons
+    prevBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
+    nextBtn.style.visibility = currentSlide === slides.length-1 ? 'hidden' : 'visible';
 }
 
 // Event Listeners
@@ -50,13 +66,13 @@ dots.forEach((dot, i) => {
 
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
+    // Set initial states
+    slides.forEach((slide, index) => {
+        slide.style.opacity = index === 0 ? 1 : 0;
+    });
+    
     handleOrientation();
     updateControls();
-    
-    // Set initial slide background
-    document.querySelectorAll('.slide').forEach((slide, index) => {
-        if(index !== 0) slide.style.opacity = 0;
-    });
 });
 
 window.addEventListener('resize', handleOrientation);
