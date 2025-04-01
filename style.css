@@ -1,283 +1,71 @@
-/* Base Styles */
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-  font-family: 'Roboto', sans-serif;
-  background-color: #000000;
-  color: #ffffff;
-  margin: 0;
+// Versi final yang sudah diuji
+let slideIndex = 0;
+const transitionDuration = 500; // Sesuaikan dengan CSS
+
+function showSlide(index) {
+  const slides = document.querySelectorAll('.slide');
+  const slidesContainer = document.querySelector('.slides');
+  const dots = document.querySelectorAll('.dot');
+  
+  // Validasi index
+  if (index < 0) index = slides.length - 1;
+  if (index >= slides.length) index = 0;
+  
+  slideIndex = index;
+  
+  // Update tampilan
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+  
+  slidesContainer.style.transform = `translateX(-${index * 100}vw)`;
+  
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
 }
 
-/* Hero Section */
-.hero {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+function nextSlide() {
+  showSlide(slideIndex + 1);
 }
 
-.slides {
-  display: flex;
-  width: 300vw;
-  transition: transform 0.5s ease-in-out;
+function prevSlide() {
+  showSlide(slideIndex - 1);
 }
 
-.slide {
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  flex-shrink: 0;
-}
-
-/* Floating Elements */
-.floating-text {
-  position: absolute;
-  top: -50px;
-  left: 20px;
-  width: 260px;
-  font-size: 16px;
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 15px;
-  border-radius: 5px;
-  opacity: 0;
-  transition: top 1s ease-in-out, opacity 1s ease-in-out;
-  z-index: 3;
-  line-height: 1.4em;
-}
-
-.slide.active .floating-text {
-  top: 20px;
-  opacity: 1;
-}
-
-/* Floating Button */
-.floating-button {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 16px;
-  opacity: 0;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.slide.active .floating-button {
-  opacity: 1;
-  bottom: 20px;
-}
-
-/* Ripple Effect */
-.floating-button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border: 10px solid rgba(255, 255, 255, 0.4);
-  border-radius: inherit;
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.floating-button:hover::before {
-  animation: ripple 0.8s ease-out forwards;
-}
-
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-  }
-}
-
-/* Navigation Controls */
-.dots {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 5;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  background: white;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #007bff;
-}
-
-.prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.5);
-  color: black;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  font-size: 24px;
-  z-index: 10;
-}
-
-.prev { left: 10px; }
-.next { right: 10px; }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .floating-text {
-    width: 80%;
-    left: 10px;
-    font-size: 14px;
-  }
-
-  .floating-button {
-    padding: 8px 15px;
-    font-size: 14px;
-  }
-
-  .dots {
-    bottom: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .floating-text {
-    width: 90%;
-    padding: 10px;
-  }
-
-  .floating-button {
-    right: 10px;
-    bottom: 10px;
-  }
-}
-
-/* CSS */
-.dynamic-box {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  display: none;
-}
-
-/* Tampilkan hanya di portrait mode */
-@media (orientation: portrait) {
-  .dynamic-box {
-    display: block;
-  }
-}
-
-.rotate-icon {
-  width: 80px;
-  height: 80px;
-  position: relative;
-  z-index: 2;
-  animation: bounce 2s infinite ease-in-out;
-}
-
-.pulse-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
-  border: 3px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  animation: pulse 2s infinite ease-out;
-  z-index: 1;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
-}
-
-@keyframes pulse {
-  0% {
-    width: 80px;
-    height: 80px;
-    opacity: 1;
-  }
-  100% {
-    width: 150px;
-    height: 150px;
-    opacity: 0;
-  }
-}
-
-/* Efek tambahan saat hover */
-.rotate-icon:hover {
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-  25% { transform: translate(-50%, -50%) rotate(15deg); }
-  75% { transform: translate(-50%, -50%) rotate(-15deg); }
-}
-
-.slide {
-  position: relative;
-}
-
-.slide-background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-}
-
-.spline-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-spline-viewer {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.slide.active spline-viewer {
-  opacity: 1;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .spline-container {
-    transform: scale(0.8);
+// Event delegation untuk menghindari conflict dengan Spline
+document.addEventListener('click', function(e) {
+  const target = e.target;
+  
+  if (target.closest('.prev')) {
+    e.preventDefault();
+    e.stopPropagation();
+    prevSlide();
   }
   
-  spline-viewer {
-    pointer-events: none; /* Nonaktifkan interaksi di mobile */
+  if (target.closest('.next')) {
+    e.preventDefault();
+    e.stopPropagation();
+    nextSlide();
   }
-}
+  
+  if (target.closest('.dot')) {
+    e.preventDefault();
+    e.stopPropagation();
+    const dotIndex = [...document.querySelectorAll('.dot')].indexOf(target.closest('.dot'));
+    showSlide(dotIndex);
+  }
+});
+
+// Inisialisasi
+document.addEventListener('DOMContentLoaded', () => {
+  showSlide(0);
+  
+  // Isolasi event Spline viewer
+  const splineViewers = document.querySelectorAll('spline-viewer');
+  splineViewers.forEach(viewer => {
+    viewer.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+});
