@@ -11,6 +11,17 @@ function showSlide(index) {
     slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
     dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
 }
+  // Handle 3D viewer
+  document.querySelectorAll('spline-viewer').forEach(viewer => {
+    viewer.style.opacity = '0';
+  });
+  
+  if(slides[index].querySelector('spline-viewer')) {
+    setTimeout(() => {
+      slides[index].querySelector('spline-viewer').style.opacity = '1';
+    }, 300);
+  }
+}
 
 function nextSlide() {
     slideIndex = (slideIndex + 1) % 3;
