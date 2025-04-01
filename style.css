@@ -1,5 +1,4 @@
 /* style.css */
-/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -10,92 +9,57 @@
 .orientation-alert {
   display: none;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
   z-index: 1000;
-  text-align: center;
-  background: rgba(0,0,0,0.9);
-  padding: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.blink-box {
+  background: #fff;
+  padding: 30px 40px;
   border-radius: 15px;
-  color: white;
-  font-family: Arial, sans-serif;
+  text-align: center;
+  animation: blink 1.5s infinite;
 }
 
-.orientation-alert img {
-  width: 60px;
+@keyframes blink {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.8; }
+}
+
+.blink-box img {
+  width: 80px;
   margin-bottom: 15px;
-  animation: rotate 2s infinite linear;
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.blink-box p {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 @media (orientation: portrait) {
-  .orientation-alert { display: flex; flex-direction: column; align-items: center; }
+  .orientation-alert { display: flex; }
   .hero { display: none; }
 }
 
-/* Slider Controls */
-.slider-controls {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  z-index: 10;
-}
-
-.arrow-btn {
-  background: rgba(255,255,255,0.1);
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: grid;
-  place-items: center;
-}
-
-.arrow-btn:hover {
-  background: rgba(255,255,255,0.3);
-}
-
-.arrow-btn svg {
-  width: 24px;
-  height: 24px;
-  fill: white;
-}
-
-.dots-container {
-  display: flex;
-  gap: 12px;
-}
-
-.dot {
-  width: 14px;
-  height: 14px;
-  background: rgba(255,255,255,0.4);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.dot.active {
-  background: #fff;
-  transform: scale(1.3);
-}
-
 /* Slide Styles */
-.slides {
+.hero {
   position: relative;
   height: 100vh;
   overflow: hidden;
+  background: #000;
+}
+
+.slides {
+  position: relative;
+  height: 100%;
 }
 
 .slide {
@@ -105,10 +69,73 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.5s;
+  transition: opacity 0.8s ease;
 }
 
 .slide.active {
   opacity: 1;
   z-index: 1;
 }
+
+.slide-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Slide 1 Background */
+.slide:nth-child(1) .slide-background {
+  background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png');
+}
+
+/* Slide 2 Background */
+.slide:nth-child(2) .slide-background {
+  background-image: url('https://i.ibb.co/bg07MbQv/Kusonime-Jenengmu-Be-Deh-1080-P-mkv-snapshot-00-33-57-892.jpg');
+}
+
+/* Slide 3 Background */
+.slide:nth-child(3) .slide-background {
+  background-image: url('https://example.com/image3.jpg');
+}
+
+/* Content Box */
+.content-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(0,0,0,0.8);
+  padding: 30px 40px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.floating-text {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.floating-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.floating-button:hover {
+  background: #eee;
+  transform: translateY(-3px);
+}
+
+/* Slider Controls (tetap sama seperti sebelumnya) */

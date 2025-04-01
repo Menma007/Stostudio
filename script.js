@@ -1,46 +1,29 @@
 // script.js
 let currentSlide = 0;
 let isAnimating = false;
-const animationDuration = 1000;
+const animationDuration = 800;
 
-// Elements
-const slider = document.querySelector('.slides');
 const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.dot');
 const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 
-// Orientation Check
-function checkOrientation() {
+// Orientation Handler
+function handleOrientation() {
     const orientationAlert = document.querySelector('.orientation-alert');
-    const hero = document.querySelector('.hero');
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
     
-    if (window.matchMedia("(orientation: portrait)").matches) {
-        orientationAlert.style.display = 'flex';
-        hero.style.display = 'none';
-    } else {
-        orientationAlert.style.display = 'none';
-        hero.style.display = 'block';
-    }
+    orientationAlert.style.display = isPortrait ? 'flex' : 'none';
+    document.querySelector('.hero').style.display = isPortrait ? 'none' : 'block';
 }
 
-// Slider Functions
-function updateControls() {
-    prevBtn.classList.toggle('disabled', currentSlide === 0);
-    nextBtn.classList.toggle('disabled', currentSlide === slides.length - 1);
-    
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-    });
-}
-
+// Slide Navigation
 function goToSlide(index) {
-    if (isAnimating) return;
-    index = Math.max(0, Math.min(index, slides.length - 1));
+    if (isAnimating || index === currentSlide) return;
     
     isAnimating = true;
     slides[currentSlide].classList.remove('active');
-    currentSlide = index;
+    currentSlide = (index + slides.length) % slides.length;
     slides[currentSlide].classList.add('active');
     
     updateControls();
@@ -50,17 +33,31 @@ function goToSlide(index) {
     }, animationDuration);
 }
 
+// Update Controls
+function updateControls() {
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+    });
+}
+
 // Event Listeners
 prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
 nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
-dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => goToSlide(index));
+dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goToSlide(i));
 });
 
-// Initialization
-document.addEventListener('DOMContentLoaded', () => {
-    checkOrientation();
-    window.addEventListener('resize', checkOrientation);
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+    handleOrientation();
     updateControls();
+    
+    // Set initial slide background
+    document.querySelectorAll('.slide').forEach((slide, index) => {
+        if(index !== 0) slide.style.opacity = 0;
+    });
 });
+
+window.addEventListener('resize', handleOrientation);
+window.addEventListener('orientationchange', handleOrientation);
