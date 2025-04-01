@@ -104,6 +104,20 @@ body {
   }
 }
 
+@media (orientation: landscape) {
+  .slider-controls {
+    bottom: 10px;
+  }
+  
+  .floating-button {
+    bottom: 10px;
+  }
+  
+  .floating-text {
+    top: 10px;
+  }
+}
+
 /* Floating Elements */
 .floating-text {
   position: absolute;
