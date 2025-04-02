@@ -1,68 +1,320 @@
-<!-- index.html -->
+<!-- index-inline.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soto Studio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soto Studio</title>
+  <style>
+    /* style.css */
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Orientation Alert */
+    .orientation-alert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .blink-box {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    .orientation-alert img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    @media (orientation: portrait) {
+      .orientation-alert { display: flex; }
+      .hero { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .slide-background {
+          background-size: contain; /* Sesuaikan untuk layar kecil */
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden !important;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    /* FIX UTAMA: Spline container */
+    .spline-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .slide-background {
+      background-size: cover !important;
+      background-position: center center !important;
+      transform: translateZ(0);
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Slider Controls */
+    .slider-controls {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      z-index: 1000;
+    }
+
+    .arrow-btn {
+      background: rgba(255,255,255,0.9);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s;
+    }
+
+    .arrow-btn:hover {
+      background: rgba(255,255,255,0.7);
+    }
+
+    .arrow-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #333;
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 12px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+
+    /* Konten */
+    .floating-text {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 1.5rem;
+      text-align: center;
+      z-index: 3;
+    }
+
+    .floating-button {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 30px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      border-radius: 30px;
+      text-decoration: none;
+      z-index: 3;
+    }
+  </style>
 </head>
 <body>
-    <!-- Orientation Alert -->
-    <div class="orientation-alert">
-        <div class="blink-box">
-            <img src="assets/rotate-icon.png" alt="Rotate Device">
-            <p>Please rotate to landscape mode!</p>
+  <!-- Orientation Alert -->
+  <div class="orientation-alert">
+    <div class="blink-box">
+      <img src="assets/rotate-icon.png" alt="Rotate Device">
+      <p>Please rotate to landscape mode!</p>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="slides">
+      <!-- Slide 1 -->
+      <div class="slide active">
+        <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
+        <div class="spline-container">
+          <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+          <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
         </div>
+        <div class="floating-text">Lorem ipsum dolor sit amet</div>
+        <a class="floating-button" href="#">Learn More</a>
+      </div>
+      
+      <!-- Slide 2 -->
+      <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')">
+        <div class="slide-background"></div>
+        <div class="floating-text">Lorem ipsum dolor sit amet</div>
+        <a class="floating-button" href="#">Explore</a>
+      </div>
+      
+      <!-- Slide 3 -->
+      <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')">
+        <div class="slide-background"></div>
+        <div class="floating-text">Lorem ipsum dolor sit amet</div>
+        <a class="floating-button" href="#">Contact Us</a>
+      </div>
     </div>
 
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="slides">
-            <!-- Slide 1 -->
-            <div class="slide active">
-                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
-                <div class="spline-container">
-                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-                    <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
-                </div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Learn More</a>
-            </div>
-            
-            <!-- Slide 2 -->
-            <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')">
-                <div class="slide-background"></div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Explore</a>
-            </div>
-            
-            <!-- Slide 3 -->
-            <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')">
-                <div class="slide-background"></div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Contact Us</a>
-            </div>
-        </div>
-
-        <!-- Slider Controls -->
-        <div class="slider-controls">
-            <button class="arrow-btn prev">
-                <svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/></svg>
-            </button>
-            
-            <div class="dots-container">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-
-            <button class="arrow-btn next">
-                <svg viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
-            </button>
-        </div>
+    <!-- Slider Controls -->
+    <div class="slider-controls">
+      <button class="arrow-btn prev">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
+        </svg>
+      </button>
+      
+      <div class="dots-container">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      
+      <button class="arrow-btn next">
+        <svg viewBox="0 0 24 24">
+          <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    // script.js
+    let currentSlide = 0;
+    let isAnimating = false;
+    const animationDuration = 800;
+
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+
+    // Orientation Handler
+    function handleOrientation() {
+      const orientationAlert = document.querySelector('.orientation-alert');
+      const hero = document.querySelector('.hero');
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+
+      orientationAlert.style.display = isPortrait ? 'flex' : 'none';
+      hero.style.display = isPortrait ? 'none' : 'block';
+    }
+
+    // Slide Navigation
+    function goToSlide(index) {
+      if (isAnimating || index < 0 || index >= slides.length) return;
+
+      isAnimating = true;
+
+      // Animasikan transisi
+      slides[currentSlide].style.opacity = 0;
+      slides[currentSlide].classList.remove('active');
+
+      currentSlide = index;
+
+      slides[currentSlide].style.opacity = 1;
+      slides[currentSlide].classList.add('active');
+
+      updateControls();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, animationDuration);
+    }
+
+    // Update Controls
+    function updateControls() {
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+
+      // Update arrow visibility
+      prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+      nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+    }
+
+    // Event Listeners
+    prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goToSlide(i));
+    });
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      // Set initial states
+      slides.forEach((slide, index) => {
+        slide.style.opacity = index === 0 ? 1 : 0;
+      });
+      updateControls();
+      handleOrientation();
+    });
+
+    window.addEventListener('resize', handleOrientation);
+    window.addEventListener('orientationchange', handleOrientation);
+  </script>
 </body>
 </html>
