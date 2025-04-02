@@ -67,6 +67,20 @@
   z-index: 1;
 }
 
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Hindari gambar keluar dari batas */
+}
+
+.spline-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* Pastikan Spline di atas background */
+}
+
 .slide.active {
   opacity: 1;
   z-index: 2;
