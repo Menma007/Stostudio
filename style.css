@@ -58,11 +58,12 @@
   overflow: hidden;
 }
 
-.slides {
-  position: relative;
+.slide {
+  position: absolute;
+  width: 100%;
   height: 100%;
+  overflow: hidden !important; /* Tambahkan ini */
 }
-
 
 .slide {
   position: absolute;
@@ -75,10 +76,15 @@
   overflow: hidden; /* Perbaikan 1: Hindari overflow */
 }
 
+/* FIX UTAMA: Spline container */
 .spline-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%); /* Posisi absolut di tengah */
+  z-index: 2;
 }
 
 .slide.active {
@@ -87,9 +93,9 @@
 }
 
 .slide-background {
-  background-size: cover;
-  background-position: center;
-  transform: translateZ(0); /* Aktifkan GPU rendering */
+  background-size: cover !important;
+  background-position: center center !important;
+  transform: translateZ(0); /* Hardware acceleration */
 }
 
 .slide img {
