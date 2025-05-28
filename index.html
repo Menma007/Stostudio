@@ -7,6 +7,65 @@
   <style>
     /* style.css */
     /* Reset */
+      .floating-icons {
+          position: absolute;
+          top: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 22px;
+          z-index: 10;
+      }
+
+      .icon-item {
+          position: relative;
+          display: flex;
+          align-items: center;
+      }
+
+      .icon {
+          width: 48px;
+          height: 48px;
+          background: rgba(255,255,255,0.7);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.7rem;
+          color: #333;
+          cursor: pointer;
+          transition: background 0.3s;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+
+      .icon-item:hover .icon {
+          background: rgba(255,255,255,0.95);
+      }
+
+      .icon-label {
+          opacity: 0;
+          visibility: hidden;
+          background: rgba(255,255,255,0.95);
+          color: #333;
+          border-radius: 8px;
+          padding: 7px 16px;
+          margin-left: 12px;
+          font-size: 1rem;
+          white-space: nowrap;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          position: absolute;
+          left: 60px;
+          top: 50%;
+          transform: translateY(-50%);
+          transition: opacity 0.2s, visibility 0.2s;
+          z-index: 20;
+      }
+
+      .icon-item:hover .icon-label {
+          opacity: 1;
+          visibility: visible;
+      }
+
     * {
       margin: 0;
       padding: 0;
@@ -195,49 +254,75 @@
   </div>
 
   <div class="hero">
-    <div class="slides">
-      <div class="slide active">
-        <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
-        <div class="spline-container">
-          <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-          <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
-        </div>
-        <div class="floating-text">Lorem ipsum dolor sit amet</div>
-        <a class="floating-button" href="#">Learn More</a>
-      </div>
-      
-      <div class="slide">
-        <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-        <div class="floating-text">Lorem ipsum dolor sit amet</div>
-        <a class="floating-button" href="#">Explore</a>
-      </div>
-      
-      <div class="slide">
-        <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-        <div class="floating-text">Lorem ipsum dolor sit amet</div>
-        <a class="floating-button" href="#">Contact Us</a>
-      </div>
-    </div>
+      <div class="slides">
+          <div class="slide active">
+              <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
+              <div class="spline-container">
+                  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+                  <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
+              </div>
+              <div class="floating-text">Lorem ipsum dolor sit amet</div>
+              <a class="floating-button" href="#">Learn More</a>
+          </div>
 
-    <div class="slider-controls">
-      <button class="arrow-btn prev">
-        <svg viewBox="0 0 24 24">
-          <path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z"/>
-        </svg>
-      </button>
-      
-      <div class="dots-container">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+          <div class="slide">
+              <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
+
+              <div class="floating-text">Lorem ipsum dolor sit amet</div>
+              <a class="floating-button" href="#">Explore</a>
+          </div>
+
+          <div class="slide">
+              <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
+              <div class="floating-text">Lorem ipsum dolor sit amet</div>
+              <a class="floating-button" href="#">Contact Us</a>
+          </div>
       </div>
-      
-      <button class="arrow-btn next">
-        <svg viewBox="0 0 24 24">
-          <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/>
-        </svg>
-      </button>
-    </div>
+      <div class="floating-icons">
+          <div class="icon-item">
+              <span class="icon">&#9733;</span>
+              <span class="icon-label">Fitur 1</span>
+          </div>
+          <div class="icon-item">
+              <span class="icon">&#9881;</span>
+              <span class="icon-label">Fitur 2</span>
+          </div>
+          <div class="icon-item">
+              <span class="icon">&#9993;</span>
+              <span class="icon-label">Fitur 3</span>
+          </div>
+          <div class="icon-item">
+              <span class="icon">&#128187;</span>
+              <span class="icon-label">Fitur 4</span>
+          </div>
+          <div class="icon-item">
+              <span class="icon">&#128640;</span>
+              <span class="icon-label">Fitur 5</span>
+          </div>
+          <div class="icon-item">
+              <span class="icon">&#127919;</span>
+              <span class="icon-label">Fitur 6</span>
+          </div>
+      </div>
+      <div class="slider-controls">
+          <button class="arrow-btn prev">
+              <svg viewBox="0 0 24 24">
+                  <path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z" />
+              </svg>
+          </button>
+
+          <div class="dots-container">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+          </div>
+
+          <button class="arrow-btn next">
+              <svg viewBox="0 0 24 24">
+                  <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z" />
+              </svg>
+          </button>
+      </div>
   </div>
 
   <script>
