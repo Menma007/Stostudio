@@ -101,31 +101,29 @@
         /* Wrapper for Icon Navigation (arrows + icon list) */
         .icon-navigation-wrapper {
             position: absolute;
-            top: 50%;
+            top: 0; /* Align to top of hero */
             left: 5%;
-            transform: translateY(-50%);
+            height: 100vh; /* Take full viewport height */
+            display: flex;
+            flex-direction: column; /* Stack children: up-arrow, icon-container, down-arrow */
+            justify-content: space-between; /* Pushes up/down arrows to extremes */
+            align-items: flex-start; /* Align all children to the left */
+            padding-top: 20px; /* Some padding from top/bottom edges */
+            padding-bottom: 20px;
+            box-sizing: border-box; /* Include padding in height calculation */
             z-index: 10;
         }
 
-        /* Container for the horizontal arrangement of arrows and icons */
-        .icon-and-arrows-layout {
-            display: flex; /* Arrange children (arrow column and icon container) horizontally */
-            flex-direction: row; /* Keep children in a row */
-            align-items: center; /* Vertically center items within this row */
-            gap: 10px; /* Space between arrow column and the icon list */
-        }
+        /* Removed .icon-and-arrows-layout as it's no longer needed */
 
-        /* Container for the vertical arrows */
+        /* Container for the vertical arrows - now just holds the buttons */
         .arrow-column {
+            /* No specific height needed here, as it's a flex item in a column */
             display: flex;
-            flex-direction: column; /* Stack arrows vertically */
-            /* This height should match the height of .icon-navigation-container
-               to ensure arrows align with the top/bottom of the visible icons.
-               3 icons * 56px (icon size) + 2 * 15px (gap) = 168 + 30 = 198px
-            */
-            height: calc(3 * 56px + 2 * 15px);
-            justify-content: space-between; /* Push arrows to the top and bottom of this column */
+            flex-direction: column;
+            justify-content: space-between; /* Arrows will be pushed to the top/bottom of this column */
             align-items: center; /* Center arrows horizontally within their column */
+            /* Removed fixed height from here, as it's now handled by the wrapper's justify-content */
         }
 
         /* Icon Navigation Container - Now only wraps the scrollable icons */
@@ -135,6 +133,8 @@
             overflow: hidden; /* Hide overflowing icons */
             display: flex; /* Ensure it's a flex container for its children */
             flex-direction: column; /* Keep icons stacked vertically inside */
+            margin-top: auto; /* Push it to center vertically */
+            margin-bottom: auto; /* Push it to center vertically */
         }
 
         /* Floating Icons Section - Now for vertical scrolling */
@@ -284,10 +284,10 @@
             transform: translateY(-2px);
         }
 
-        /* Slider Controls (Arrows and Dots) - Now globally positioned at the bottom */
+        /* Slider Controls (Arrows and Dots) - Globally positioned at the bottom */
         .slider-controls {
             position: absolute;
-            bottom: 30px; /* Reverted to fixed bottom position */
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -428,87 +428,83 @@
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
 
                 <div class="icon-navigation-wrapper">
-                    <div class="icon-and-arrows-layout">
-                        <div class="arrow-column">
-                            <button class="arrow-btn-vertical up-arrow">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-                                </svg>
-                            </button>
-                            <button class="arrow-btn-vertical down-arrow">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="icon-navigation-container">
-                            <div class="floating-icons">
-                                <div class="icon-item" data-product-id="avatar1">
-                                    <span class="icon">
-                                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=Avatar1" alt="Avatar 1" />
-                                    </span>
-                                    <span class="icon-label">
-                                        Sci-Fi Explorer
-                                        <span class="icon-desc">A futuristic character.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar2">
-                                    <span class="icon">&#128100;</span> <span class="icon-label">
-                                        Fantasy Knight
-                                        <span class="icon-desc">Brave warrior model.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar3">
-                                    <span class="icon">&#129497;</span> <span class="icon-label">
-                                        Cute Robot
-                                        <span class="icon-desc">Friendly companion.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar4">
-                                    <span class="icon">&#128126;</span> <span class="icon-label">
-                                        Alien Creature
-                                        <span class="icon-desc">Mysterious extraterrestrial.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar5">
-                                    <span class="icon">&#128105;&#8205;&#127891;</span> <span class="icon-label">
-                                        Stylized Human
-                                        <span class="icon-desc">Cartoonish character.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar6">
-                                    <span class="icon">&#127944;</span> <span class="icon-label">
-                                        Athlete Model
-                                        <span class="icon-desc">Dynamic sports figure.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar7">
-                                    <span class="icon">
-                                        <img src="https://placehold.co/40x40/8A2BE2/FFFFFF?text=Avatar7" alt="Avatar 7" />
-                                    </span>
-                                    <span class="icon-label">
-                                        Cyberpunk Rogue
-                                        <span class="icon-desc">Stealthy urban character.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar8">
-                                    <span class="icon">&#128125;</span> <span class="icon-label">
-                                        Spirit Guide
-                                        <span class="icon-desc">Ethereal and mystical.</span>
-                                    </span>
-                                </div>
-                                <div class="icon-item" data-product-id="avatar9">
-                                    <span class="icon">
-                                        <img src="https://placehold.co/40x40/FFD700/000000?text=Avatar9" alt="Avatar 9" />
-                                    </span>
-                                    <span class="icon-label">
-                                        Ancient Guardian
-                                        <span class="icon-desc">Protector from old times.</span>
-                                    </span>
-                                </div>
+                    <button class="arrow-btn-vertical up-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                        </svg>
+                    </button>
+                    <div class="icon-navigation-container">
+                        <div class="floating-icons">
+                            <div class="icon-item" data-product-id="avatar1">
+                                <span class="icon">
+                                    <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=Avatar1" alt="Avatar 1" />
+                                </span>
+                                <span class="icon-label">
+                                    Sci-Fi Explorer
+                                    <span class="icon-desc">A futuristic character.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar2">
+                                <span class="icon">&#128100;</span> <span class="icon-label">
+                                    Fantasy Knight
+                                    <span class="icon-desc">Brave warrior model.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar3">
+                                <span class="icon">&#129497;</span> <span class="icon-label">
+                                    Cute Robot
+                                    <span class="icon-desc">Friendly companion.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar4">
+                                <span class="icon">&#128126;</span> <span class="icon-label">
+                                    Alien Creature
+                                    <span class="icon-desc">Mysterious extraterrestrial.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar5">
+                                <span class="icon">&#128105;&#8205;&#127891;</span> <span class="icon-label">
+                                    Stylized Human
+                                    <span class="icon-desc">Cartoonish character.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar6">
+                                <span class="icon">&#127944;</span> <span class="icon-label">
+                                    Athlete Model
+                                    <span class="icon-desc">Dynamic sports figure.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar7">
+                                <span class="icon">
+                                    <img src="https://placehold.co/40x40/8A2BE2/FFFFFF?text=Avatar7" alt="Avatar 7" />
+                                </span>
+                                <span class="icon-label">
+                                    Cyberpunk Rogue
+                                    <span class="icon-desc">Stealthy urban character.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar8">
+                                <span class="icon">&#128125;</span> <span class="icon-label">
+                                    Spirit Guide
+                                    <span class="icon-desc">Ethereal and mystical.</span>
+                                </span>
+                            </div>
+                            <div class="icon-item" data-product-id="avatar9">
+                                <span class="icon">
+                                    <img src="https://placehold.co/40x40/FFD700/000000?text=Avatar9" alt="Avatar 9" />
+                                </span>
+                                <span class="icon-label">
+                                    Ancient Guardian
+                                    <span class="icon-desc">Protector from old times.</span>
+                                </span>
                             </div>
                         </div>
                     </div>
+                    <button class="arrow-btn-vertical down-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+                        </svg>
+                    </button>
                 </div>
 
                 <div class="floating-text">Explore Our Collection of 3D Avatars</div>
@@ -695,6 +691,7 @@
             {
                 id: 'avatar9',
                 image: 'https://placehold.co/300x300/CD853F/FFFFFF?text=Guardian+Avatar',
+                title: 'Ancient Guardian',
                 description: 'A weathered and powerful guardian from forgotten times, ideal for ancient ruins or epic fantasy settings. Comes with stone and moss textures.',
                 price: '$65.99'
             }
