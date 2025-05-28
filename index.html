@@ -1,272 +1,280 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Soto Studio</title>
-  <style>
-    /* style.css */
-    /* Reset */
-      .floating-icons {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          gap: 22px;
-          z-index: 10;
-      }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soto Studio</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      .icon-item {
-          display: flex;
-          align-items: center;
-          position: relative;
-      }
+        /* Orientation Alert for Portrait Mode */
+        .orientation-alert {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Inter', sans-serif; /* Using Inter font */
+        }
 
-      .icon {
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: none; /* Tidak ada background kapsul di icon */
-          border-radius: 50%;
-          overflow: hidden;
-      }
+        .blink-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            animation: blink 1.5s infinite; /* Blinking animation */
+            color: #333;
+        }
 
-          .icon img {
-              width: 48px;
-              height: 48px;
-              border-radius: 50%;
-              object-fit: cover;
-              display: block;
-          }
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
 
-      .icon-label {
-          opacity: 0;
-          visibility: hidden;
-          margin-left: 14px;
-          background: rgba(255,255,255,0.95);
-          color: #333;
-          border-radius: 24px;
-          padding: 7px 18px;
-          font-size: 1rem;
-          white-space: nowrap;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-          transition: opacity 0.25s cubic-bezier(.4,0,.2,1), visibility 0.25s, transform 0.25s cubic-bezier(.4,0,.2,1);
-          transform: scaleX(0.7);
-          transform-origin: left center;
-          display: flex;
-          align-items: center;
-      }
+        .orientation-alert img {
+            width: 80px;
+            margin-bottom: 15px;
+        }
 
-          .icon-item:hover .icon-label,
-          .icon-label.show {
-              opacity: 1;
-              visibility: visible;
-              transform: scaleX(1);
-          }
+        /* Show alert and hide hero section in portrait mode */
+        @media (orientation: portrait) {
+            .orientation-alert { display: flex; }
+            .hero { display: none; }
+        }
 
-      .icon-desc {
-          font-size: 0.85rem;
-          color: #666;
-          margin-left: 8px;
-          opacity: 0.8;
-          line-height: 1.3;
-          display: inline;
-      }
+        /* Hero Section - Main container for the slider */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif; /* Using Inter font */
+        }
 
-      .icon-item.hide {
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.2s;
-      }
+        /* Individual slide styling */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.8s ease; /* Smooth fade transition */
+            z-index: 1; /* Default z-index */
+        }
 
+        .slide.active {
+            opacity: 1; /* Active slide is visible */
+            z-index: 2; /* Active slide is on top */
+        }
 
+        /* Background image for each slide */
+        .slide-background {
+            background-size: cover; /* Ensures background covers the entire area */
+            background-position: center center; /* Centers the background image */
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        /* Spline 3D Model Container */
+        .spline-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Ensures Spline model is above background */
+        }
 
-    /* Orientation Alert */
-    .orientation-alert {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
+        /* Floating Icons Section */
+        .floating-icons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 22px; /* Default gap */
+            z-index: 10; /* Ensures icons are above other content */
+            flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
+            justify-content: center; /* Center icons when wrapped */
+            align-items: center; /* Ensure vertical centering too */
+        }
 
-    .blink-box {
-      background: #fff;
-      padding: 25px;
-      border-radius: 15px;
-      text-align: center;
-      animation: blink 1.5s infinite;
-    }
+        .icon-item {
+            display: flex;
+            align-items: center;
+            position: relative;
+            /* Transition for opacity for a softer fade */
+            transition: opacity 0.2s ease-in-out;
+        }
 
-    @keyframes blink {
-      0% { opacity: 0.3; }
-      50% { opacity: 1; }
-      100% { opacity: 0.3; }
-    }
+        /* Style for hidden icon items - now a simple fade */
+        .icon-item.hide {
+            opacity: 0;
+            pointer-events: none; /* Disable interaction when hidden */
+        }
 
-    .orientation-alert img {
-      width: 80px;
-      margin-bottom: 15px;
-    }
+        .icon {
+            /* Updated: Increased size for larger internal image + padding */
+            width: 56px; /* 40px image + 2*8px padding = 56px */
+            height: 56px; /* 40px image + 2*8px padding = 56px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+            padding: 8px; /* Add padding to create a capsule effect */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+            /* Updated: Adjusted font-size for emoji icons to match new size */
+            font-size: 32px; /* For emoji icons to fit the new 40px visual space */
+        }
 
-    @media (orientation: portrait) {
-      .orientation-alert { display: flex; }
-      .hero { display: none; }
-    }
+        /* Adjust image size within the icon to fill its parent (the .icon container) */
+        .icon img {
+            width: 100%; /* Image now fills the .icon container */
+            height: 100%; /* Image now fills the .icon container */
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
 
-    @media (max-width: 768px) {
-      .slide-background {
-          background-size: contain; /* Sesuaikan untuk layar kecil */
-      }
-    }
+        .icon-label {
+            opacity: 0;
+            visibility: hidden;
+            margin-left: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 24px;
+            padding: 7px 18px;
+            font-size: 1rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: opacity 0.25s cubic-bezier(.4, 0, .2, 1), visibility 0.25s, transform 0.25s cubic-bezier(.4, 0, .2, 1);
+            transform: scaleX(0.7);
+            transform-origin: left center;
+            display: flex;
+            align-items: center;
+        }
 
-    /* Hero Section */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
+        .icon-item:hover .icon-label,
+        .icon-label.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scaleX(1);
+        }
 
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden !important;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-    }
+        .icon-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-left: 8px;
+            opacity: 0.8;
+            line-height: 1.3;
+            display: inline;
+        }
 
-    /* FIX UTAMA: Spline container */
-    .spline-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
+        /* Slider Controls (Arrows and Dots) */
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            z-index: 1000; /* Ensures controls are on top */
+        }
 
-    .slide.active {
-      opacity: 1;
-      z-index: 2;
-    }
+        .arrow-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
 
-    .slide-background {
-      background-size: cover !important;
-      background-position: center center !important;
-      transform: translateZ(0);
-      width: 100%; /* Ensure it fills the slide */
-      height: 100%; /* Ensure it fills the slide */
-      position: absolute; /* Position it correctly within the slide */
-      top: 0;
-      left: 0;
-    }
+        .arrow-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
 
-    /* .slide img is not used as backgrounds are set via background-image */
-    /* .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    } */
+        .arrow-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+        }
 
-    /* Slider Controls */
-    .slider-controls {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      z-index: 1000;
-    }
+        .dots-container {
+            display: flex;
+            gap: 12px;
+        }
 
-    .arrow-btn {
-      background: rgba(255,255,255,0.9);
-      border: 2px solid #fff;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.3s;
-    }
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-    .arrow-btn:hover {
-      background: rgba(255,255,255,0.7);
-    }
+        .dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
 
-    .arrow-btn svg {
-      width: 24px;
-      height: 24px;
-      fill: #333;
-    }
+        /* Floating Text and Button */
+        .floating-text {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            z-index: 3; /* Above background, below controls */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Add shadow for readability */
+        }
 
-    .dots-container {
-      display: flex;
-      gap: 12px;
-    }
+        .floating-button {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 30px;
+            text-decoration: none;
+            z-index: 3; /* Above background, below controls */
+            transition: background 0.3s ease;
+        }
 
-    .dot {
-      width: 12px;
-      height: 12px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .dot.active {
-      background: #fff;
-      transform: scale(1.3);
-    }
-
-    /* Konten */
-    .floating-text {
-      position: absolute;
-      bottom: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 1.5rem;
-      text-align: center;
-      z-index: 3;
-    }
-
-    .floating-button {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 30px;
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      border-radius: 30px;
-      text-decoration: none;
-      z-index: 3;
-    }
-  </style>
+        .floating-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+    </style>
 </head>
 <body>
     <div class="orientation-alert">
         <div class="blink-box">
-            <img src="assets/rotate-icon.png" alt="Rotate Device">
+            <img src="https://placehold.co/80x80/000000/FFFFFF?text=Rotate" alt="Rotate Device">
             <p>Please rotate to landscape mode!</p>
         </div>
     </div>
@@ -279,8 +287,8 @@
                     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
                     <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
                 </div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Learn More</a>
+                <div class="floating-text">Welcome to Soto Studio: Where Ideas Take Shape</div>
+                <a class="floating-button" href="#">Discover More</a>
             </div>
 
             <div class="slide">
@@ -288,42 +296,52 @@
                 <div class="floating-icons">
                     <div class="icon-item">
                         <span class="icon">
-                            <img src="assets/your-icon1.png" alt="Fitur 1" />
-                            <span class="icon-label">
-                                Fitur 1
-                                <span class="icon-desc">Deskripsi singkat fitur 1 di sini.</span>
-                            </span>
+                            <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=Icon1" alt="Fitur 1" />
+                        </span>
+                        <span class="icon-label">
+                            Creative Design
+                            <span class="icon-desc">Crafting unique visual experiences.</span>
                         </span>
                     </div>
                     <div class="icon-item">
-                        <span class="icon">&#9881;</span>
-                        <span class="icon-label">Fitur 2</span>
+                        <span class="icon">&#9881;</span> <span class="icon-label">
+                            Development
+                            <span class="icon-desc">Bringing your ideas to life with code.</span>
+                        </span>
                     </div>
                     <div class="icon-item">
-                        <span class="icon">&#9993;</span>
-                        <span class="icon-label">Fitur 3</span>
+                        <span class="icon">&#9993;</span> <span class="icon-label">
+                            Consultation
+                            <span class="icon-desc">Expert advice for your digital projects.</span>
+                        </span>
                     </div>
                     <div class="icon-item">
-                        <span class="icon">&#128187;</span>
-                        <span class="icon-label">Fitur 4</span>
+                        <span class="icon">&#128187;</span> <span class="icon-label">
+                            Web Solutions
+                            <span class="icon-desc">Building modern and responsive websites.</span>
+                        </span>
                     </div>
                     <div class="icon-item">
-                        <span class="icon">&#128640;</span>
-                        <span class="icon-label">Fitur 5</span>
+                        <span class="icon">&#128640;</span> <span class="icon-label">
+                            Innovation
+                            <span class="icon-desc">Pushing boundaries with cutting-edge tech.</span>
+                        </span>
                     </div>
                     <div class="icon-item">
-                        <span class="icon">&#127919;</span>
-                        <span class="icon-label">Fitur 6</span>
+                        <span class="icon">&#127919;</span> <span class="icon-label">
+                            Animation
+                            <span class="icon-desc">Dynamic visuals that tell your story.</span>
+                        </span>
                     </div>
                 </div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Explore</a>
+                <div class="floating-text">Our Expertise: Design, Development, and Digital Solutions</div>
+                <a class="floating-button" href="#">Explore Services</a>
             </div>
 
             <div class="slide">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Contact Us</a>
+                <div class="floating-text">Ready to Start Your Project? Get in Touch!</div>
+                <a class="floating-button" href="#">Contact Us Today</a>
             </div>
         </div>
 
@@ -349,93 +367,118 @@
     </div>
 
     <script>
-        // script.js
+        // JavaScript for Slider Functionality
         let currentSlide = 0;
         let isAnimating = false;
-        const animationDuration = 800;
+        const animationDuration = 800; // Duration of the slide transition in milliseconds
 
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         const prevBtn = document.querySelector('.prev');
         const nextBtn = document.querySelector('.next');
 
-        // Orientation Handler
+        // Function to handle device orientation changes
         function handleOrientation() {
-        const orientationAlert = document.querySelector('.orientation-alert');
-        const hero = document.querySelector('.hero');
-        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+            const orientationAlert = document.querySelector('.orientation-alert');
+            const hero = document.querySelector('.hero');
+            const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
-        orientationAlert.style.display = isPortrait ? 'flex' : 'none';
-        hero.style.display = isPortrait ? 'none' : 'block';
+            // Show alert and hide hero section if in portrait mode
+            orientationAlert.style.display = isPortrait ? 'flex' : 'none';
+            hero.style.display = isPortrait ? 'none' : 'block';
         }
 
-        // Slide Navigation
+        // Function to navigate to a specific slide
         function goToSlide(index) {
-        if (isAnimating || index < 0 || index >= slides.length) return;
+            // Prevent navigation if an animation is in progress or index is out of bounds
+            if (isAnimating || index < 0 || index >= slides.length) return;
 
-        isAnimating = true;
+            isAnimating = true; // Set animation flag to true
 
-        // Animate transition
-        slides[currentSlide].style.opacity = 0;
-        slides[currentSlide].classList.remove('active');
+            // Hide the current slide
+            slides[currentSlide].style.opacity = 0;
+            slides[currentSlide].classList.remove('active');
 
-        currentSlide = index;
+            currentSlide = index; // Update current slide index
 
-        slides[currentSlide].style.opacity = 1;
-        slides[currentSlide].classList.add('active');
+            // Show the new active slide
+            slides[currentSlide].style.opacity = 1;
+            slides[currentSlide].classList.add('active');
 
-        updateControls();
+            updateControls(); // Update dot and arrow button states
 
-        setTimeout(() => {
-        isAnimating = false;
-        }, animationDuration);
+            // Reset animation flag after the transition duration
+            setTimeout(() => {
+                isAnimating = false;
+            }, animationDuration);
         }
 
-        // Update Controls
+        // Function to update the active dot and arrow button visibility
         function updateControls() {
-        dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-        });
+            // Update active dot
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
 
-        // Update arrow visibility
-        prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
-        nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+            // Update arrow button visibility based on current slide
+            prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex'; // Hide prev button on first slide
+            nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex'; // Hide next button on last slide
         }
 
-        // Event Listeners
+        // Event Listeners for Slider Controls
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
         dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => goToSlide(i));
+            dot.addEventListener('click', () => goToSlide(i));
         });
 
-        // Initialize
+        // Initialize the slider and orientation check when the DOM is fully loaded
         window.addEventListener('DOMContentLoaded', () => {
-        // Set initial states
-        slides.forEach((slide, index) => {
-        slide.style.opacity = index === 0 ? 1 : 0;
-        });
-        updateControls();
-        handleOrientation();
+            // Set initial opacity for slides (only first slide visible)
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === 0 ? 1 : 0;
+            });
+            updateControls(); // Initial update of controls
+            handleOrientation(); // Initial orientation check
         });
 
+        // Listen for window resize and orientation change events
         window.addEventListener('resize', handleOrientation);
         window.addEventListener('orientationchange', handleOrientation);
     </script>
 
     <script>
+        // JavaScript for Floating Icons Hover Effect (Hide others on hover)
         document.querySelectorAll('.icon-item').forEach(function(item) {
-        item.addEventListener('mouseenter', function() {
-        document.querySelectorAll('.icon-label').forEach(function(label) {
-        label.classList.add('show');
-        });
-        });
-        item.addEventListener('mouseleave', function() {
-        document.querySelectorAll('.icon-label').forEach(function(label) {
-        label.classList.remove('show');
-        });
-        });
+            const label = item.querySelector('.icon-label'); // Get the specific label for this icon item
+            const allIconItems = document.querySelectorAll('.icon-item'); // Get all icon items
+
+            // Add event listeners for mouse enter
+            item.addEventListener('mouseenter', function() {
+                // Hide all other icon items
+                allIconItems.forEach(function(otherItem) {
+                    if (otherItem !== item) { // If it's not the currently hovered item
+                        otherItem.classList.add('hide');
+                    }
+                });
+                // Show the specific label of the hovered item
+                if (label) {
+                    label.classList.add('show');
+                }
+            });
+
+            // Add event listeners for mouse leave
+            item.addEventListener('mouseleave', function() {
+                // Show all icon items again
+                allIconItems.forEach(function(otherItem) {
+                    otherItem.classList.remove('hide');
+                });
+                // Hide the specific label of the hovered item
+                if (label) {
+                    label.classList.remove('show');
+                }
+            });
         });
     </script>
 </body>
