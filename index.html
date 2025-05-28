@@ -119,7 +119,7 @@
             display: flex; /* Atur anak-anak (kolom panah dan kontainer ikon) secara horizontal */
             flex-direction: row; /* Pertahankan anak-anak dalam satu baris */
             align-items: center; /* Pusatkan item secara vertikal dalam baris ini */
-            gap: 10px; /* Jarak antara kolom panah dan daftar ikon */
+            gap: 5px; /* Jarak antara kolom panah dan daftar ikon (dapat dimodifikasi) */
             margin-top: auto; /* Dorong ke tengah secara vertikal */
             margin-bottom: auto; /* Dorong ke tengah secara vertikal */
         }
@@ -151,7 +151,7 @@
             display: flex;
             flex-direction: column; /* Tumpuk ikon secara vertikal */
             align-items: flex-start; /* Sejajarkan ikon ke kiri dalam kolom */
-            gap: 15px; /* Jarak vertikal antara ikon */
+            gap: 15px; /* Jarak vertikal antara ikon (dapat dimodifikasi) */
             transition: transform 0.3s ease-in-out; /* Transisi pengguliran yang mulus */
             padding: 0; /* Pastikan tidak ada padding ekstra */
             margin: 0; /* Pastikan tidak ada margin ekstra */
@@ -224,21 +224,21 @@
         .product-detail-overlay {
             position: absolute;
             top: 50%;
-            left: 50%;
+            left: 70%; /* Digeser lebih jauh ke kanan dari tengah (dapat dimodifikasi) */
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2); /* Putih transparan */
-            backdrop-filter: blur(8px); /* Efek kaca buram */
+            background: rgba(255, 255, 255, 0.2); /* Putih transparan (dapat dimodifikasi) */
+            backdrop-filter: blur(8px); /* Efek kaca buram (dapat dimodifikasi) */
             -webkit-backdrop-filter: blur(8px); /* Untuk Safari */
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px; /* Radius sudut (dapat dimodifikasi) */
+            padding: 30px; /* Padding internal (dapat dimodifikasi) */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Bayangan (dapat dimodifikasi) */
             z-index: 11; /* Di atas ikon mengambang */
             display: flex; /* Mengatur tata letak anak-anak */
             flex-direction: row; /* Mengatur gambar di kiri, teks di kanan */
             align-items: center; /* Pusatkan item secara vertikal */
             text-align: left; /* Teks sejajar kiri */
-            max-width: 800px; /* Batasi lebar untuk keterbacaan */
-            width: 90%; /* Lebar responsif */
+            max-width: 800px; /* Batasi lebar untuk keterbacaan (dapat dimodifikasi) */
+            width: 90%; /* Lebar responsif (dapat dimodifikasi) */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -250,9 +250,9 @@
         }
 
         .product-detail-overlay .image-container {
-            flex: 0 0 40%; /* Gambar mengambil 40% lebar */
-            max-width: 40%;
-            margin-right: 30px; /* Jarak antara gambar dan teks */
+            flex: 0 0 40%; /* Gambar mengambil 40% lebar (dapat dimodifikasi) */
+            max-width: 40%; /* Batasi lebar maksimum gambar */
+            margin-right: 30px; /* Jarak antara gambar dan teks (dapat dimodifikasi) */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -261,7 +261,7 @@
         .product-detail-overlay img {
             max-width: 100%;
             height: auto;
-            border-radius: 10px;
+            border-radius: 10px; /* Radius sudut gambar (dapat dimodifikasi) */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 0; /* Hapus margin bawah jika ada */
         }
@@ -274,62 +274,62 @@
         }
 
         .product-detail-overlay h3 {
-            font-size: 1.8rem;
+            font-size: 1.8rem; /* Ukuran font judul (dapat dimodifikasi) */
             color: #333;
             margin-bottom: 10px;
             text-align: left; /* Pastikan judul sejajar kiri */
         }
 
         .product-detail-overlay p {
-            font-size: 1rem;
+            font-size: 1rem; /* Ukuran font paragraf (dapat dimodifikasi) */
             color: #555;
-            line-height: 1.6;
+            line-height: 1.6; /* Tinggi baris paragraf (dapat dimodifikasi) */
             margin-bottom: 20px;
             text-align: left; /* Pastikan paragraf sejajar kiri */
         }
 
         .product-detail-overlay .price {
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* Ukuran font harga (dapat dimodifikasi) */
             font-weight: bold;
-            color: #007bff; /* Warna menonjol untuk harga */
+            color: #007bff; /* Warna harga (dapat dimodifikasi) */
             margin-bottom: 20px;
             text-align: left; /* Pastikan harga sejajar kiri */
         }
 
         .product-detail-overlay .buy-button {
             display: inline-block;
-            padding: 12px 25px;
-            background: #007bff;
+            padding: 12px 25px; /* Padding tombol (dapat dimodifikasi) */
+            background: #007bff; /* Warna latar belakang tombol (dapat dimodifikasi) */
             color: white;
-            border-radius: 30px;
+            border-radius: 30px; /* Radius sudut tombol (dapat dimodifikasi) */
             text-decoration: none;
             font-weight: bold;
             transition: background 0.3s ease, transform 0.2s ease;
         }
 
         .product-detail-overlay .buy-button:hover {
-            background: #0056b3;
+            background: #0056b3; /* Warna hover tombol (dapat dimodifikasi) */
             transform: translateY(-2px);
         }
 
         /* Kontrol Slider (Panah dan Titik) - Diposisikan secara global di bagian bawah */
         .slider-controls {
             position: absolute;
-            bottom: 30px; /* Jarak dari bawah */
+            bottom: 30px; /* Jarak dari bawah (dapat dimodifikasi) */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 25px; /* Jarak antara kontrol (dapat dimodifikasi) */
             z-index: 1000; /* Memastikan kontrol di atas */
         }
 
         .arrow-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #fff;
+            background: rgba(255, 255, 255, 0.9); /* Latar belakang panah (dapat dimodifikasi) */
+            border: 2px solid #fff; /* Border panah (dapat dimodifikasi) */
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 45px; /* Ukuran panah (dapat dimodifikasi) */
+            height: 45px; /* Ukuran panah (dapat dimodifikasi) */
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -338,7 +338,7 @@
         }
 
         .arrow-btn:hover:not(:disabled) { /* Ditambahkan :not(:disabled) untuk efek hover */
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.7); /* Latar belakang hover panah (dapat dimodifikasi) */
         }
 
         .arrow-btn:disabled { /* Gaya untuk status dinonaktifkan */
@@ -347,37 +347,37 @@
         }
 
         .arrow-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: #333;
+            width: 24px; /* Ukuran SVG panah (dapat dimodifikasi) */
+            height: 24px; /* Ukuran SVG panah (dapat dimodifikasi) */
+            fill: #333; /* Warna SVG panah (dapat dimodifikasi) */
         }
 
         .dots-container {
             display: flex;
-            gap: 12px;
+            gap: 12px; /* Jarak antara titik (dapat dimodifikasi) */
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.4);
+            width: 12px; /* Ukuran titik (dapat dimodifikasi) */
+            height: 12px; /* Ukuran titik (dapat dimodifikasi) */
+            background: rgba(255, 255, 255, 0.4); /* Warna titik (dapat dimodifikasi) */
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .dot.active {
-            background: #fff;
+            background: #fff; /* Warna titik aktif (dapat dimodifikasi) */
             transform: scale(1.3);
         }
 
         /* Tombol Panah Vertikal untuk Navigasi Ikon */
         .arrow-btn-vertical {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #fff;
+            background: rgba(255, 255, 255, 0.9); /* Latar belakang panah vertikal (dapat dimodifikasi) */
+            border: 2px solid #fff; /* Border panah vertikal (dapat dimodifikasi) */
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 45px; /* Ukuran panah vertikal (dapat dimodifikasi) */
+            height: 45px; /* Ukuran panah vertikal (dapat dimodifikasi) */
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -386,7 +386,7 @@
         }
 
         .arrow-btn-vertical:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.7); /* Latar belakang hover panah vertikal (dapat dimodifikasi) */
         }
 
         .arrow-btn-vertical:disabled {
@@ -395,40 +395,48 @@
         }
 
         .arrow-btn-vertical svg {
-            width: 24px;
-            height: 24px;
-            fill: #333;
+            width: 24px; /* Ukuran SVG panah vertikal (dapat dimodifikasi) */
+            height: 24px; /* Ukuran SVG panah vertikal (dapat dimodifikasi) */
+            fill: #333; /* Warna SVG panah vertikal (dapat dimodifikasi) */
         }
 
         /* Teks Mengambang dan Tombol - Mengembalikan posisi bawah */
         .floating-text {
             position: absolute;
-            bottom: 120px; /* Kembali ke posisi asli */
+            bottom: 120px; /* Posisi dari bawah (dapat dimodifikasi) */
             left: 50%;
             transform: translateX(-50%);
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* Ukuran font (dapat dimodifikasi) */
             text-align: center;
             z-index: 3; /* Di atas latar belakang, di bawah kontrol */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Tambahkan bayangan untuk keterbacaan */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Bayangan teks (dapat dimodifikasi) */
+            transition: opacity 0.3s ease; /* Transisi untuk fade out */
         }
 
         .floating-button {
             position: absolute;
-            bottom: 80px; /* Kembali ke posisi asli */
+            bottom: 80px; /* Posisi dari bawah (dapat dimodifikasi) */
             left: 50%;
             transform: translateX(-50%);
-            padding: 12px 30px;
-            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 30px; /* Padding tombol (dapat dimodifikasi) */
+            background: rgba(255, 255, 255, 0.9); /* Latar belakang tombol (dapat dimodifikasi) */
             color: #333;
-            border-radius: 30px;
+            border-radius: 30px; /* Radius sudut tombol (dapat dimodifikasi) */
             text-decoration: none;
             z-index: 3; /* Di atas latar belakang, di bawah kontrol */
             transition: background 0.3s ease;
+            transition: opacity 0.3s ease; /* Transisi untuk fade out */
         }
 
         .floating-button:hover {
-            background: rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 1); /* Latar belakang hover tombol (dapat dimodifikasi) */
+        }
+
+        /* CSS untuk menyembunyikan elemen saat overlay aktif */
+        .hide-on-overlay {
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -745,6 +753,9 @@
         let currentIconSetIndex = 0; // Indeks ikon pertama yang terlihat di set saat ini
         const iconItemHeight = 56 + 15; // Tinggi ikon (56px) + jarak (15px) = 71px per item (dapat dimodifikasi jika ukuran ikon atau jarak berubah)
 
+        const overlayHideDelay = 1500; // Penundaan dalam milidetik sebelum overlay menghilang (dapat dimodifikasi)
+        let overlayHideTimeout; // Variabel untuk menyimpan timeout penyembunyian overlay
+
         // Fungsi untuk memperbarui ikon mana yang terlihat dan mengaktifkan/menonaktifkan panah
         function updateVisibleIcons() {
             // Hitung transformasi yang diperlukan untuk menggulir ikon
@@ -779,6 +790,7 @@
 
             // Tambahkan event listener untuk mouse enter
             item.addEventListener('mouseenter', function() {
+                clearTimeout(overlayHideTimeout); // Hapus timeout penyembunyian jika ada
                 const productId = item.dataset.productId; // Dapatkan ID produk dari atribut data
                 const product = productData.find(p => p.id === productId); // Temukan data produk yang sesuai
 
@@ -797,16 +809,51 @@
                     if (label) {
                         label.classList.remove('show');
                     }
+
+                    // Sembunyikan teks dan tombol mengambang di slide yang sama
+                    const currentSlideElement = item.closest('.slide'); // Dapatkan slide saat ini
+                    const floatingText = currentSlideElement.querySelector('.floating-text');
+                    const floatingButton = currentSlideElement.querySelector('.floating-button');
+                    if (floatingText) floatingText.classList.add('hide-on-overlay');
+                    if (floatingButton) floatingButton.classList.add('hide-on-overlay');
                 }
             });
 
             // Tambahkan event listener untuk mouse leave
             item.addEventListener('mouseleave', function() {
-                // Sembunyikan overlay detail produk
-                productDetailOverlay.classList.remove('show');
-
-                // Ikon itu sendiri tetap terlihat sesuai dengan persyaratan yang diperbarui
+                // Atur timeout untuk menyembunyikan overlay setelah penundaan singkat
+                overlayHideTimeout = setTimeout(() => {
+                    productDetailOverlay.classList.remove('show');
+                    // Tampilkan kembali teks dan tombol mengambang
+                    const currentSlideElement = document.querySelector('.slide.active'); // Dapatkan slide aktif
+                    if (currentSlideElement) {
+                        const floatingText = currentSlideElement.querySelector('.floating-text');
+                        const floatingButton = currentSlideElement.querySelector('.floating-button');
+                        if (floatingText) floatingText.classList.remove('hide-on-overlay');
+                        if (floatingButton) floatingButton.classList.remove('hide-on-overlay');
+                    }
+                }, overlayHideDelay); // Gunakan delay yang dapat dimodifikasi
             });
+        });
+
+        // Event listener untuk overlay detail produk itu sendiri (agar tidak hilang saat kursor berpindah dari ikon ke overlay)
+        productDetailOverlay.addEventListener('mouseenter', function() {
+            clearTimeout(overlayHideTimeout); // Hapus timeout penyembunyian jika kursor masuk ke overlay
+        });
+
+        productDetailOverlay.addEventListener('mouseleave', function() {
+            // Atur timeout untuk menyembunyikan overlay saat kursor meninggalkan overlay
+            overlayHideTimeout = setTimeout(() => {
+                productDetailOverlay.classList.remove('show');
+                // Tampilkan kembali teks dan tombol mengambang
+                const currentSlideElement = document.querySelector('.slide.active'); // Dapatkan slide aktif
+                if (currentSlideElement) {
+                    const floatingText = currentSlideElement.querySelector('.floating-text');
+                    const floatingButton = currentSlideElement.querySelector('.floating-button');
+                    if (floatingText) floatingText.classList.remove('hide-on-overlay');
+                    if (floatingButton) floatingButton.classList.remove('hide-on-overlay');
+                }
+            }, overlayHideDelay); // Gunakan delay yang dapat dimodifikasi
         });
 
         // Inisialisasi tampilan ikon dan slider saat DOM dimuat sepenuhnya
