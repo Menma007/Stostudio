@@ -98,36 +98,63 @@
             z-index: 2; /* Ensures Spline model is above background */
         }
 
-        /* Floating Icons Section */
-        .floating-icons {
+        /* Wrapper for Icon Navigation (arrows + icon list) */
+        .icon-navigation-wrapper {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            left: 5%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        /* Container for the horizontal arrangement of arrows and icons */
+        .icon-and-arrows-layout {
+            display: flex; /* Arrange children (arrow column and icon container) horizontally */
+            flex-direction: row; /* Keep children in a row */
+            align-items: center; /* Vertically center items within this row */
+            gap: 10px; /* Space between arrow column and the icon list */
+        }
+
+        /* Container for the vertical arrows */
+        .arrow-column {
             display: flex;
-            gap: 22px; /* Default gap */
-            z-index: 10; /* Ensures icons are above other content */
-            flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
-            justify-content: center; /* Center icons when wrapped */
-            align-items: center; /* Ensure vertical centering too */
+            flex-direction: column; /* Stack arrows vertically */
+            /* This height should match the height of .icon-navigation-container
+               to ensure arrows align with the top/bottom of the visible icons.
+               3 icons * 56px (icon size) + 2 * 15px (gap) = 168 + 30 = 198px
+            */
+            height: calc(3 * 56px + 2 * 15px);
+            justify-content: space-between; /* Push arrows to the top and bottom of this column */
+            align-items: center; /* Center arrows horizontally within their column */
+        }
+
+        /* Icon Navigation Container - Now only wraps the scrollable icons */
+        .icon-navigation-container {
+            /* Fixed height to show only a subset of icons */
+            height: calc(3 * 56px + 2 * 15px); /* 3 icons * icon_size + 2 * gap */
+            overflow: hidden; /* Hide overflowing icons */
+            display: flex; /* Ensure it's a flex container for its children */
+            flex-direction: column; /* Keep icons stacked vertically inside */
+        }
+
+        /* Floating Icons Section - Now for vertical scrolling */
+        .floating-icons {
+            display: flex;
+            flex-direction: column; /* Stack icons vertically */
+            align-items: flex-start; /* Align icons to the left within the column */
+            gap: 15px; /* Vertical gap between icons */
+            transition: transform 0.3s ease-in-out; /* Smooth scrolling transition */
+            padding: 0; /* Ensure no extra padding */
+            margin: 0; /* Ensure no extra margin */
         }
 
         .icon-item {
             display: flex;
             align-items: center;
             position: relative;
-            /* Transition for opacity for a softer fade */
-            transition: opacity 0.2s ease-in-out;
-        }
-
-        /* Style for hidden icon items - now a simple fade */
-        .icon-item.hide {
-            opacity: 0;
-            pointer-events: none; /* Disable interaction when hidden */
         }
 
         .icon {
-            /* Updated: Increased size for larger internal image + padding */
             width: 56px; /* 40px image + 2*8px padding = 56px */
             height: 56px; /* 40px image + 2*8px padding = 56px */
             display: flex;
@@ -138,7 +165,6 @@
             background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
             padding: 8px; /* Add padding to create a capsule effect */
             box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-            /* Updated: Adjusted font-size for emoji icons to match new size */
             font-size: 32px; /* For emoji icons to fit the new 40px visual space */
         }
 
@@ -185,10 +211,83 @@
             display: inline;
         }
 
-        /* Slider Controls (Arrows and Dots) */
+        /* Product Detail Overlay for selling 3D models */
+        .product-detail-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(8px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(8px); /* For Safari */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 11; /* Above floating icons */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 500px; /* Limit width for readability */
+            width: 90%; /* Responsive width */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .product-detail-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .product-detail-overlay img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-detail-overlay h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-detail-overlay p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-overlay .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff; /* A prominent color for price */
+            margin-bottom: 20px;
+        }
+
+        .product-detail-overlay .buy-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .product-detail-overlay .buy-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Slider Controls (Arrows and Dots) - Now globally positioned at the bottom */
         .slider-controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 30px; /* Reverted to fixed bottom position */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -210,8 +309,13 @@
             transition: all 0.3s;
         }
 
-        .arrow-btn:hover {
+        .arrow-btn:hover:not(:disabled) { /* Added :not(:disabled) for hover effect */
             background: rgba(255, 255, 255, 0.7);
+        }
+
+        .arrow-btn:disabled { /* Style for disabled state */
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .arrow-btn svg {
@@ -239,10 +343,39 @@
             transform: scale(1.3);
         }
 
-        /* Floating Text and Button */
+        /* Vertical Arrow Buttons for Icon Navigation */
+        .arrow-btn-vertical {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .arrow-btn-vertical:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .arrow-btn-vertical:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .arrow-btn-vertical svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+        }
+
+        /* Floating Text and Button - Reverted bottom positions */
         .floating-text {
             position: absolute;
-            bottom: 120px;
+            bottom: 120px; /* Reverted to original position */
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -254,7 +387,7 @@
 
         .floating-button {
             position: absolute;
-            bottom: 80px;
+            bottom: 80px; /* Reverted to original position */
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 30px;
@@ -293,49 +426,101 @@
 
             <div class="slide">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-icons">
-                    <div class="icon-item">
-                        <span class="icon">
-                            <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=Icon1" alt="Fitur 1" />
-                        </span>
-                        <span class="icon-label">
-                            Creative Design
-                            <span class="icon-desc">Crafting unique visual experiences.</span>
-                        </span>
-                    </div>
-                    <div class="icon-item">
-                        <span class="icon">&#9881;</span> <span class="icon-label">
-                            Development
-                            <span class="icon-desc">Bringing your ideas to life with code.</span>
-                        </span>
-                    </div>
-                    <div class="icon-item">
-                        <span class="icon">&#9993;</span> <span class="icon-label">
-                            Consultation
-                            <span class="icon-desc">Expert advice for your digital projects.</span>
-                        </span>
-                    </div>
-                    <div class="icon-item">
-                        <span class="icon">&#128187;</span> <span class="icon-label">
-                            Web Solutions
-                            <span class="icon-desc">Building modern and responsive websites.</span>
-                        </span>
-                    </div>
-                    <div class="icon-item">
-                        <span class="icon">&#128640;</span> <span class="icon-label">
-                            Innovation
-                            <span class="icon-desc">Pushing boundaries with cutting-edge tech.</span>
-                        </span>
-                    </div>
-                    <div class="icon-item">
-                        <span class="icon">&#127919;</span> <span class="icon-label">
-                            Animation
-                            <span class="icon-desc">Dynamic visuals that tell your story.</span>
-                        </span>
+
+                <div class="icon-navigation-wrapper">
+                    <div class="icon-and-arrows-layout">
+                        <div class="arrow-column">
+                            <button class="arrow-btn-vertical up-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                                </svg>
+                            </button>
+                            <button class="arrow-btn-vertical down-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="icon-navigation-container">
+                            <div class="floating-icons">
+                                <div class="icon-item" data-product-id="avatar1">
+                                    <span class="icon">
+                                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=Avatar1" alt="Avatar 1" />
+                                    </span>
+                                    <span class="icon-label">
+                                        Sci-Fi Explorer
+                                        <span class="icon-desc">A futuristic character.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar2">
+                                    <span class="icon">&#128100;</span> <span class="icon-label">
+                                        Fantasy Knight
+                                        <span class="icon-desc">Brave warrior model.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar3">
+                                    <span class="icon">&#129497;</span> <span class="icon-label">
+                                        Cute Robot
+                                        <span class="icon-desc">Friendly companion.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar4">
+                                    <span class="icon">&#128126;</span> <span class="icon-label">
+                                        Alien Creature
+                                        <span class="icon-desc">Mysterious extraterrestrial.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar5">
+                                    <span class="icon">&#128105;&#8205;&#127891;</span> <span class="icon-label">
+                                        Stylized Human
+                                        <span class="icon-desc">Cartoonish character.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar6">
+                                    <span class="icon">&#127944;</span> <span class="icon-label">
+                                        Athlete Model
+                                        <span class="icon-desc">Dynamic sports figure.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar7">
+                                    <span class="icon">
+                                        <img src="https://placehold.co/40x40/8A2BE2/FFFFFF?text=Avatar7" alt="Avatar 7" />
+                                    </span>
+                                    <span class="icon-label">
+                                        Cyberpunk Rogue
+                                        <span class="icon-desc">Stealthy urban character.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar8">
+                                    <span class="icon">&#128125;</span> <span class="icon-label">
+                                        Spirit Guide
+                                        <span class="icon-desc">Ethereal and mystical.</span>
+                                    </span>
+                                </div>
+                                <div class="icon-item" data-product-id="avatar9">
+                                    <span class="icon">
+                                        <img src="https://placehold.co/40x40/FFD700/000000?text=Avatar9" alt="Avatar 9" />
+                                    </span>
+                                    <span class="icon-label">
+                                        Ancient Guardian
+                                        <span class="icon-desc">Protector from old times.</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="floating-text">Our Expertise: Design, Development, and Digital Solutions</div>
-                <a class="floating-button" href="#">Explore Services</a>
+
+                <div class="floating-text">Explore Our Collection of 3D Avatars</div>
+                <a class="floating-button" href="#">View All Models</a>
+
+                <div class="product-detail-overlay" id="productDetailOverlay">
+                    <img id="productImage" src="" alt="Product Image">
+                    <h3 id="productTitle"></h3>
+                    <p id="productDescription"></p>
+                    <div class="price" id="productPrice"></div>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
             </div>
 
             <div class="slide">
@@ -351,13 +536,11 @@
                     <path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z" />
                 </svg>
             </button>
-
             <div class="dots-container">
                 <span class="dot active"></span>
                 <span class="dot"></span>
                 <span class="dot"></span>
             </div>
-
             <button class="arrow-btn next">
                 <svg viewBox="0 0 24 24">
                     <path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z" />
@@ -373,9 +556,9 @@
         const animationDuration = 800; // Duration of the slide transition in milliseconds
 
         const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
+        const dots = document.querySelectorAll('.dot'); // Global dots
+        const prevBtn = document.querySelector('.prev'); // Global prev button
+        const nextBtn = document.querySelector('.next'); // Global next button
 
         // Function to handle device orientation changes
         function handleOrientation() {
@@ -393,21 +576,20 @@
             // Prevent navigation if an animation is in progress or index is out of bounds
             if (isAnimating || index < 0 || index >= slides.length) return;
 
-            isAnimating = true; // Set animation flag to true
+            isAnimating = true;
 
             // Hide the current slide
             slides[currentSlide].style.opacity = 0;
             slides[currentSlide].classList.remove('active');
 
-            currentSlide = index; // Update current slide index
+            currentSlide = index;
 
             // Show the new active slide
             slides[currentSlide].style.opacity = 1;
             slides[currentSlide].classList.add('active');
 
-            updateControls(); // Update dot and arrow button states
+            updateControls();
 
-            // Reset animation flag after the transition duration
             setTimeout(() => {
                 isAnimating = false;
             }, animationDuration);
@@ -420,12 +602,12 @@
                 dot.classList.toggle('active', i === currentSlide);
             });
 
-            // Update arrow button visibility based on current slide
-            prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex'; // Hide prev button on first slide
-            nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex'; // Hide next button on last slide
+            // Update arrow button disabled state
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
         }
 
-        // Event Listeners for Slider Controls
+        // Event Listeners for Slider Controls (global)
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
@@ -440,7 +622,10 @@
                 slide.style.opacity = index === 0 ? 1 : 0;
             });
             updateControls(); // Initial update of controls
-            handleOrientation(); // Initial orientation check
+            handleOrientation();
+
+            // Initial setup for vertical icon display
+            updateVisibleIcons();
         });
 
         // Listen for window resize and orientation change events
@@ -449,36 +634,164 @@
     </script>
 
     <script>
-        // JavaScript for Floating Icons Hover Effect (Hide others on hover)
-        document.querySelectorAll('.icon-item').forEach(function(item) {
-            const label = item.querySelector('.icon-label'); // Get the specific label for this icon item
-            const allIconItems = document.querySelectorAll('.icon-item'); // Get all icon items
+        // Data for 3D Model Avatars
+        const productData = [
+            {
+                id: 'avatar1',
+                image: 'https://placehold.co/300x300/FF0000/FFFFFF?text=Sci-Fi+Avatar',
+                title: 'Sci-Fi Explorer Avatar',
+                description: 'A highly detailed 3D model of a futuristic explorer, perfect for games and animations. Features PBR textures and a rigged skeleton.',
+                price: '$49.99'
+            },
+            {
+                id: 'avatar2',
+                image: 'https://placehold.co/300x300/00FF00/000000?text=Knight+Avatar',
+                title: 'Fantasy Knight Avatar',
+                description: 'A classic fantasy knight model with intricate armor and weapon details. Ideal for medieval-themed projects.',
+                price: '$39.99'
+            },
+            {
+                id: 'avatar3',
+                image: 'https://placehold.co/300x300/0000FF/FFFFFF?text=Robot+Avatar',
+                title: 'Cute Robot Companion',
+                description: 'An adorable and friendly robot avatar, great for casual games or educational content. Fully animated and optimized.',
+                price: '$29.99'
+            },
+            {
+                id: 'avatar4',
+                image: 'https://placehold.co/300x300/FFFF00/000000?text=Alien+Avatar',
+                title: 'Mysterious Alien Creature',
+                description: 'A unique and intriguing alien design, suitable for sci-fi adventures and creature features. Comes with multiple texture variations.',
+                price: '$59.99'
+            },
+            {
+                id: 'avatar5',
+                image: 'https://placehold.co/300x300/FF00FF/FFFFFF?text=Stylized+Avatar',
+                title: 'Stylized Human Character',
+                description: 'A versatile stylized human model with a cartoonish aesthetic. Perfect for animated shorts or indie games.',
+                price: '$34.99'
+            },
+            {
+                id: 'avatar6',
+                image: 'https://placehold.co/300x300/00FFFF/000000?text=Athlete+Avatar',
+                title: 'Dynamic Athlete Model',
+                description: 'A highly poseable athlete model, ideal for sports simulations or character animations requiring dynamic movement.',
+                price: '$44.99'
+            },
+            {
+                id: 'avatar7',
+                image: 'https://placehold.co/300x300/8A2BE2/FFFFFF?text=Cyberpunk+Avatar',
+                title: 'Cyberpunk Rogue',
+                description: 'A sleek and edgy cyberpunk character, ready for dystopian adventures. Includes detailed cybernetic enhancements.',
+                price: '$54.99'
+            },
+            {
+                id: 'avatar8',
+                image: 'https://placehold.co/300x300/ADD8E6/000000?text=Spirit+Avatar',
+                title: 'Ethereal Spirit Guide',
+                description: 'A mystical and translucent spirit character, perfect for fantasy or spiritual-themed projects. Glows with inner light.',
+                price: '$42.99'
+            },
+            {
+                id: 'avatar9',
+                image: 'https://placehold.co/300x300/CD853F/FFFFFF?text=Guardian+Avatar',
+                description: 'A weathered and powerful guardian from forgotten times, ideal for ancient ruins or epic fantasy settings. Comes with stone and moss textures.',
+                price: '$65.99'
+            }
+        ];
+
+        // Get elements for the product detail overlay
+        const productDetailOverlay = document.getElementById('productDetailOverlay');
+        const productImage = document.getElementById('productImage');
+        const productTitle = document.getElementById('productTitle');
+        const productDescription = document.getElementById('productDescription');
+        const productPrice = document.getElementById('productPrice');
+
+        // Icon Paging Variables
+        const floatingIconsContainer = document.querySelector('.floating-icons');
+        const allIconItems = document.querySelectorAll('.icon-item');
+        const upArrowBtn = document.querySelector('.up-arrow');
+        const downArrowBtn = document.querySelector('.down-arrow');
+
+        const iconsPerPage = 3; // Number of icons to display at once
+        let currentIconSetIndex = 0; // Index of the first visible icon in the current set
+        const iconItemHeight = 56 + 15; // icon height (56px) + gap (15px) = 71px per item
+
+        // Function to update which icons are visible and enable/disable arrows
+        function updateVisibleIcons() {
+            // Calculate the transform needed to scroll the icons
+            const translateYValue = -currentIconSetIndex * iconItemHeight;
+            floatingIconsContainer.style.transform = `translateY(${translateYValue}px)`;
+
+            // Update arrow button states
+            upArrowBtn.disabled = currentIconSetIndex === 0;
+            downArrowBtn.disabled = currentIconSetIndex >= (allIconItems.length - iconsPerPage);
+        }
+
+        // Event listener for the up arrow
+        upArrowBtn.addEventListener('click', () => {
+            if (currentIconSetIndex > 0) {
+                currentIconSetIndex--;
+                updateVisibleIcons();
+            }
+        });
+
+        // Event listener for the down arrow
+        downArrowBtn.addEventListener('click', () => {
+            // Ensure we don't scroll past the last set of icons
+            if (currentIconSetIndex < (allIconItems.length - iconsPerPage)) {
+                currentIconSetIndex++;
+                updateVisibleIcons();
+            }
+        });
+
+        // JavaScript for Floating Icons Hover Effect (Show product details)
+        allIconItems.forEach(function(item) {
+            const label = item.querySelector('.icon-label'); // The small label
 
             // Add event listeners for mouse enter
             item.addEventListener('mouseenter', function() {
-                // Hide all other icon items
-                allIconItems.forEach(function(otherItem) {
-                    if (otherItem !== item) { // If it's not the currently hovered item
-                        otherItem.classList.add('hide');
+                const productId = item.dataset.productId; // Get the product ID from data attribute
+                const product = productData.find(p => p.id === productId); // Find the corresponding product data
+
+                if (product) {
+                    // Populate the product detail overlay
+                    productImage.src = product.image;
+                    productImage.alt = product.title;
+                    productTitle.textContent = product.title;
+                    productDescription.textContent = product.description;
+                    productPrice.textContent = product.price;
+
+                    // Show the product detail overlay
+                    productDetailOverlay.classList.add('show');
+
+                    // Hide the small icon label when the large overlay is active
+                    if (label) {
+                        label.classList.remove('show');
                     }
-                });
-                // Show the specific label of the hovered item
-                if (label) {
-                    label.classList.add('show');
                 }
             });
 
             // Add event listeners for mouse leave
             item.addEventListener('mouseleave', function() {
-                // Show all icon items again
-                allIconItems.forEach(function(otherItem) {
-                    otherItem.classList.remove('hide');
-                });
-                // Hide the specific label of the hovered item
-                if (label) {
-                    label.classList.remove('show');
-                }
+                // Hide the product detail overlay
+                productDetailOverlay.classList.remove('show');
+
+                // The icons themselves remain visible as per the updated requirement
             });
+        });
+
+        // Initialize the icon display and slider on load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Initial setup for main slider
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === 0 ? 1 : 0;
+            });
+            updateControls(); // Initial update of controls
+            handleOrientation();
+
+            // Initial setup for vertical icon display
+            updateVisibleIcons();
         });
     </script>
 </body>
