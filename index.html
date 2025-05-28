@@ -72,9 +72,7 @@
           }
 
 
-      .icon-item:hover .icon {
-          background: rgba(255,255,255,0.95);
-      }
+    
 
       .icon-item.hide {
           opacity: 0;
@@ -420,19 +418,18 @@
     </script>
 
     <script>
+        // Saat mouse masuk ke salah satu icon, semua label muncul
         document.querySelectorAll('.icon-item').forEach(function(item) {
         item.addEventListener('mouseenter', function() {
-        document.querySelectorAll('.icon-item').forEach(function(other) {
-        if (other !== item) {
-        other.classList.add('hide');
-        } else {
-        other.classList.remove('hide');
-        }
+        document.querySelectorAll('.icon-label').forEach(function(label) {
+        label.style.opacity = '1';
+        label.style.visibility = 'visible';
         });
         });
         item.addEventListener('mouseleave', function() {
-        document.querySelectorAll('.icon-item').forEach(function(other) {
-        other.classList.remove('hide');
+        document.querySelectorAll('.icon-label').forEach(function(label) {
+        label.style.opacity = '';
+        label.style.visibility = '';
         });
         });
         });
