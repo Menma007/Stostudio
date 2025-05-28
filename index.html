@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soto Studio</title>
     <style>
-        /* General Reset */
+        /* Pengaturan Ulang Umum */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Orientation Alert for Portrait Mode */
+        /* Peringatan Orientasi untuk Mode Potret */
         .orientation-alert {
-            display: none; /* Hidden by default */
+            display: none; /* Tersembunyi secara default */
             position: fixed;
             top: 0;
             left: 0;
@@ -25,7 +25,7 @@
             justify-content: center;
             align-items: center;
             color: #fff;
-            font-family: 'Inter', sans-serif; /* Using Inter font */
+            font-family: 'Inter', sans-serif; /* Menggunakan font Inter */
         }
 
         .blink-box {
@@ -33,7 +33,7 @@
             padding: 25px;
             border-radius: 15px;
             text-align: center;
-            animation: blink 1.5s infinite; /* Blinking animation */
+            animation: blink 1.5s infinite; /* Animasi berkedip */
             color: #333;
         }
 
@@ -48,41 +48,41 @@
             margin-bottom: 15px;
         }
 
-        /* Show alert and hide hero section in portrait mode */
+        /* Tampilkan peringatan dan sembunyikan bagian hero dalam mode potret */
         @media (orientation: portrait) {
             .orientation-alert { display: flex; }
             .hero { display: none; }
         }
 
-        /* Hero Section - Main container for the slider */
+        /* Bagian Hero - Kontainer utama untuk slider */
         .hero {
             position: relative;
             height: 100vh;
             overflow: hidden;
-            font-family: 'Inter', sans-serif; /* Using Inter font */
+            font-family: 'Inter', sans-serif; /* Menggunakan font Inter */
         }
 
-        /* Individual slide styling */
+        /* Gaya slide individual */
         .slide {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.8s ease; /* Smooth fade transition */
-            z-index: 1; /* Default z-index */
+            opacity: 0; /* Tersembunyi secara default */
+            transition: opacity 0.8s ease; /* Transisi fade yang mulus */
+            z-index: 1; /* Z-index default */
         }
 
         .slide.active {
-            opacity: 1; /* Active slide is visible */
-            z-index: 2; /* Active slide is on top */
+            opacity: 1; /* Slide aktif terlihat */
+            z-index: 2; /* Slide aktif di atas */
         }
 
-        /* Background image for each slide */
+        /* Gambar latar belakang untuk setiap slide */
         .slide-background {
-            background-size: cover; /* Ensures background covers the entire area */
-            background-position: center center; /* Centers the background image */
+            background-size: cover; /* Memastikan latar belakang menutupi seluruh area */
+            background-position: center center; /* Memusatkan gambar latar belakang */
             width: 100%;
             height: 100%;
             position: absolute;
@@ -90,62 +90,71 @@
             left: 0;
         }
 
-        /* Spline 3D Model Container */
+        /* Kontainer Model 3D Spline */
         .spline-container {
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: 2; /* Ensures Spline model is above background */
+            z-index: 2; /* Memastikan model Spline di atas latar belakang */
         }
 
-        /* Wrapper for Icon Navigation (arrows + icon list) */
+        /* Wrapper untuk Navigasi Ikon (panah + daftar ikon) */
         .icon-navigation-wrapper {
             position: absolute;
-            top: 0; /* Align to top of hero */
-            left: 5%;
-            height: 100vh; /* Take full viewport height */
+            top: 0; /* Sejajarkan dengan bagian atas hero */
+            left: 5%; /* Posisi dari tepi kiri */
+            height: 100vh; /* Mengambil tinggi viewport penuh */
             display: flex;
-            flex-direction: column; /* Stack children: up-arrow, icon-container, down-arrow */
-            justify-content: space-between; /* Pushes up/down arrows to extremes */
-            align-items: flex-start; /* Align all children to the left */
-            padding-top: 20px; /* Some padding from top/bottom edges */
+            flex-direction: column; /* Tumpuk anak-anak: panah-atas, kontainer-ikon, panah-bawah */
+            justify-content: space-between; /* Dorong panah atas/bawah ke ekstrem */
+            align-items: flex-start; /* Sejajarkan semua anak ke kiri */
+            padding-top: 20px; /* Beberapa padding dari tepi atas/bawah */
             padding-bottom: 20px;
-            box-sizing: border-box; /* Include padding in height calculation */
+            box-sizing: border-box; /* Sertakan padding dalam perhitungan tinggi */
             z-index: 10;
         }
 
-        /* Removed .icon-and-arrows-layout as it's no longer needed */
+        /* Kontainer untuk pengaturan horizontal panah dan ikon */
+        .icon-and-arrows-layout {
+            display: flex; /* Atur anak-anak (kolom panah dan kontainer ikon) secara horizontal */
+            flex-direction: row; /* Pertahankan anak-anak dalam satu baris */
+            align-items: center; /* Pusatkan item secara vertikal dalam baris ini */
+            gap: 10px; /* Jarak antara kolom panah dan daftar ikon */
+            margin-top: auto; /* Dorong ke tengah secara vertikal */
+            margin-bottom: auto; /* Dorong ke tengah secara vertikal */
+        }
 
-        /* Container for the vertical arrows - now just holds the buttons */
+        /* Kontainer untuk panah vertikal */
         .arrow-column {
-            /* No specific height needed here, as it's a flex item in a column */
             display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Arrows will be pushed to the top/bottom of this column */
-            align-items: center; /* Center arrows horizontally within their column */
-            /* Removed fixed height from here, as it's now handled by the wrapper's justify-content */
+            flex-direction: column; /* Tumpuk panah secara vertikal */
+            /* Tinggi ini harus sesuai dengan tinggi .icon-navigation-container
+               untuk memastikan panah sejajar dengan bagian atas/bawah ikon yang terlihat.
+               3 ikon * 56px (ukuran ikon) + 2 * 15px (jarak) = 168 + 30 = 198px
+            */
+            height: calc(3 * 56px + 2 * 15px);
+            justify-content: space-between; /* Dorong panah ke atas dan bawah kolom ini */
+            align-items: center; /* Pusatkan panah secara horizontal dalam kolomnya */
         }
 
-        /* Icon Navigation Container - Now only wraps the scrollable icons */
+        /* Kontainer Navigasi Ikon - Sekarang hanya membungkus ikon yang dapat digulir */
         .icon-navigation-container {
-            /* Fixed height to show only a subset of icons */
-            height: calc(3 * 56px + 2 * 15px); /* 3 icons * icon_size + 2 * gap */
-            overflow: hidden; /* Hide overflowing icons */
-            display: flex; /* Ensure it's a flex container for its children */
-            flex-direction: column; /* Keep icons stacked vertically inside */
-            margin-top: auto; /* Push it to center vertically */
-            margin-bottom: auto; /* Push it to center vertically */
+            /* Tinggi tetap untuk menampilkan hanya sebagian ikon */
+            height: calc(3 * 56px + 2 * 15px); /* 3 ikon * 56px (ukuran ikon) + 2 * 15px (jarak) */
+            overflow: hidden; /* Sembunyikan ikon yang meluap */
+            display: flex; /* Pastikan itu adalah kontainer flex untuk anak-anaknya */
+            flex-direction: column; /* Pertahankan ikon yang ditumpuk secara vertikal di dalamnya */
         }
 
-        /* Floating Icons Section - Now for vertical scrolling */
+        /* Bagian Ikon Mengambang - Sekarang untuk pengguliran vertikal */
         .floating-icons {
             display: flex;
-            flex-direction: column; /* Stack icons vertically */
-            align-items: flex-start; /* Align icons to the left within the column */
-            gap: 15px; /* Vertical gap between icons */
-            transition: transform 0.3s ease-in-out; /* Smooth scrolling transition */
-            padding: 0; /* Ensure no extra padding */
-            margin: 0; /* Ensure no extra margin */
+            flex-direction: column; /* Tumpuk ikon secara vertikal */
+            align-items: flex-start; /* Sejajarkan ikon ke kiri dalam kolom */
+            gap: 15px; /* Jarak vertikal antara ikon */
+            transition: transform 0.3s ease-in-out; /* Transisi pengguliran yang mulus */
+            padding: 0; /* Pastikan tidak ada padding ekstra */
+            margin: 0; /* Pastikan tidak ada margin ekstra */
         }
 
         .icon-item {
@@ -155,23 +164,23 @@
         }
 
         .icon {
-            width: 56px; /* 40px image + 2*8px padding = 56px */
-            height: 56px; /* 40px image + 2*8px padding = 56px */
+            width: 56px; /* 40px gambar + 2*8px padding = 56px */
+            height: 56px; /* 40px gambar + 2*8px padding = 56px */
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
-            padding: 8px; /* Add padding to create a capsule effect */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-            font-size: 32px; /* For emoji icons to fit the new 40px visual space */
+            background: rgba(255, 255, 255, 0.9); /* Latar belakang putih dengan sedikit transparansi */
+            padding: 8px; /* Tambahkan padding untuk membuat efek kapsul */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Bayangan halus untuk kedalaman */
+            font-size: 32px; /* Untuk ikon emoji agar sesuai dengan ruang visual 40px yang baru */
         }
 
-        /* Adjust image size within the icon to fill its parent (the .icon container) */
+        /* Sesuaikan ukuran gambar di dalam ikon untuk mengisi induknya (kontainer .icon) */
         .icon img {
-            width: 100%; /* Image now fills the .icon container */
-            height: 100%; /* Image now fills the .icon container */
+            width: 100%; /* Gambar sekarang mengisi kontainer .icon */
+            height: 100%; /* Gambar sekarang mengisi kontainer .icon */
             border-radius: 50%;
             object-fit: cover;
             display: block;
@@ -211,25 +220,25 @@
             display: inline;
         }
 
-        /* Product Detail Overlay for selling 3D models */
+        /* Overlay Detail Produk untuk menjual model 3D */
         .product-detail-overlay {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2); /* Transparent white */
-            backdrop-filter: blur(8px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(8px); /* For Safari */
+            background: rgba(255, 255, 255, 0.2); /* Putih transparan */
+            backdrop-filter: blur(8px); /* Efek kaca buram */
+            -webkit-backdrop-filter: blur(8px); /* Untuk Safari */
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 11; /* Above floating icons */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 500px; /* Limit width for readability */
-            width: 90%; /* Responsive width */
+            z-index: 11; /* Di atas ikon mengambang */
+            display: flex; /* Mengatur tata letak anak-anak */
+            flex-direction: row; /* Mengatur gambar di kiri, teks di kanan */
+            align-items: center; /* Pusatkan item secara vertikal */
+            text-align: left; /* Teks sejajar kiri */
+            max-width: 800px; /* Batasi lebar untuk keterbacaan */
+            width: 90%; /* Lebar responsif */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -240,18 +249,35 @@
             visibility: visible;
         }
 
+        .product-detail-overlay .image-container {
+            flex: 0 0 40%; /* Gambar mengambil 40% lebar */
+            max-width: 40%;
+            margin-right: 30px; /* Jarak antara gambar dan teks */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .product-detail-overlay img {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
-            margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0; /* Hapus margin bawah jika ada */
+        }
+
+        .product-detail-overlay .text-content {
+            flex: 1; /* Konten teks mengambil sisa lebar */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Sejajarkan teks ke kiri */
         }
 
         .product-detail-overlay h3 {
             font-size: 1.8rem;
             color: #333;
             margin-bottom: 10px;
+            text-align: left; /* Pastikan judul sejajar kiri */
         }
 
         .product-detail-overlay p {
@@ -259,13 +285,15 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 20px;
+            text-align: left; /* Pastikan paragraf sejajar kiri */
         }
 
         .product-detail-overlay .price {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #007bff; /* A prominent color for price */
+            color: #007bff; /* Warna menonjol untuk harga */
             margin-bottom: 20px;
+            text-align: left; /* Pastikan harga sejajar kiri */
         }
 
         .product-detail-overlay .buy-button {
@@ -284,16 +312,16 @@
             transform: translateY(-2px);
         }
 
-        /* Slider Controls (Arrows and Dots) - Globally positioned at the bottom */
+        /* Kontrol Slider (Panah dan Titik) - Diposisikan secara global di bagian bawah */
         .slider-controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 30px; /* Jarak dari bawah */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
             gap: 25px;
-            z-index: 1000; /* Ensures controls are on top */
+            z-index: 1000; /* Memastikan kontrol di atas */
         }
 
         .arrow-btn {
@@ -309,11 +337,11 @@
             transition: all 0.3s;
         }
 
-        .arrow-btn:hover:not(:disabled) { /* Added :not(:disabled) for hover effect */
+        .arrow-btn:hover:not(:disabled) { /* Ditambahkan :not(:disabled) untuk efek hover */
             background: rgba(255, 255, 255, 0.7);
         }
 
-        .arrow-btn:disabled { /* Style for disabled state */
+        .arrow-btn:disabled { /* Gaya untuk status dinonaktifkan */
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -343,7 +371,7 @@
             transform: scale(1.3);
         }
 
-        /* Vertical Arrow Buttons for Icon Navigation */
+        /* Tombol Panah Vertikal untuk Navigasi Ikon */
         .arrow-btn-vertical {
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid #fff;
@@ -372,22 +400,22 @@
             fill: #333;
         }
 
-        /* Floating Text and Button - Reverted bottom positions */
+        /* Teks Mengambang dan Tombol - Mengembalikan posisi bawah */
         .floating-text {
             position: absolute;
-            bottom: 120px; /* Reverted to original position */
+            bottom: 120px; /* Kembali ke posisi asli */
             left: 50%;
             transform: translateX(-50%);
             color: white;
             font-size: 1.5rem;
             text-align: center;
-            z-index: 3; /* Above background, below controls */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Add shadow for readability */
+            z-index: 3; /* Di atas latar belakang, di bawah kontrol */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Tambahkan bayangan untuk keterbacaan */
         }
 
         .floating-button {
             position: absolute;
-            bottom: 80px; /* Reverted to original position */
+            bottom: 80px; /* Kembali ke posisi asli */
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 30px;
@@ -395,7 +423,7 @@
             color: #333;
             border-radius: 30px;
             text-decoration: none;
-            z-index: 3; /* Above background, below controls */
+            z-index: 3; /* Di atas latar belakang, di bawah kontrol */
             transition: background 0.3s ease;
         }
 
@@ -511,11 +539,15 @@
                 <a class="floating-button" href="#">View All Models</a>
 
                 <div class="product-detail-overlay" id="productDetailOverlay">
-                    <img id="productImage" src="" alt="Product Image">
-                    <h3 id="productTitle"></h3>
-                    <p id="productDescription"></p>
-                    <div class="price" id="productPrice"></div>
-                    <a href="#" class="buy-button">Buy Now</a>
+                    <div class="image-container">
+                        <img id="productImage" src="" alt="Product Image">
+                    </div>
+                    <div class="text-content">
+                        <h3 id="productTitle"></h3>
+                        <p id="productDescription"></p>
+                        <div class="price" id="productPrice"></div>
+                        <a href="#" class="buy-button">Buy Now</a>
+                    </div>
                 </div>
             </div>
 
@@ -546,41 +578,41 @@
     </div>
 
     <script>
-        // JavaScript for Slider Functionality
+        // JavaScript untuk Fungsionalitas Slider
         let currentSlide = 0;
         let isAnimating = false;
-        const animationDuration = 800; // Duration of the slide transition in milliseconds
+        const animationDuration = 800; // Durasi transisi slide dalam milidetik (dapat dimodifikasi)
 
         const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot'); // Global dots
-        const prevBtn = document.querySelector('.prev'); // Global prev button
-        const nextBtn = document.querySelector('.next'); // Global next button
+        const dots = document.querySelectorAll('.dot'); // Titik global
+        const prevBtn = document.querySelector('.prev'); // Tombol prev global
+        const nextBtn = document.querySelector('.next'); // Tombol next global
 
-        // Function to handle device orientation changes
+        // Fungsi untuk menangani perubahan orientasi perangkat
         function handleOrientation() {
             const orientationAlert = document.querySelector('.orientation-alert');
             const hero = document.querySelector('.hero');
             const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
-            // Show alert and hide hero section if in portrait mode
+            // Tampilkan peringatan dan sembunyikan bagian hero jika dalam mode potret
             orientationAlert.style.display = isPortrait ? 'flex' : 'none';
             hero.style.display = isPortrait ? 'none' : 'block';
         }
 
-        // Function to navigate to a specific slide
+        // Fungsi untuk menavigasi ke slide tertentu
         function goToSlide(index) {
-            // Prevent navigation if an animation is in progress or index is out of bounds
+            // Mencegah navigasi jika animasi sedang berlangsung atau indeks di luar batas
             if (isAnimating || index < 0 || index >= slides.length) return;
 
             isAnimating = true;
 
-            // Hide the current slide
+            // Sembunyikan slide saat ini
             slides[currentSlide].style.opacity = 0;
             slides[currentSlide].classList.remove('active');
 
             currentSlide = index;
 
-            // Show the new active slide
+            // Tampilkan slide aktif yang baru
             slides[currentSlide].style.opacity = 1;
             slides[currentSlide].classList.add('active');
 
@@ -591,19 +623,19 @@
             }, animationDuration);
         }
 
-        // Function to update the active dot and arrow button visibility
+        // Fungsi untuk memperbarui titik aktif dan visibilitas tombol panah
         function updateControls() {
-            // Update active dot
+            // Perbarui titik aktif
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentSlide);
             });
 
-            // Update arrow button disabled state
+            // Perbarui status tombol panah yang dinonaktifkan
             prevBtn.disabled = currentSlide === 0;
             nextBtn.disabled = currentSlide === slides.length - 1;
         }
 
-        // Event Listeners for Slider Controls (global)
+        // Event Listener untuk Kontrol Slider (global)
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
@@ -611,121 +643,120 @@
             dot.addEventListener('click', () => goToSlide(i));
         });
 
-        // Initialize the slider and orientation check when the DOM is fully loaded
+        // Inisialisasi slider dan pemeriksaan orientasi saat DOM dimuat sepenuhnya
         window.addEventListener('DOMContentLoaded', () => {
-            // Set initial opacity for slides (only first slide visible)
+            // Atur opasitas awal untuk slide (hanya slide pertama yang terlihat)
             slides.forEach((slide, index) => {
                 slide.style.opacity = index === 0 ? 1 : 0;
             });
-            updateControls(); // Initial update of controls
-            handleOrientation();
+            updateControls(); // Pembaruan kontrol awal
+            handleOrientation(); // Pemeriksaan orientasi awal
 
-            // Initial setup for vertical icon display
+            // Pengaturan awal untuk tampilan ikon vertikal
             updateVisibleIcons();
         });
 
-        // Listen for window resize and orientation change events
+        // Dengarkan peristiwa pengubahan ukuran jendela dan perubahan orientasi
         window.addEventListener('resize', handleOrientation);
         window.addEventListener('orientationchange', handleOrientation);
     </script>
 
     <script>
-        // Data for 3D Model Avatars
+        // Data untuk Avatar Model 3D (dapat dimodifikasi)
         const productData = [
             {
                 id: 'avatar1',
-                image: 'https://placehold.co/300x300/FF0000/FFFFFF?text=Sci-Fi+Avatar',
-                title: 'Sci-Fi Explorer Avatar',
-                description: 'A highly detailed 3D model of a futuristic explorer, perfect for games and animations. Features PBR textures and a rigged skeleton.',
-                price: '$49.99'
+                image: 'https://placehold.co/300x300/FF0000/FFFFFF?text=Sci-Fi+Avatar', // URL gambar (dapat dimodifikasi)
+                title: 'Sci-Fi Explorer Avatar', // Judul produk (dapat dimodifikasi)
+                description: 'Model 3D penjelajah futuristik yang sangat detail, cocok untuk game dan animasi. Dilengkapi tekstur PBR dan kerangka yang di-rig.', // Deskripsi produk (dapat dimodifikasi)
+                price: '$49.99' // Harga produk (dapat dimodifikasi)
             },
             {
                 id: 'avatar2',
                 image: 'https://placehold.co/300x300/00FF00/000000?text=Knight+Avatar',
                 title: 'Fantasy Knight Avatar',
-                description: 'A classic fantasy knight model with intricate armor and weapon details. Ideal for medieval-themed projects.',
+                description: 'Model ksatria fantasi klasik dengan detail baju besi dan senjata yang rumit. Ideal untuk proyek bertema abad pertengahan.',
                 price: '$39.99'
             },
             {
                 id: 'avatar3',
                 image: 'https://placehold.co/300x300/0000FF/FFFFFF?text=Robot+Avatar',
                 title: 'Cute Robot Companion',
-                description: 'An adorable and friendly robot avatar, great for casual games or educational content. Fully animated and optimized.',
+                description: 'Avatar robot yang menggemaskan dan ramah, cocok untuk game kasual atau konten edukasi. Sepenuhnya animasi dan dioptimalkan.',
                 price: '$29.99'
             },
             {
                 id: 'avatar4',
                 image: 'https://placehold.co/300x300/FFFF00/000000?text=Alien+Avatar',
                 title: 'Mysterious Alien Creature',
-                description: 'A unique and intriguing alien design, suitable for sci-fi adventures and creature features. Comes with multiple texture variations.',
+                description: 'Desain alien yang unik dan menarik, cocok untuk petualangan fiksi ilmiah dan fitur makhluk. Hadir dengan berbagai variasi tekstur.',
                 price: '$59.99'
             },
             {
                 id: 'avatar5',
                 image: 'https://placehold.co/300x300/FF00FF/FFFFFF?text=Stylized+Avatar',
                 title: 'Stylized Human Character',
-                description: 'A versatile stylized human model with a cartoonish aesthetic. Perfect for animated shorts or indie games.',
+                description: 'Model manusia bergaya serbaguna dengan estetika kartun. Sempurna untuk film pendek animasi atau game indie.',
                 price: '$34.99'
             },
             {
                 id: 'avatar6',
                 image: 'https://placehold.co/300x300/00FFFF/000000?text=Athlete+Avatar',
                 title: 'Dynamic Athlete Model',
-                description: 'A highly poseable athlete model, ideal for sports simulations or character animations requiring dynamic movement.',
+                description: 'Model atlet yang sangat poseable, ideal untuk simulasi olahraga atau animasi karakter yang membutuhkan gerakan dinamis.',
                 price: '$44.99'
             },
             {
                 id: 'avatar7',
                 image: 'https://placehold.co/300x300/8A2BE2/FFFFFF?text=Cyberpunk+Avatar',
                 title: 'Cyberpunk Rogue',
-                description: 'A sleek and edgy cyberpunk character, ready for dystopian adventures. Includes detailed cybernetic enhancements.',
+                description: 'Karakter cyberpunk yang ramping dan edgy, siap untuk petualangan dystopian. Termasuk peningkatan sibernetik yang detail.',
                 price: '$54.99'
             },
             {
                 id: 'avatar8',
                 image: 'https://placehold.co/300x300/ADD8E6/000000?text=Spirit+Avatar',
                 title: 'Ethereal Spirit Guide',
-                description: 'A mystical and translucent spirit character, perfect for fantasy or spiritual-themed projects. Glows with inner light.',
+                description: 'Karakter roh mistis dan transparan, cocok untuk proyek fantasi atau bertema spiritual. Bercahaya dengan cahaya batin.',
                 price: '$42.99'
             },
             {
                 id: 'avatar9',
                 image: 'https://placehold.co/300x300/CD853F/FFFFFF?text=Guardian+Avatar',
-                title: 'Ancient Guardian',
-                description: 'A weathered and powerful guardian from forgotten times, ideal for ancient ruins or epic fantasy settings. Comes with stone and moss textures.',
+                description: 'Penjaga kuno yang lapuk dan kuat, ideal untuk reruntuhan kuno atau pengaturan fantasi epik. Hadir dengan tekstur batu dan lumut.',
                 price: '$65.99'
             }
         ];
 
-        // Get elements for the product detail overlay
+        // Dapatkan elemen untuk overlay detail produk
         const productDetailOverlay = document.getElementById('productDetailOverlay');
         const productImage = document.getElementById('productImage');
         const productTitle = document.getElementById('productTitle');
         const productDescription = document.getElementById('productDescription');
         const productPrice = document.getElementById('productPrice');
 
-        // Icon Paging Variables
+        // Variabel Paging Ikon
         const floatingIconsContainer = document.querySelector('.floating-icons');
         const allIconItems = document.querySelectorAll('.icon-item');
         const upArrowBtn = document.querySelector('.up-arrow');
         const downArrowBtn = document.querySelector('.down-arrow');
 
-        const iconsPerPage = 3; // Number of icons to display at once
-        let currentIconSetIndex = 0; // Index of the first visible icon in the current set
-        const iconItemHeight = 56 + 15; // icon height (56px) + gap (15px) = 71px per item
+        const iconsPerPage = 3; // Jumlah ikon yang ditampilkan sekaligus (dapat dimodifikasi)
+        let currentIconSetIndex = 0; // Indeks ikon pertama yang terlihat di set saat ini
+        const iconItemHeight = 56 + 15; // Tinggi ikon (56px) + jarak (15px) = 71px per item (dapat dimodifikasi jika ukuran ikon atau jarak berubah)
 
-        // Function to update which icons are visible and enable/disable arrows
+        // Fungsi untuk memperbarui ikon mana yang terlihat dan mengaktifkan/menonaktifkan panah
         function updateVisibleIcons() {
-            // Calculate the transform needed to scroll the icons
+            // Hitung transformasi yang diperlukan untuk menggulir ikon
             const translateYValue = -currentIconSetIndex * iconItemHeight;
             floatingIconsContainer.style.transform = `translateY(${translateYValue}px)`;
 
-            // Update arrow button states
+            // Perbarui status tombol panah
             upArrowBtn.disabled = currentIconSetIndex === 0;
             downArrowBtn.disabled = currentIconSetIndex >= (allIconItems.length - iconsPerPage);
         }
 
-        // Event listener for the up arrow
+        // Event listener untuk panah atas
         upArrowBtn.addEventListener('click', () => {
             if (currentIconSetIndex > 0) {
                 currentIconSetIndex--;
@@ -733,61 +764,61 @@
             }
         });
 
-        // Event listener for the down arrow
+        // Event listener untuk panah bawah
         downArrowBtn.addEventListener('click', () => {
-            // Ensure we don't scroll past the last set of icons
+            // Pastikan kita tidak menggulir melewati set ikon terakhir
             if (currentIconSetIndex < (allIconItems.length - iconsPerPage)) {
                 currentIconSetIndex++;
                 updateVisibleIcons();
             }
         });
 
-        // JavaScript for Floating Icons Hover Effect (Show product details)
+        // JavaScript untuk Efek Hover Ikon Mengambang (Tampilkan detail produk)
         allIconItems.forEach(function(item) {
-            const label = item.querySelector('.icon-label'); // The small label
+            const label = item.querySelector('.icon-label'); // Label kecil
 
-            // Add event listeners for mouse enter
+            // Tambahkan event listener untuk mouse enter
             item.addEventListener('mouseenter', function() {
-                const productId = item.dataset.productId; // Get the product ID from data attribute
-                const product = productData.find(p => p.id === productId); // Find the corresponding product data
+                const productId = item.dataset.productId; // Dapatkan ID produk dari atribut data
+                const product = productData.find(p => p.id === productId); // Temukan data produk yang sesuai
 
                 if (product) {
-                    // Populate the product detail overlay
+                    // Isi overlay detail produk
                     productImage.src = product.image;
                     productImage.alt = product.title;
                     productTitle.textContent = product.title;
                     productDescription.textContent = product.description;
                     productPrice.textContent = product.price;
 
-                    // Show the product detail overlay
+                    // Tampilkan overlay detail produk
                     productDetailOverlay.classList.add('show');
 
-                    // Hide the small icon label when the large overlay is active
+                    // Sembunyikan label ikon kecil saat overlay besar aktif
                     if (label) {
                         label.classList.remove('show');
                     }
                 }
             });
 
-            // Add event listeners for mouse leave
+            // Tambahkan event listener untuk mouse leave
             item.addEventListener('mouseleave', function() {
-                // Hide the product detail overlay
+                // Sembunyikan overlay detail produk
                 productDetailOverlay.classList.remove('show');
 
-                // The icons themselves remain visible as per the updated requirement
+                // Ikon itu sendiri tetap terlihat sesuai dengan persyaratan yang diperbarui
             });
         });
 
-        // Initialize the icon display and slider on load
+        // Inisialisasi tampilan ikon dan slider saat DOM dimuat sepenuhnya
         window.addEventListener('DOMContentLoaded', () => {
-            // Initial setup for main slider
+            // Pengaturan awal untuk slider utama
             slides.forEach((slide, index) => {
                 slide.style.opacity = index === 0 ? 1 : 0;
             });
-            updateControls(); // Initial update of controls
-            handleOrientation();
+            updateControls(); // Pembaruan kontrol awal
+            handleOrientation(); // Pemeriksaan orientasi awal
 
-            // Initial setup for vertical icon display
+            // Pengaturan awal untuk tampilan ikon vertikal
             updateVisibleIcons();
         });
     </script>
