@@ -16,26 +16,32 @@
         /* Prevent horizontal scroll on the entire page */
         body {
             overflow-x: hidden;
+            font-family: "Inter", sans-serif; /* Added Inter font */
         }
 
-        /* Floating Icons Container - Now acts as the main sliding container */
+        /* Floating Icons Container - Contains the icon wrapper and the 'hide' button */
         .floating-icons {
             position: absolute;
-            left: 20px; /* Base position 20px from the left */
+            left: -5px; /* Base position -5px from the left, even closer to the edge */
             z-index: 10;
             top: 50%; /* Center vertically */
             transform: translateY(-50%); /* Adjust for vertical centering */
-            display: flex; /* Use flexbox to arrange wrapper and button */
+            display: flex; /* Use flexbox to arrange wrapper and hide button */
             align-items: center; /* Vertically align items within this flex container */
-            gap: 10px; /* Space between wrapper and button */
+            gap: 10px; /* Space between wrapper and hide button */
             transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition for sliding and fading */
-            transform-origin: left center; /* Ensure transform applies correctly */
         }
 
-        /* Toggle Icons Button */
+        /* Class to hide the entire floating-icons container by sliding it left */
+        .floating-icons.hidden {
+            /* Slide left off-screen by its full width + initial -5px offset */
+            transform: translateY(-50%) translateX(calc(-100% - 5px));
+            opacity: 0; /* Smooth opacity change */
+            pointer-events: none; /* Disable interaction when hidden */
+        }
+
+        /* Common styles for both toggle buttons (hide and show) */
         .toggle-icons-button {
-            /* Position relative to its flex parent (.floating-icons) */
-            /* No 'position: absolute' or 'fixed' here anymore, it's part of the flex flow */
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(3px);
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -44,12 +50,11 @@
             color: #333;
             font-size: 0.9rem;
             cursor: pointer;
-            /* Transition only for background and box-shadow, 'left' is handled by JS */
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            /* Removed 'transform' from transition to prevent rotation animation */
+            transition: background 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
             z-index: 11;
-            white-space: nowrap; /* Prevent text wrapping */
-            /* Initial 'left' position is now handled by flexbox and gap */
-            /* No rotation applied here */
+            white-space: nowrap;
+            transform-origin: center; /* Ensure rotation is around its center */
         }
 
         .toggle-icons-button:hover {
@@ -57,7 +62,28 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* Removed .toggle-icons-button.rotated class entirely */
+        /* Specific styles for the 'Hide Icons' button (inside floating-icons) */
+        .hide-button {
+            transform: rotate(90deg); /* Always rotated 90 degrees */
+            opacity: 1; /* Default to visible */
+            pointer-events: auto; /* Default to interactive */
+        }
+
+        /* Specific styles for the 'Show Icons' button (fixed position on the left) */
+        .show-button {
+            position: fixed; /* Always fixed relative to the viewport */
+            left: -5px; /* Always on the left middle, closer to the edge */
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg); /* Now also rotated 90 degrees */
+            opacity: 0; /* Hidden by default */
+            pointer-events: none; /* Disable interaction when hidden */
+        }
+
+        /* When floating-icons is hidden, show the 'Show Icons' button */
+        .floating-icons.hidden + .show-button { /* Adjacent sibling selector */
+            opacity: 1;
+            pointer-events: auto;
+        }
 
         /* Wrapper for the transparent box containing icons */
         .icons-container-wrapper {
@@ -73,8 +99,9 @@
             gap: 20px; /* Gap between icons */
 
             /* Fixed width for 5 icons (350px icon + 80px gap + 40px padding) */
-            width: 470px;
-            max-width: calc(100vw - 40px - 10px - 100px); /* Ensure it doesn't overflow (100px approx button width) */
+            width: 470px; /* Original width, will be overridden by max-width if smaller */
+            /* Adjusted max-width for new left: -5px, assuming 20px right margin for the entire floating-icons area */
+            max-width: calc(100vw - 20px - 10px - 100px); 
 
             /* --- Vertical Scrollbar Enhancements --- */
             max-height: 200px; /* Max height for approximately 2 rows of icons */
@@ -83,7 +110,6 @@
             /* Custom scrollbar styling */
             scrollbar-width: thin; /* Firefox */
             scrollbar-color: rgba(0, 120, 215, 0.5) rgba(255, 255, 255, 0.1); /* Firefox */
-            /* No transform transition here, parent handles it */
         }
 
         /* Custom scrollbar for Webkit browsers (Chrome, Safari) */
@@ -107,13 +133,6 @@
             background-color: rgba(0, 120, 215, 0.7); /* Darker blue on hover */
         }
         /* --- End Scrollbar Enhancements --- */
-
-        /* Class to hide the floating-icons container by sliding it left */
-        .floating-icons.hidden {
-            transform: translateY(-50%) translateX(calc(-100% - 20px)); /* Slide left off-screen */
-            opacity: 0; /* Smooth opacity change */
-            pointer-events: none; /* Disable interaction when hidden */
-        }
 
         .icon-item {
             display: flex;
@@ -432,13 +451,16 @@
             .icons-container-wrapper {
                 width: calc(100vw - 40px); /* Full viewport width minus padding */
                 grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Allow wrapping */
-                max-width: 470px; /* Maintain max width */
+                max-width: none; /* Remove fixed max-width on smaller screens */
             }
             .floating-icons {
-                left: 20px; /* Stay on left */
-                transform: none; /* Remove Y transformation */
-                width: calc(100% - 40px); /* Take full width on small screens minus margin */
-                align-items: flex-start; /* Ensure wrapper stays on left */
+                flex-direction: column; /* Stack items vertically */
+                align-items: center; /* Center items horizontally when stacked */
+                gap: 15px; /* Adjust gap for vertical stacking */
+                left: 50%; /* Center horizontally */
+                top: auto; /* Reset top */
+                bottom: 20px; /* Place at the bottom */
+                transform: translateX(-50%); /* Center horizontally */
             }
             .modal-content {
                 /* Reset positioning for small screens to center it fully */
@@ -465,15 +487,17 @@
             .modal-link-button {
                 align-self: center; /* Center button on small screens */
             }
-            .toggle-icons-button {
-                /* Adjust button position for small screens */
-                left: 50%;
-                transform: translateX(-50%) translateY(-50%) rotate(0deg); /* Center horizontally, maintain vertical center */
+            .hide-button {
+                transform: rotate(0deg); /* No rotation on mobile */
+                margin-top: 10px; /* Add some space when stacked vertically */
+            }
+            .show-button {
+                position: fixed; /* Still fixed */
+                left: 50%; /* Center horizontally */
                 top: auto; /* Reset top */
                 bottom: 20px; /* Place at the bottom */
-                right: auto; /* Reset right */
+                transform: translateX(-50%) rotate(0deg); /* No rotation */
             }
-            /* Removed .toggle-icons-button.rotated for mobile as well */
         }
 
         /* Hero Section */
@@ -610,7 +634,7 @@
         <div class="slides">
             <div class="slide active">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-icons vertical-center">
+                <div class="floating-icons" id="floatingIconsContainer">
                     <div class="icons-container-wrapper" id="iconsContainerWrapper">
                         <div class="icon-item">
                             <div class="icon-box" data-title="Design Features" data-desc="Intuitive and modern interface design for the best user experience. We focus on aesthetics and functionality to create beautiful and easy-to-use products. Every detail is considered to ensure a seamless and enjoyable experience for the end-user. We believe good design is key to product success." data-images='["https://placehold.co/250x250/FF5733/FFFFFF?text=Design+1", "https://placehold.co/250x250/FF5733/FFFFFF?text=Design+2", "https://placehold.co/250x250/FF5733/FFFFFF?text=Design+3"]' data-link="https://www.google.com/search?q=design+features">
@@ -679,8 +703,10 @@
                             <span class="icon-label">New Feature 5</span>
                         </div>
                     </div>
+                    <button id="hideIconsButton" class="toggle-icons-button hide-button">Hide Icons</button>
                 </div>
-                <button id="toggleIconsButton" class="toggle-icons-button">Hide Icons</button>
+                <button id="showIconsButton" class="toggle-icons-button show-button">Show Icons</button>
+
                 <div class="floating-text">Discover our key features</div>
                 <a class="floating-button" href="#">Explore</a>
             </div>
@@ -766,6 +792,7 @@
         function updateModalShowoffImages(imageUrls) {
             const slider = document.getElementById('modalImageSlider');
             const dotsContainer = document.getElementById('modalImageDots');
+            const modalImageContainer = document.querySelector('.modal-image-container');
 
             // Clear previous content
             slider.innerHTML = '';
@@ -774,10 +801,10 @@
 
             if (!imageUrls || imageUrls.length === 0) {
                 // Hide image container if no images
-                document.querySelector('.modal-image-container').style.display = 'none';
+                modalImageContainer.style.display = 'none';
                 return;
             } else {
-                document.querySelector('.modal-image-container').style.display = 'flex'; // Show again
+                modalImageContainer.style.display = 'flex'; // Show again
             }
 
             // Create image elements and dots
@@ -897,44 +924,17 @@
         });
 
         // Toggle Icons Button Logic
-        const toggleIconsButton = document.getElementById('toggleIconsButton');
-        const iconsContainerWrapper = document.getElementById('iconsContainerWrapper');
-        const floatingIconsContainer = document.querySelector('.floating-icons'); // Get the parent container
+        const hideIconsButton = document.getElementById('hideIconsButton'); // The button inside the panel
+        const showIconsButton = document.getElementById('showIconsButton'); // The fixed button
+        const floatingIconsContainer = document.getElementById('floatingIconsContainer');
 
-        // Function to update the button's position based on the wrapper's current position
-        function updateToggleButtonPosition() {
-            const wrapperRect = iconsContainerWrapper.getBoundingClientRect();
-            // Position the button to the right of the wrapper, vertically centered
-            toggleIconsButton.style.left = `${wrapperRect.right + 10}px`; /* 10px gap from wrapper */
-            toggleIconsButton.style.top = `${wrapperRect.top + wrapperRect.height / 2}px`; /* Vertically center */
-        }
-
-        // Set initial position on load and resize
-        window.addEventListener('load', () => {
-            updateToggleButtonPosition();
-            // Set initial text
-            if (floatingIconsContainer.classList.contains('hidden')) {
-                toggleIconsButton.textContent = 'Show Icons';
-            } else {
-                toggleIconsButton.textContent = 'Hide Icons';
-            }
-        });
-        window.addEventListener('resize', updateToggleButtonPosition);
-
-        toggleIconsButton.addEventListener('click', () => {
-            floatingIconsContainer.classList.toggle('hidden'); // Toggle hidden class on the main sliding container
-            // Removed toggleIconsButton.classList.toggle('rotated');
-
-            // Update button position instantly after toggling visibility
-            updateToggleButtonPosition();
-
-            if (floatingIconsContainer.classList.contains('hidden')) {
-                toggleIconsButton.textContent = 'Show Icons';
-            } else {
-                toggleIconsButton.textContent = 'Hide Icons';
-            }
+        hideIconsButton.addEventListener('click', () => {
+            floatingIconsContainer.classList.add('hidden'); // Hide the panel
         });
 
+        showIconsButton.addEventListener('click', () => {
+            floatingIconsContainer.classList.remove('hidden'); // Show the panel
+        });
 
         let currentSlide = 0;
         let isAnimating = false;
