@@ -159,7 +159,7 @@
             background: transparent; /* Latar belakang overlay sepenuhnya transparan */
             backdrop-filter: none; /* Hapus efek blur dari overlay */
             justify-content: flex-end; /* Posisikan konten modal ke kanan */
-            align-items: stretch; /* Biarkan konten modal meregang secara vertikal */
+            align-items: center; /* Pusatkan konten modal secara vertikal */
         }
 
         .modal-overlay.active {
@@ -205,7 +205,6 @@
             flex-grow: 1; /* Memungkinkan teks mengambil ruang yang tersedia */
             text-align: left; /* Teks deskripsi rata kiri */
             overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi */
-            /* max-height disesuaikan untuk tidak terlalu lebar vertikal */
             max-height: calc(90vh - 40px - 120px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 120px (tinggi gambar) - 20px (gap) */
             padding-right: 10px; /* Tambahkan padding agar scrollbar tidak menempel teks */
         }
@@ -223,14 +222,8 @@
         }
 
         .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: #888;
+            /* Dihapus: Tombol X tidak lagi digunakan */
+            display: none;
         }
 
         .icon-item.hide {
@@ -442,16 +435,6 @@
     <div class="hero">
         <div class="slides">
             <div class="slide active">
-                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
-                <div class="spline-container">
-                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-                    <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
-                </div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Pelajari Lebih Lanjut</a>
-            </div>
-
-            <div class="slide">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
                 <div class="floating-icons vertical-center">
                     <div class="icons-container-wrapper">
@@ -497,6 +480,16 @@
                 <a class="floating-button" href="#">Jelajahi</a>
             </div>
 
+            <div class="slide">
+                <div class="slide-background" style="background-image: url('https://i.ibb.co/gbm02Mf5/Screenshot-2025-02-28-222328.png')"></div>
+                <div class="spline-container">
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+                    <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
+                </div>
+                <div class="floating-text">Lorem ipsum dolor sit amet</div>
+                <a class="floating-button" href="#">Pelajari Lebih Lanjut</a>
+            </div>
+
             <div class="modal-overlay" id="descModal">
                 <div class="modal-content">
                     <button class="modal-close" id="closeModal">&times;</button>
@@ -539,6 +532,21 @@
     </div>
 
     <script>
+        let modalHideTimeoutId; // Variabel untuk menyimpan ID timeout
+
+        // Fungsi untuk memulai timer sembunyikan modal
+        function startModalHideTimer() {
+            clearTimeout(modalHideTimeoutId); // Hapus timer sebelumnya jika ada
+            modalHideTimeoutId = setTimeout(() => {
+                document.getElementById('descModal').classList.remove('active');
+            }, 3000); // Sembunyikan setelah 3 detik
+        }
+
+        // Fungsi untuk menghapus timer sembunyikan modal
+        function clearModalHideTimer() {
+            clearTimeout(modalHideTimeoutId);
+        }
+
         // Modal logic for icon-box
         document.querySelectorAll('.icon-box').forEach(function(box) {
             box.addEventListener('click', function() {
@@ -546,18 +554,33 @@
                 document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
                 document.getElementById('modalImage').src = box.getAttribute('data-image'); // Set image source
                 document.getElementById('descModal').classList.add('active');
+                startModalHideTimer(); // Mulai timer saat modal ditampilkan atau diperbarui
             });
-        });
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('descModal').classList.remove('active');
-        });
-        document.getElementById('descModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('active');
-        });
-    </script>
 
-    <script>
-        // script.js
+            // Tambahkan event listener untuk mouseenter dan mouseleave pada setiap icon-box
+            box.addEventListener('mouseenter', clearModalHideTimer);
+            box.addEventListener('mouseleave', startModalHideTimer);
+        });
+
+        // Tambahkan event listener untuk mouseenter dan mouseleave pada modal content itu sendiri
+        document.getElementById('descModal').addEventListener('mouseenter', clearModalHideTimer);
+        document.getElementById('descModal').addEventListener('mouseleave', startModalHideTimer);
+
+        // Menghapus event listener untuk tombol close modal karena tombol X dihapus
+        // document.getElementById('closeModal').addEventListener('click', function() {
+        //     document.getElementById('descModal').classList.remove('active');
+        // });
+
+        // Event listener untuk menutup modal saat mengklik di luar modal (overlay)
+        document.getElementById('descModal').addEventListener('click', function(e) {
+            if (e.target === this) { // Jika target klik adalah overlay itu sendiri
+                this.classList.remove('active');
+                clearModalHideTimer(); // Hapus timer saat ditutup manual
+            }
+        });
+
+        // ...existing slider/orientation scripts...
+
         let currentSlide = 0;
         let isAnimating = false;
         const animationDuration = 800;
