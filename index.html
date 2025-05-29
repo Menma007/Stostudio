@@ -1,349 +1,389 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Soto Studio</title>
-  <style>
-    /* style.css */
-    /* Reset */
-      .floating-icons {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          gap: 22px;
-          z-index: 10;
-      }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soto Studio</title>
+    <style>
+        /* style.css */
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      .icon-item {
-          display: flex;
-          align-items: center;
-          position: relative;
-      }
+        /* Floating Icons Container - Holds the transparent wrapper */
+        .floating-icons {
+            position: absolute;
+            left: 20px; /* Posisikan 20px dari sisi kiri */
+            z-index: 10;
+            display: flex; /* Diperlukan untuk kelas posisi vertikal */
+            flex-direction: column; /* Diperlukan untuk kelas posisi vertikal */
+            /* align-items: center; dihapus karena tidak lagi memusatkan wrapper secara horizontal */
+        }
 
-      .icon {
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: none; /* Tidak ada background kapsul di icon */
-          border-radius: 50%;
-          overflow: hidden;
-      }
+        /* Opsi Penempatan Vertikal untuk .floating-icons */
+        .floating-icons.vertical-top {
+            top: 5%; /* Atas */
+            transform: translateY(0); /* Hanya transformasi Y */
+        }
 
-          .icon img {
-              width: 48px;
-              height: 48px;
-              border-radius: 50%;
-              object-fit: cover;
-              display: block;
-          }
+        .floating-icons.vertical-center {
+            top: 50%; /* Tengah */
+            transform: translateY(-50%); /* Hanya transformasi Y */
+        }
 
-      .icon-label {
-          opacity: 0;
-          visibility: hidden;
-          margin-left: 14px;
-          background: rgba(255,255,255,0.95);
-          color: #333;
-          border-radius: 24px;
-          padding: 7px 18px;
-          font-size: 1rem;
-          white-space: nowrap;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-          transition: opacity 0.25s cubic-bezier(.4,0,.2,1), visibility 0.25s, transform 0.25s cubic-bezier(.4,0,.2,1);
-          transform: scaleX(0.7);
-          transform-origin: left center;
-          display: flex;
-          align-items: center;
-      }
+        .floating-icons.vertical-bottom {
+            bottom: 5%; /* Bawah */
+            top: auto; /* Memastikan 'top' tidak mengganggu 'bottom' */
+            transform: translateY(0); /* Hanya transformasi Y */
+        }
 
-          .icon-item:hover .icon-label,
-          .icon-label.show {
-              opacity: 1;
-              visibility: visible;
-              transform: scaleX(1);
-          }
+        /* Wrapper for the transparent box containing icons */
+        .icons-container-wrapper {
+            background: rgba(255, 255, 255, 0.2); /* Latar belakang transparan */
+            border-radius: 16px; /* Sudut membulat untuk kotak */
+            padding: 20px; /* Padding di dalam kotak */
+            backdrop-filter: blur(5px); /* Opsional: Efek blur halus */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
 
-      .icon-desc {
-          font-size: 0.85rem;
-          color: #666;
-          margin-left: 8px;
-          opacity: 0.8;
-          line-height: 1.3;
-          display: inline;
-      }
-      .icon-box {
-          width: 70px;
-          height: 70px;
-          background: #fff;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: box-shadow 0.2s;
-          border: 2px solid transparent;
-          overflow: hidden;
-      }
+            /* Tata letak Grid untuk ikon: 5 per baris, responsif */
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Tepat 5 kolom, masing-masing mengambil fraksi yang sama */
+            gap: 20px; /* Jarak antar ikon */
 
-          .icon-box:hover {
-              box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-              border-color: #0078d7;
-          }
+            /* Lebar tetap untuk memastikan 5 ikon muat */
+            width: 470px; /* (70px * 5) + (20px * 4) + (20px * 2) = 350 + 80 + 40 = 470px */
+        }
 
-          .icon-box img {
-              width: 48px;
-              height: 48px;
-              object-fit: cover;
-              border-radius: 8px;
-              display: block;
-          }
-      /* Modal styles */
-      .modal-overlay {
-          display: none;
-          position: fixed;
-          z-index: 2000;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.65);
-          justify-content: center;
-          align-items: center;
-      }
+        .icon-item {
+            display: flex;
+            align-items: center;
+            position: relative; /* Penting untuk posisi absolut label */
+            justify-content: center; /* Pusatkan icon-box di dalam item grid */
+        }
 
-          .modal-overlay.active {
-              display: flex;
-          }
+        .icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border-radius: 50%;
+            overflow: hidden;
+        }
 
-      .modal-content {
-          background: #fff;
-          border-radius: 16px;
-          padding: 32px 24px;
-          max-width: 350px;
-          text-align: center;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-          position: relative;
-      }
+        .icon img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
 
-          .modal-content h3 {
-              margin-bottom: 12px;
-              font-size: 1.3rem;
-              color: #222;
-          }
+        .icon-label {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute; /* Membuat label mengambang */
+            left: calc(100% + 14px); /* Posisikan di sebelah kanan icon-box */
+            top: 50%; /* Pusatkan secara vertikal relatif terhadap icon-item */
+            transform: translateY(-50%) scaleX(0.7); /* Pusatkan dan skala awal */
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            border-radius: 24px;
+            padding: 7px 18px;
+            font-size: 1rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: opacity 0.25s cubic-bezier(.4,0,.2,1), visibility 0.25s, transform 0.25s cubic-bezier(.4,0,.2,1);
+            transform-origin: left center;
+            display: flex;
+            align-items: center;
+            z-index: 100; /* Pastikan label muncul di atas elemen lain */
+        }
 
-          .modal-content p {
-              color: #444;
-              font-size: 1rem;
-          }
+        .icon-item:hover .icon-label,
+        .icon-label.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scaleX(1); /* Skala penuh saat aktif */
+        }
 
-      .modal-close {
-          position: absolute;
-          top: 12px;
-          right: 16px;
-          background: none;
-          border: none;
-          font-size: 1.3rem;
-          cursor: pointer;
-          color: #888;
-      }
+        .icon-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-left: 8px;
+            opacity: 0.8;
+            line-height: 1.3;
+            display: inline;
+        }
 
-      .icon-item.hide {
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.2s;
-      }
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2); /* Latar belakang transparan untuk kotak ikon */
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Bayangan lebih ringan */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.4); /* Border sedikit terlihat */
+            overflow: hidden;
+        }
 
+        .icon-box:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            border-color: #0078d7;
+        }
 
+        .icon-box img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.65);
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Orientation Alert */
-    .orientation-alert {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
+        .modal-overlay.active {
+            display: flex;
+        }
 
-    .blink-box {
-      background: #fff;
-      padding: 25px;
-      border-radius: 15px;
-      text-align: center;
-      animation: blink 1.5s infinite;
-    }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            position: relative;
+        }
 
-    @keyframes blink {
-      0% { opacity: 0.3; }
-      50% { opacity: 1; }
-      100% { opacity: 0.3; }
-    }
+        .modal-content h3 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: #222;
+        }
 
-    .orientation-alert img {
-      width: 80px;
-      margin-bottom: 15px;
-    }
+        .modal-content p {
+            color: #444;
+            font-size: 1rem;
+        }
 
-    @media (orientation: portrait) {
-      .orientation-alert { display: flex; }
-      .hero { display: none; }
-    }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #888;
+        }
 
-    @media (max-width: 768px) {
-      .slide-background {
-          background-size: contain; /* Sesuaikan untuk layar kecil */
-      }
-    }
+        .icon-item.hide {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
 
-    /* Hero Section */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
+        /* Orientation Alert */
+        .orientation-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden !important;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-    }
+        .blink-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            animation: blink 1.5s infinite;
+        }
 
-    /* FIX UTAMA: Spline container */
-    .spline-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
 
-    .slide.active {
-      opacity: 1;
-      z-index: 2;
-    }
+        .orientation-alert img {
+            width: 80px;
+            margin-bottom: 15px;
+        }
 
-    .slide-background {
-      background-size: cover !important;
-      background-position: center center !important;
-      transform: translateZ(0);
-      width: 100%; /* Ensure it fills the slide */
-      height: 100%; /* Ensure it fills the slide */
-      position: absolute; /* Position it correctly within the slide */
-      top: 0;
-      left: 0;
-    }
+        @media (orientation: portrait) {
+            .orientation-alert { display: flex; }
+            .hero { display: none; }
+        }
 
-    /* .slide img is not used as backgrounds are set via background-image */
-    /* .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    } */
+        /* Responsive adjustment for smaller screens */
+        @media (max-width: 500px) { /* Sesuaikan breakpoint sesuai kebutuhan */
+            .icons-container-wrapper {
+                width: calc(100vw - 40px); /* Lebar penuh viewport dikurangi padding */
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Izinkan wrapping */
+                max-width: 470px; /* Tetap patuhi lebar maksimal */
+            }
+            .floating-icons {
+                left: 20px; /* Tetap di kiri */
+                transform: none; /* Hapus transformasi X */
+                width: calc(100% - 40px); /* Ambil lebar penuh pada layar kecil dikurangi margin */
+                align-items: flex-start; /* Pastikan wrapper tetap di kiri */
+            }
+        }
 
-    /* Slider Controls */
-    .slider-controls {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      z-index: 1000;
-    }
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    .arrow-btn {
-      background: rgba(255,255,255,0.9);
-      border: 2px solid #fff;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.3s;
-    }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden !important;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
 
-    .arrow-btn:hover {
-      background: rgba(255,255,255,0.7);
-    }
+        /* FIX UTAMA: Spline container */
+        .spline-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
 
-    .arrow-btn svg {
-      width: 24px;
-      height: 24px;
-      fill: #333;
-    }
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
 
-    .dots-container {
-      display: flex;
-      gap: 12px;
-    }
+        .slide-background {
+            background-size: cover !important;
+            background-position: center center !important;
+            transform: translateZ(0);
+            width: 100%; /* Pastikan mengisi slide */
+            height: 100%; /* Pastikan mengisi slide */
+            position: absolute; /* Posisikan dengan benar di dalam slide */
+            top: 0;
+            left: 0;
+        }
 
-    .dot {
-      width: 12px;
-      height: 12px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
+        /* Slider Controls */
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            z-index: 1000;
+        }
 
-    .dot.active {
-      background: #fff;
-      transform: scale(1.3);
-    }
+        .arrow-btn {
+            background: rgba(255,255,255,0.9);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
 
-    /* Konten */
-    .floating-text {
-      position: absolute;
-      bottom: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 1.5rem;
-      text-align: center;
-      z-index: 3;
-    }
+        .arrow-btn:hover {
+            background: rgba(255,255,255,0.7);
+        }
 
-    .floating-button {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 30px;
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      border-radius: 30px;
-      text-decoration: none;
-      z-index: 3;
-    }
-  </style>
+        .arrow-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+        }
+
+        .dots-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+
+        /* Konten */
+        .floating-text {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            z-index: 3;
+        }
+
+        .floating-button {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border-radius: 30px;
+            text-decoration: none;
+            z-index: 3;
+        }
+    </style>
 </head>
 <body>
     <div class="orientation-alert">
         <div class="blink-box">
-            <img src="assets/rotate-icon.png" alt="Rotate Device">
-            <p>Please rotate to landscape mode!</p>
+            <img src="https://placehold.co/80x80/000000/FFFFFF?text=Rotate" alt="Rotate Device">
+            <p>Harap putar perangkat ke mode lanskap!</p>
         </div>
     </div>
 
@@ -356,45 +396,53 @@
                     <spline-viewer url="https://prod.spline.design/hoVybJVh4hbsNsGU/scene.splinecode" loading="eager"></spline-viewer>
                 </div>
                 <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Learn More</a>
+                <a class="floating-button" href="#">Pelajari Lebih Lanjut</a>
             </div>
 
             <div class="slide">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-icons">
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 1" data-desc="Deskripsi singkat fitur 1 di sini.">
-                            <img src="assets/your-icon1.png" alt="Fitur 1" />
+                <div class="floating-icons vertical-center">
+                    <div class="icons-container-wrapper">
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik.">
+                                <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=D1" alt="Fitur Desain" />
+                            </div>
+                            <span class="icon-label">Fitur Desain</span>
                         </div>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="assets/your-icon2.png" alt="Fitur 2" />
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru.">
+                                <img src="https://placehold.co/48x48/33FF57/FFFFFF?text=P2" alt="Fitur Pengembangan" />
+                            </div>
+                            <span class="icon-label">Fitur Pengembangan</span>
                         </div>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="assets/your-icon2.png" alt="Fitur 2" />
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman.">
+                                <img src="https://placehold.co/48x48/3366FF/FFFFFF?text=K3" alt="Fitur Keamanan" />
+                            </div>
+                            <span class="icon-label">Fitur Keamanan</span>
                         </div>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="assets/your-icon2.png" alt="Fitur 2" />
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan.">
+                                <img src="https://placehold.co/48x48/FF33CC/FFFFFF?text=S4" alt="Fitur Skalabilitas" />
+                            </div>
+                            <span class="icon-label">Fitur Skalabilitas</span>
                         </div>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="assets/your-icon2.png" alt="Fitur 2" />
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda.">
+                                <img src="https://placehold.co/48x48/FFFF33/000000?text=D5" alt="Fitur Dukungan" />
+                            </div>
+                            <span class="icon-label">Fitur Dukungan</span>
                         </div>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="assets/your-icon2.png" alt="Fitur 2" />
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain.">
+                                <img src="https://placehold.co/48x48/33FFFF/000000?text=I6" alt="Fitur Integrasi" />
+                            </div>
+                            <span class="icon-label">Fitur Integrasi</span>
                         </div>
                     </div>
                 </div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Explore</a>
+                <div class="floating-text">Temukan fitur-fitur unggulan kami</div>
+                <a class="floating-button" href="#">Jelajahi</a>
             </div>
 
             <div class="modal-overlay" id="descModal">
@@ -407,8 +455,8 @@
 
             <div class="slide">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-text">Lorem ipsum dolor sit amet</div>
-                <a class="floating-button" href="#">Contact Us</a>
+                <div class="floating-text">Siap untuk memulai proyek Anda?</div>
+                <a class="floating-button" href="#">Hubungi Kami</a>
             </div>
         </div>
 
@@ -434,21 +482,19 @@
     </div>
 
     <script>
-        // ...existing slider/orientation scripts...
-
         // Modal logic for icon-box
         document.querySelectorAll('.icon-box').forEach(function(box) {
-        box.addEventListener('click', function() {
-        document.getElementById('modalTitle').textContent = box.getAttribute('data-title');
-        document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
-        document.getElementById('descModal').classList.add('active');
-        });
+            box.addEventListener('click', function() {
+                document.getElementById('modalTitle').textContent = box.getAttribute('data-title');
+                document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
+                document.getElementById('descModal').classList.add('active');
+            });
         });
         document.getElementById('closeModal').addEventListener('click', function() {
-        document.getElementById('descModal').classList.remove('active');
+            document.getElementById('descModal').classList.remove('active');
         });
         document.getElementById('descModal').addEventListener('click', function(e) {
-        if (e.target === this) this.classList.remove('active');
+            if (e.target === this) this.classList.remove('active');
         });
     </script>
 
@@ -465,45 +511,45 @@
 
         // Orientation Handler
         function handleOrientation() {
-        const orientationAlert = document.querySelector('.orientation-alert');
-        const hero = document.querySelector('.hero');
-        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+            const orientationAlert = document.querySelector('.orientation-alert');
+            const hero = document.querySelector('.hero');
+            const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
-        orientationAlert.style.display = isPortrait ? 'flex' : 'none';
-        hero.style.display = isPortrait ? 'none' : 'block';
+            orientationAlert.style.display = isPortrait ? 'flex' : 'none';
+            hero.style.display = isPortrait ? 'none' : 'block';
         }
 
         // Slide Navigation
         function goToSlide(index) {
-        if (isAnimating || index < 0 || index >= slides.length) return;
+            if (isAnimating || index < 0 || index >= slides.length) return;
 
-        isAnimating = true;
+            isAnimating = true;
 
-        // Animate transition
-        slides[currentSlide].style.opacity = 0;
-        slides[currentSlide].classList.remove('active');
+            // Animate transition
+            slides[currentSlide].style.opacity = 0;
+            slides[currentSlide].classList.remove('active');
 
-        currentSlide = index;
+            currentSlide = index;
 
-        slides[currentSlide].style.opacity = 1;
-        slides[currentSlide].classList.add('active');
+            slides[currentSlide].style.opacity = 1;
+            slides[currentSlide].classList.add('active');
 
-        updateControls();
+            updateControls();
 
-        setTimeout(() => {
-        isAnimating = false;
-        }, animationDuration);
+            setTimeout(() => {
+                isAnimating = false;
+            }, animationDuration);
         }
 
         // Update Controls
         function updateControls() {
-        dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-        });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
 
-        // Update arrow visibility
-        prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
-        nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+            // Update arrow visibility
+            prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+            nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
         }
 
         // Event Listeners
@@ -511,17 +557,17 @@
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
         dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => goToSlide(i));
+            dot.addEventListener('click', () => goToSlide(i));
         });
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-        // Set initial states
-        slides.forEach((slide, index) => {
-        slide.style.opacity = index === 0 ? 1 : 0;
-        });
-        updateControls();
-        handleOrientation();
+            // Set initial states
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === 0 ? 1 : 0;
+            });
+            updateControls();
+            handleOrientation();
         });
 
         window.addEventListener('resize', handleOrientation);
@@ -530,16 +576,20 @@
 
     <script>
         document.querySelectorAll('.icon-item').forEach(function(item) {
-        item.addEventListener('mouseenter', function() {
-        document.querySelectorAll('.icon-label').forEach(function(label) {
-        label.classList.add('show');
-        });
-        });
-        item.addEventListener('mouseleave', function() {
-        document.querySelectorAll('.icon-label').forEach(function(label) {
-        label.classList.remove('show');
-        });
-        });
+            item.addEventListener('mouseenter', function() {
+                // Find the label within the current icon-item and show it
+                const label = item.querySelector('.icon-label');
+                if (label) {
+                    label.classList.add('show');
+                }
+            });
+            item.addEventListener('mouseleave', function() {
+                // Find the label within the current icon-item and hide it
+                const label = item.querySelector('.icon-label');
+                if (label) {
+                    label.classList.remove('show');
+                }
+            });
         });
     </script>
 </body>
