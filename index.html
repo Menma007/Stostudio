@@ -13,6 +13,11 @@
             box-sizing: border-box;
         }
 
+        /* Mencegah scroll horizontal pada seluruh halaman */
+        body {
+            overflow-x: hidden;
+        }
+
         /* Floating Icons Container - Holds the transparent wrapper */
         .floating-icons {
             position: absolute;
@@ -47,13 +52,20 @@
             backdrop-filter: blur(5px); /* Opsional: Efek blur halus */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
 
-            /* Tata letak Grid untuk ikon: 5 per baris, responsif */
+            /* Tata letak Grid untuk ikon: otomatis menyesuaikan kolom */
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Tepat 5 kolom, masing-masing mengambil fraksi yang sama */
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Izinkan wrapping, min 70px per ikon */
             gap: 20px; /* Jarak antar ikon */
 
-            /* Lebar tetap untuk memastikan 5 ikon muat */
-            width: 470px; /* (70px * 5) + (20px * 4) + (20px * 2) = 350 + 80 + 40 = 470px */
+            /* Lebar responsif dengan batas maksimal untuk 5 ikon */
+            width: 100%; /* Mengambil lebar penuh dari parent */
+            max-width: 470px; /* Batasi lebar maksimal untuk 5 ikon (350px ikon + 80px gap + 40px padding) */
+
+            /* --- Penambahan untuk Scrollbar Vertikal --- */
+            max-height: 200px; /* Tinggi maksimal untuk sekitar 2 baris ikon (70px*2 ikon + 20px gap + 2*20px padding) */
+            overflow-y: auto; /* Aktifkan scrollbar vertikal jika konten melebihi max-height */
+            overflow-x: hidden; /* Pastikan tidak ada scrollbar horizontal di dalam wrapper */
+            /* --- Akhir Penambahan --- */
         }
 
         .icon-item {
@@ -214,6 +226,7 @@
             transition: opacity 0.5s ease-in-out;
             object-fit: cover; /* Pastikan gambar mengisi container */
             border-radius: 12px;
+            cursor: pointer; /* Menambahkan kursor pointer untuk menunjukkan dapat diklik */
         }
 
         .modal-showoff-image.active {
@@ -294,6 +307,37 @@
             pointer-events: none;
             transition: opacity 0.2s;
         }
+
+        /* Fullscreen Image Overlay */
+        .fullscreen-overlay {
+            display: none; /* Sembunyikan secara default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9); /* Latar belakang gelap transparan */
+            z-index: 3000; /* Pastikan di atas semua elemen lain */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            cursor: pointer; /* Menunjukkan dapat diklik untuk menutup */
+        }
+
+        .fullscreen-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .fullscreen-image {
+            max-width: 90%; /* Batasi lebar gambar agar tidak melebihi layar */
+            max-height: 90%; /* Batasi tinggi gambar agar tidak melebihi layar */
+            object-fit: contain; /* Pastikan gambar diskalakan dengan benar */
+            border-radius: 8px; /* Sudut membulat untuk gambar */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Bayangan untuk gambar */
+        }
+
 
         /* Orientation Alert */
         .orientation-alert {
@@ -545,6 +589,36 @@
                             </div>
                             <span class="icon-label">Fitur Integrasi</span>
                         </div>
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Baru 1" data-desc="Ini adalah fitur baru tambahan untuk menguji scroll vertikal. Deskripsi ini cukup panjang untuk memastikan scrollbar vertikal pada modal deskripsi juga berfungsi dengan baik. Kami ingin memastikan bahwa semua teks dapat dibaca dengan nyaman, bahkan jika melebihi tinggi yang tersedia." data-images='["https://placehold.co/250x250/FF0000/FFFFFF?text=Baru+1"]' data-link="https://www.google.com/search?q=fitur+baru+1">
+                                <img src="https://placehold.co/48x48/FF0000/FFFFFF?text=N1" alt="Fitur Baru 1" />
+                            </div>
+                            <span class="icon-label">Fitur Baru 1</span>
+                        </div>
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Baru 2" data-desc="Fitur lain yang ditambahkan untuk tujuan pengujian scrollbar. Ini juga memiliki deskripsi yang cukup panjang untuk menguji fungsionalitas scroll pada modal. Penting untuk memastikan pengalaman pengguna yang optimal." data-images='["https://placehold.co/250x250/00FF00/FFFFFF?text=Baru+2"]' data-link="https://www.google.com/search?q=fitur+baru+2">
+                                <img src="https://placehold.co/48x48/00FF00/FFFFFF?text=N2" alt="Fitur Baru 2" />
+                            </div>
+                            <span class="icon-label">Fitur Baru 2</span>
+                        </div>
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Baru 3" data-desc="Fitur terakhir untuk memastikan scrollbar vertikal muncul dengan benar. Deskripsi ini juga diperpanjang untuk tujuan pengujian. Kami ingin memastikan bahwa semua aspek responsif bekerja dengan baik." data-images='["https://placehold.co/250x250/0000FF/FFFFFF?text=Baru+3"]' data-link="https://www.google.com/search?q=fitur+baru+3">
+                                <img src="https://placehold.co/48x48/0000FF/FFFFFF?text=N3" alt="Fitur Baru 3" />
+                            </div>
+                            <span class="icon-label">Fitur Baru 3</span>
+                        </div>
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Baru 4" data-desc="Satu lagi ikon dummy untuk memastikan scroll. Ini adalah contoh deskripsi yang lebih panjang untuk menguji kemampuan scroll vertikal pada modal." data-images='["https://placehold.co/250x250/FF00FF/FFFFFF?text=Baru+4"]' data-link="https://www.google.com/search?q=fitur+baru+4">
+                                <img src="https://placehold.co/48x48/FF00FF/FFFFFF?text=N4" alt="Fitur Baru 4" />
+                            </div>
+                            <span class="icon-label">Fitur Baru 4</span>
+                        </div>
+                        <div class="icon-item">
+                            <div class="icon-box" data-title="Fitur Baru 5" data-desc="Ikon terakhir untuk pengujian scroll vertikal. Deskripsi ini juga diperpanjang untuk memastikan bahwa semua elemen bekerja dengan baik." data-images='["https://placehold.co/250x250/00FFFF/000000?text=Baru+5"]' data-link="https://www.google.com/search?q=fitur+baru+5">
+                                <img src="https://placehold.co/48x48/00FFFF/000000?text=N5" alt="Fitur Baru 5" />
+                            </div>
+                            <span class="icon-label">Fitur Baru 5</span>
+                        </div>
                     </div>
                 </div>
                 <div class="floating-text">Temukan fitur-fitur unggulan kami</div>
@@ -575,6 +649,10 @@
                             </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="fullscreen-overlay" id="fullscreenOverlay">
+                <img src="" alt="Fullscreen Image" class="fullscreen-image" id="fullscreenImage">
             </div>
 
             <div class="slide">
@@ -651,6 +729,15 @@
                 if (index === 0) {
                     img.classList.add('active');
                 }
+                // Tambahkan event listener untuk mode fullscreen
+                img.addEventListener('click', () => {
+                    const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+                    const fullscreenImage = document.getElementById('fullscreenImage');
+                    fullscreenImage.src = img.src; // Set gambar yang diklik ke fullscreen
+                    fullscreenOverlay.classList.add('active'); // Tampilkan overlay fullscreen
+                    clearModalHideTimer(); // Hentikan timer modal utama saat fullscreen aktif
+                });
+
                 slider.appendChild(img);
 
                 const dot = document.createElement('div');
@@ -742,6 +829,13 @@
                 clearInterval(showoffImageIntervalId); // Hentikan auto-slide saat modal ditutup
             }
         });
+
+        // Event listener untuk menutup fullscreen overlay
+        document.getElementById('fullscreenOverlay').addEventListener('click', function() {
+            this.classList.remove('active'); // Sembunyikan overlay fullscreen
+            startModalHideTimer(); // Lanjutkan timer modal utama
+        });
+
 
         let currentSlide = 0;
         let isAnimating = false;
