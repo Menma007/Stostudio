@@ -158,7 +158,6 @@
             bottom: 0;
             background: transparent; /* Latar belakang overlay sepenuhnya transparan */
             backdrop-filter: none; /* Hapus efek blur dari overlay */
-            /* align-items dan justify-content dipindahkan ke modal-content untuk positioning */
         }
 
         .modal-overlay.active {
@@ -176,8 +175,8 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
             position: absolute; /* Posisikan relatif terhadap viewport */
             top: 50%; /* Pusatkan secara vertikal */
-            left: 75%; /* Posisikan untuk pemusatan di bagian kanan */
-            transform: translate(-50%, -50%); /* Sesuaikan untuk benar-benar di tengah */
+            right: 20px; /* Jarak 20px dari kanan */
+            transform: translateY(-50%); /* Sesuaikan untuk pemusatan vertikal */
             display: flex; /* Menggunakan flexbox untuk layout gambar dan teks */
             flex-direction: row-reverse; /* Gambar di kanan, teks di kiri */
             align-items: flex-start; /* Pusatkan secara vertikal di awal konten */
@@ -186,28 +185,66 @@
 
         .modal-image-container {
             flex-shrink: 0; /* Mencegah gambar menyusut */
-            width: 150px; /* Lebar tetap untuk gambar */
-            height: 150px; /* Tinggi tetap untuk gambar */
+            width: 250px; /* Lebar container gambar */
+            height: 250px; /* Tinggi container gambar */
             border-radius: 12px;
             overflow: hidden;
             background-color: #f0f0f0; /* Placeholder background */
             display: flex;
+            flex-direction: column; /* Untuk menata gambar dan dots */
+            justify-content: space-between; /* Dorong dots ke bawah */
             align-items: center;
-            justify-content: center;
         }
 
-        .modal-image-container img {
+        .modal-image-slider {
+            width: 100%;
+            height: calc(100% - 20px); /* Kurangi tinggi untuk dots */
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px; /* Sudut membulat untuk slider */
+        }
+
+        .modal-showoff-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            object-fit: cover; /* Pastikan gambar mengisi container */
+            border-radius: 12px;
+        }
+
+        .modal-showoff-image.active {
+            opacity: 1;
+        }
+
+        .modal-image-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px; /* Jarak dari gambar */
+            z-index: 1; /* Pastikan dots di atas gambar */
+        }
+
+        .modal-image-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-image-dot.active {
+            background: #0078d7;
         }
 
         .modal-text-content {
             flex-grow: 1; /* Memungkinkan teks mengambil ruang yang tersedia */
             text-align: left; /* Teks deskripsi rata kiri */
             overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi */
-            max-height: calc(90vh - 40px - 150px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 150px (tinggi gambar) - 20px (gap) */
+            max-height: calc(90vh - 40px - 250px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 250px (tinggi gambar) - 20px (gap) */
             padding-right: 10px; /* Tambahkan padding agar scrollbar tidak menempel teks */
             display: flex; /* Menggunakan flexbox untuk menata judul, paragraf, dan tombol */
             flex-direction: column; /* Tumpuk secara vertikal */
@@ -313,6 +350,7 @@
                 /* Reset positioning for small screens to center it fully */
                 left: 50%;
                 top: 50%;
+                right: auto; /* Reset right property */
                 transform: translate(-50%, -50%);
                 flex-direction: column; /* Tumpuk gambar dan teks secara vertikal */
                 width: 90%; /* Sesuaikan lebar modal untuk layar kecil */
@@ -322,12 +360,12 @@
                 border-radius: 16px; /* Pastikan sudut membulat tetap ada */
             }
             .modal-image-container {
-                width: 120px; /* Sesuaikan ukuran gambar untuk mobile */
-                height: 120px;
+                width: 180px; /* Sesuaikan ukuran gambar untuk mobile */
+                height: 180px;
             }
             .modal-text-content {
                 text-align: center; /* Pusatkan teks pada layar kecil */
-                max-height: calc(90vh - 30px - 120px - 20px); /* Sesuaikan tinggi scrollable: 90vh - (padding_top+padding_bottom) - image_height - gap */
+                max-height: calc(90vh - 30px - 180px - 20px); /* Sesuaikan tinggi scrollable: 90vh - (padding_top+padding_bottom) - image_height - gap */
                 padding-right: 0; /* Hapus padding kanan agar tidak ada scrollbar ganda */
             }
             .modal-link-button {
@@ -472,37 +510,37 @@
                 <div class="floating-icons vertical-center">
                     <div class="icons-container-wrapper">
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik. Kami fokus pada estetika dan fungsionalitas untuk menciptakan produk yang indah dan mudah digunakan. Setiap detail diperhatikan untuk memastikan pengalaman yang mulus dan menyenangkan bagi pengguna akhir. Kami percaya bahwa desain yang baik adalah kunci untuk kesuksesan produk." data-image="https://placehold.co/150x150/FF5733/FFFFFF?text=Desain" data-link="https://www.google.com/search?q=desain">
+                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik. Kami fokus pada estetika dan fungsionalitas untuk menciptakan produk yang indah dan mudah digunakan. Setiap detail diperhatikan untuk memastikan pengalaman yang mulus dan menyenangkan bagi pengguna akhir. Kami percaya bahwa desain yang baik adalah kunci untuk kesuksesan produk." data-images='["https://placehold.co/250x250/FF5733/FFFFFF?text=Desain+1", "https://placehold.co/250x250/FF5733/FFFFFF?text=Desain+2", "https://placehold.co/250x250/FF5733/FFFFFF?text=Desain+3"]' data-link="https://www.google.com/search?q=desain">
                                 <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=D1" alt="Fitur Desain" />
                             </div>
                             <span class="icon-label">Fitur Desain</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru. Tim kami menggunakan metodologi agile untuk memastikan proyek selesai tepat waktu dan sesuai anggaran. Kami ahli dalam berbagai bahasa pemrograman dan framework, siap membangun solusi kustom untuk kebutuhan Anda." data-image="https://placehold.co/150x150/33FF57/FFFFFF?text=Pengembangan" data-link="https://www.google.com/search?q=pengembangan">
+                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru. Tim kami menggunakan metodologi agile untuk memastikan proyek selesai tepat waktu dan sesuai anggaran. Kami ahli dalam berbagai bahasa pemrograman dan framework, siap membangun solusi kustom untuk kebutuhan Anda." data-images='["https://placehold.co/250x250/33FF57/FFFFFF?text=Pengembangan+1", "https://placehold.co/250x250/33FF57/FFFFFF?text=Pengembangan+2"]' data-link="https://www.google.com/search?q=pengembangan">
                                 <img src="https://placehold.co/48x48/33FF57/FFFFFF?text=P2" alt="Fitur Pengembangan" />
                             </div>
                             <span class="icon-label">Fitur Pengembangan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman. Kami menerapkan praktik terbaik dalam keamanan siber, termasuk enkripsi data, otentikasi multi-faktor, dan audit keamanan rutin. Keamanan informasi Anda adalah prioritas utama kami." data-image="https://placehold.co/150x150/3366FF/FFFFFF?text=Keamanan" data-link="https://www.google.com/search?q=keamanan">
+                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman. Kami menerapkan praktik terbaik dalam keamanan siber, termasuk enkripsi data, otentikasi multi-faktor, dan audit keamanan rutin. Keamanan informasi Anda adalah prioritas utama kami." data-images='["https://placehold.co/250x250/3366FF/FFFFFF?text=Keamanan+1", "https://placehold.co/250x250/3366FF/FFFFFF?text=Keamanan+2", "https://placehold.co/250x250/3366FF/FFFFFF?text=Keamanan+3", "https://placehold.co/250x250/3366FF/FFFFFF?text=Keamanan+4"]' data-link="https://www.google.com/search?q=keamanan">
                                 <img src="https://placehold.co/48x48/3366FF/FFFFFF?text=K3" alt="Fitur Keamanan" />
                             </div>
                             <span class="icon-label">Fitur Keamanan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan. Arsitektur kami dirancang untuk menangani peningkatan beban kerja dan volume data seiring dengan perkembangan bisnis Anda. Ini memastikan bahwa aplikasi Anda akan tetap berkinerja tinggi bahkan saat Anda berkembang." data-image="https://placehold.co/150x150/FF33CC/FFFFFF?text=Skalabilitas" data-link="https://www.google.com/search?q=skalabilitas">
+                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan. Arsitektur kami dirancang untuk menangani peningkatan beban kerja dan volume data seiring dengan perkembangan bisnis Anda. Ini memastikan bahwa aplikasi Anda akan tetap berkinerja tinggi bahkan saat Anda berkembang." data-images='["https://placehold.co/250x250/FF33CC/FFFFFF?text=Skalabilitas+1"]' data-link="https://www.google.com/search?q=skalabilitas">
                                 <img src="https://placehold.co/48x48/FF33CC/FFFFFF?text=S4" alt="Fitur Skalabilitas" />
                             </div>
                             <span class="icon-label">Fitur Skalabilitas</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda. Tim dukungan kami selalu siap membantu Anda dengan pertanyaan atau masalah apa pun yang mungkin timbul. Kami berkomitmen untuk memberikan layanan yang cepat dan efektif." data-image="https://placehold.co/150x150/FFFF33/000000?text=Dukungan" data-link="https://www.google.com/search?q=dukungan">
+                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda. Tim dukungan kami selalu siap membantu Anda dengan pertanyaan atau masalah apa pun yang mungkin timbul. Kami berkomitmen untuk memberikan layanan yang cepat dan efektif." data-images='["https://placehold.co/250x250/FFFF33/000000?text=Dukungan+1", "https://placehold.co/250x250/FFFF33/000000?text=Dukungan+2"]' data-link="https://www.google.com/search?q=dukungan">
                                 <img src="https://placehold.co/48x48/FFFF33/000000?text=D5" alt="Fitur Dukungan" />
                             </div>
                             <span class="icon-label">Fitur Dukungan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain. Kami memastikan bahwa solusi kami dapat berinteraksi dengan lancar dengan alat dan layanan yang sudah Anda gunakan, menciptakan ekosistem yang terhubung dan efisien." data-image="https://placehold.co/150x150/33FFFF/000000?text=Integrasi" data-link="https://www.google.com/search?q=integrasi">
+                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain. Kami memastikan bahwa solusi kami dapat berinteraksi dengan lancar dengan alat dan layanan yang sudah Anda gunakan, menciptakan ekosistem yang terhubung dan efisien." data-images='["https://placehold.co/250x250/33FFFF/000000?text=Integrasi+1", "https://placehold.co/250x250/33FFFF/000000?text=Integrasi+2", "https://placehold.co/250x250/33FFFF/000000?text=Integrasi+3"]' data-link="https://www.google.com/search?q=integrasi">
                                 <img src="https://placehold.co/48x48/33FFFF/000000?text=I6" alt="Fitur Integrasi" />
                             </div>
                             <span class="icon-label">Fitur Integrasi</span>
@@ -531,7 +569,10 @@
                         <a href="#" id="modalLinkButton" class="modal-link-button" target="_blank">Lihat Selengkapnya</a>
                     </div>
                     <div class="modal-image-container">
-                        <img id="modalImage" src="" alt="Deskripsi Gambar">
+                        <div class="modal-image-slider" id="modalImageSlider">
+                            </div>
+                        <div class="modal-image-dots" id="modalImageDots">
+                            </div>
                     </div>
                 </div>
             </div>
@@ -566,12 +607,15 @@
 
     <script>
         let modalHideTimeoutId; // Variabel untuk menyimpan ID timeout
+        let currentShowoffImageIndex = 0;
+        let showoffImageIntervalId; // Variabel untuk menyimpan ID interval auto-slide
 
         // Fungsi untuk memulai timer sembunyikan modal
         function startModalHideTimer() {
             clearTimeout(modalHideTimeoutId); // Hapus timer sebelumnya jika ada
             modalHideTimeoutId = setTimeout(() => {
                 document.getElementById('descModal').classList.remove('active');
+                clearInterval(showoffImageIntervalId); // Hentikan auto-slide saat modal disembunyikan
             }, 3000); // Sembunyikan setelah 3 detik
         }
 
@@ -580,18 +624,94 @@
             clearTimeout(modalHideTimeoutId);
         }
 
+        // Fungsi untuk memperbarui gambar show-off di modal
+        function updateModalShowoffImages(imageUrls) {
+            const slider = document.getElementById('modalImageSlider');
+            const dotsContainer = document.getElementById('modalImageDots');
+
+            // Bersihkan konten sebelumnya
+            slider.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            clearInterval(showoffImageIntervalId); // Hentikan auto-slide sebelumnya
+
+            if (!imageUrls || imageUrls.length === 0) {
+                // Sembunyikan container gambar jika tidak ada gambar
+                document.querySelector('.modal-image-container').style.display = 'none';
+                return;
+            } else {
+                document.querySelector('.modal-image-container').style.display = 'flex'; // Tampilkan kembali
+            }
+
+            // Buat elemen gambar dan dots
+            imageUrls.forEach((url, index) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Showcase Image ' + (index + 1);
+                img.classList.add('modal-showoff-image');
+                if (index === 0) {
+                    img.classList.add('active');
+                }
+                slider.appendChild(img);
+
+                const dot = document.createElement('div');
+                dot.classList.add('modal-image-dot');
+                if (index === 0) {
+                    dot.classList.add('active');
+                }
+                dot.addEventListener('click', () => {
+                    showShowoffImage(index);
+                    clearModalHideTimer(); // Reset timer saat dot diklik
+                    startModalHideTimer(); // Mulai lagi timer
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            currentShowoffImageIndex = 0;
+            if (imageUrls.length > 1) {
+                startShowoffAutoSlide(imageUrls.length);
+            }
+        }
+
+        // Fungsi untuk menampilkan gambar show-off tertentu
+        function showShowoffImage(index) {
+            const images = document.querySelectorAll('#modalImageSlider .modal-showoff-image');
+            const dots = document.querySelectorAll('#modalImageDots .modal-image-dot');
+
+            images.forEach(img => img.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            if (images[index]) {
+                images[index].classList.add('active');
+            }
+            if (dots[index]) {
+                dots[index].classList.add('active');
+            }
+            currentShowoffImageIndex = index;
+        }
+
+        // Fungsi untuk memulai auto-slide gambar show-off
+        function startShowoffAutoSlide(totalImages) {
+            clearInterval(showoffImageIntervalId); // Pastikan tidak ada interval ganda
+            showoffImageIntervalId = setInterval(() => {
+                currentShowoffImageIndex = (currentShowoffImageIndex + 1) % totalImages;
+                showShowoffImage(currentShowoffImageIndex);
+            }, 3000); // Ganti gambar setiap 3 detik
+        }
+
+
         // Modal logic for icon-box
         document.querySelectorAll('.icon-box').forEach(function(box) {
             box.addEventListener('click', function() {
                 const modalTitle = document.getElementById('modalTitle');
                 const modalDesc = document.getElementById('modalDesc');
-                const modalImage = document.getElementById('modalImage');
                 const modalLinkButton = document.getElementById('modalLinkButton');
                 const descModal = document.getElementById('descModal');
 
                 modalTitle.textContent = box.getAttribute('data-title');
                 modalDesc.textContent = box.getAttribute('data-desc');
-                modalImage.src = box.getAttribute('data-image'); // Set image source
+
+                const imageUrls = JSON.parse(box.getAttribute('data-images') || '[]');
+                updateModalShowoffImages(imageUrls); // Panggil fungsi baru untuk gambar show-off
 
                 const linkUrl = box.getAttribute('data-link');
                 if (linkUrl) {
@@ -619,6 +739,7 @@
             if (e.target === this) { // Jika target klik adalah overlay itu sendiri
                 this.classList.remove('active');
                 clearModalHideTimer(); // Hapus timer saat ditutup manual
+                clearInterval(showoffImageIntervalId); // Hentikan auto-slide saat modal ditutup
             }
         });
 
