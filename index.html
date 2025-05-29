@@ -20,7 +20,6 @@
             z-index: 10;
             display: flex; /* Diperlukan untuk kelas posisi vertikal */
             flex-direction: column; /* Diperlukan untuk kelas posisi vertikal */
-            /* align-items: center; dihapus karena tidak lagi memusatkan wrapper secara horizontal */
         }
 
         /* Opsi Penempatan Vertikal untuk .floating-icons */
@@ -157,9 +156,10 @@
             top: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.65);
-            justify-content: center;
-            align-items: center;
+            background: transparent; /* Latar belakang overlay sepenuhnya transparan */
+            backdrop-filter: none; /* Hapus efek blur dari overlay */
+            justify-content: flex-end; /* Posisikan konten modal ke kanan */
+            align-items: stretch; /* Biarkan konten modal meregang secara vertikal */
         }
 
         .modal-overlay.active {
@@ -167,24 +167,58 @@
         }
 
         .modal-content {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.2); /* Latar belakang transparan seperti ikon */
+            backdrop-filter: blur(5px); /* Efek blur untuk latar belakang modal */
             border-radius: 16px;
-            padding: 32px 24px;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 20px; /* Menyesuaikan padding untuk layout gambar/teks */
+            width: 400px; /* Lebar tetap untuk desktop */
+            height: 100%; /* Mengisi tinggi penuh overlay */
+            max-height: 100vh; /* Pastikan tidak melebihi viewport */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
             position: relative;
+            display: flex; /* Menggunakan flexbox untuk layout gambar dan teks */
+            flex-direction: row-reverse; /* Gambar di kanan, teks di kiri */
+            align-items: flex-start; /* Pusatkan secara vertikal di awal konten */
+            gap: 20px; /* Jarak antara gambar dan teks */
         }
 
-        .modal-content h3 {
-            margin-bottom: 12px;
+        .modal-image-container {
+            flex-shrink: 0; /* Mencegah gambar menyusut */
+            width: 120px; /* Lebar tetap untuk gambar */
+            height: 120px; /* Tinggi tetap untuk gambar */
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f0f0f0; /* Placeholder background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-text-content {
+            flex-grow: 1; /* Memungkinkan teks mengambil ruang yang tersedia */
+            text-align: left; /* Teks deskripsi rata kiri */
+            overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi */
+            max-height: calc(100vh - 40px); /* Batasi tinggi agar tidak keluar modal (100vh - padding vertikal) */
+            padding-right: 10px; /* Tambahkan padding agar scrollbar tidak menempel teks */
+        }
+
+        .modal-text-content h3 {
+            margin-bottom: 8px; /* Mengurangi margin bawah */
             font-size: 1.3rem;
             color: #222;
         }
 
-        .modal-content p {
+        .modal-text-content p {
             color: #444;
             font-size: 1rem;
+            line-height: 1.5;
         }
 
         .modal-close {
@@ -254,6 +288,23 @@
                 transform: none; /* Hapus transformasi X */
                 width: calc(100% - 40px); /* Ambil lebar penuh pada layar kecil dikurangi margin */
                 align-items: flex-start; /* Pastikan wrapper tetap di kiri */
+            }
+            .modal-content {
+                flex-direction: column; /* Tumpuk gambar dan teks secara vertikal */
+                width: 90%; /* Sesuaikan lebar modal untuk layar kecil */
+                height: auto; /* Tinggi otomatis */
+                max-height: 90vh; /* Pastikan modal tidak keluar layar */
+                padding: 15px;
+                border-radius: 16px; /* Pastikan sudut membulat tetap ada */
+            }
+            .modal-image-container {
+                width: 100px; /* Sesuaikan ukuran gambar */
+                height: 100px;
+            }
+            .modal-text-content {
+                text-align: center; /* Pusatkan teks pada layar kecil */
+                max-height: calc(90vh - 30px - 100px - 20px); /* Sesuaikan tinggi scrollable: 90vh - (padding_top+padding_bottom) - image_height - gap */
+                padding-right: 0; /* Hapus padding kanan agar tidak ada scrollbar ganda */
             }
         }
 
@@ -404,37 +455,37 @@
                 <div class="floating-icons vertical-center">
                     <div class="icons-container-wrapper">
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik.">
+                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik. Kami fokus pada estetika dan fungsionalitas untuk menciptakan produk yang indah dan mudah digunakan. Setiap detail diperhatikan untuk memastikan pengalaman yang mulus dan menyenangkan bagi pengguna akhir. Kami percaya bahwa desain yang baik adalah kunci untuk kesuksesan produk." data-image="https://placehold.co/120x120/FF5733/FFFFFF?text=Desain">
                                 <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=D1" alt="Fitur Desain" />
                             </div>
                             <span class="icon-label">Fitur Desain</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru.">
+                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru. Tim kami menggunakan metodologi agile untuk memastikan proyek selesai tepat waktu dan sesuai anggaran. Kami ahli dalam berbagai bahasa pemrograman dan framework, siap membangun solusi kustom untuk kebutuhan Anda." data-image="https://placehold.co/120x120/33FF57/FFFFFF?text=Pengembangan">
                                 <img src="https://placehold.co/48x48/33FF57/FFFFFF?text=P2" alt="Fitur Pengembangan" />
                             </div>
                             <span class="icon-label">Fitur Pengembangan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman.">
+                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman. Kami menerapkan praktik terbaik dalam keamanan siber, termasuk enkripsi data, otentikasi multi-faktor, dan audit keamanan rutin. Keamanan informasi Anda adalah prioritas utama kami." data-image="https://placehold.co/120x120/3366FF/FFFFFF?text=Keamanan">
                                 <img src="https://placehold.co/48x48/3366FF/FFFFFF?text=K3" alt="Fitur Keamanan" />
                             </div>
                             <span class="icon-label">Fitur Keamanan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan.">
+                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan. Arsitektur kami dirancang untuk menangani peningkatan beban kerja dan volume data seiring dengan perkembangan bisnis Anda. Ini memastikan bahwa aplikasi Anda akan tetap berkinerja tinggi bahkan saat Anda berkembang." data-image="https://placehold.co/120x120/FF33CC/FFFFFF?text=Skalabilitas">
                                 <img src="https://placehold.co/48x48/FF33CC/FFFFFF?text=S4" alt="Fitur Skalabilitas" />
                             </div>
                             <span class="icon-label">Fitur Skalabilitas</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda.">
+                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda. Tim dukungan kami selalu siap membantu Anda dengan pertanyaan atau masalah apa pun yang mungkin timbul. Kami berkomitmen untuk memberikan layanan yang cepat dan efektif." data-image="https://placehold.co/120x120/FFFF33/000000?text=Dukungan">
                                 <img src="https://placehold.co/48x48/FFFF33/000000?text=D5" alt="Fitur Dukungan" />
                             </div>
                             <span class="icon-label">Fitur Dukungan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain.">
+                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain. Kami memastikan bahwa solusi kami dapat berinteraksi dengan lancar dengan alat dan layanan yang sudah Anda gunakan, menciptakan ekosistem yang terhubung dan efisien." data-image="https://placehold.co/120x120/33FFFF/000000?text=Integrasi">
                                 <img src="https://placehold.co/48x48/33FFFF/000000?text=I6" alt="Fitur Integrasi" />
                             </div>
                             <span class="icon-label">Fitur Integrasi</span>
@@ -448,8 +499,13 @@
             <div class="modal-overlay" id="descModal">
                 <div class="modal-content">
                     <button class="modal-close" id="closeModal">&times;</button>
-                    <h3 id="modalTitle"></h3>
-                    <p id="modalDesc"></p>
+                    <div class="modal-text-content">
+                        <h3 id="modalTitle"></h3>
+                        <p id="modalDesc"></p>
+                    </div>
+                    <div class="modal-image-container">
+                        <img id="modalImage" src="" alt="Deskripsi Gambar">
+                    </div>
                 </div>
             </div>
 
@@ -487,6 +543,7 @@
             box.addEventListener('click', function() {
                 document.getElementById('modalTitle').textContent = box.getAttribute('data-title');
                 document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
+                document.getElementById('modalImage').src = box.getAttribute('data-image'); // Set image source
                 document.getElementById('descModal').classList.add('active');
             });
         });
