@@ -135,10 +135,11 @@
         /* --- End Scrollbar Enhancements --- */
 
         .icon-item {
-            display: flex;
-            align-items: center;
+            display: flex; /* Use flexbox to arrange icon-box and label side-by-side */
+            align-items: center; /* Vertically align items */
             position: relative; /* Important for absolute label positioning */
             justify-content: center; /* Center icon-box within grid item */
+            /* Removed flex-direction: column and text-align: center */
         }
 
         .icon {
@@ -161,6 +162,7 @@
         }
 
         .icon-label {
+            /* Reverted to original hover-based label styling */
             opacity: 0;
             visibility: hidden;
             position: absolute; /* Make label float */
@@ -179,8 +181,10 @@
             display: flex;
             align-items: center;
             z-index: 100; /* Ensure label appears above other elements */
+            /* Removed margin-top, max-width, overflow, text-overflow, background, border-radius, padding, box-shadow, transition */
         }
 
+        /* Re-added hover effects for icon-label */
         .icon-item:hover .icon-label,
         .icon-label.show {
             opacity: 1;
@@ -634,8 +638,7 @@
         <div class="slides">
             <div class="slide active">
                 <div class="slide-background" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422172_960_720.jpg')"></div>
-                <div class="floating-icons" id="floatingIconsContainer">
-                    <div class="icons-container-wrapper" id="iconsContainerWrapper">
+                <div class="floating-icons hidden" id="floatingIconsContainer"> <div class="icons-container-wrapper" id="iconsContainerWrapper">
                         <div class="icon-item">
                             <div class="icon-box" data-title="Design Features" data-desc="Intuitive and modern interface design for the best user experience. We focus on aesthetics and functionality to create beautiful and easy-to-use products. Every detail is considered to ensure a seamless and enjoyable experience for the end-user. We believe good design is key to product success." data-images='["https://placehold.co/250x250/FF5733/FFFFFF?text=Design+1", "https://placehold.co/250x250/FF5733/FFFFFF?text=Design+2", "https://placehold.co/250x250/FF5733/FFFFFF?text=Design+3"]' data-link="https://www.google.com/search?q=design+features">
                                 <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=D1" alt="Design Feature Icon" />
@@ -703,9 +706,9 @@
                             <span class="icon-label">New Feature 5</span>
                         </div>
                     </div>
-                    <button id="hideIconsButton" class="toggle-icons-button hide-button">Hide Icons</button>
+                    <button id="hideIconsButton" class="toggle-icons-button hide-button">Hide Item</button>
                 </div>
-                <button id="showIconsButton" class="toggle-icons-button show-button">Show Icons</button>
+                <button id="showIconsButton" class="toggle-icons-button show-button">Show Item</button>
 
                 <div class="floating-text">Discover our key features</div>
                 <a class="floating-button" href="#">Explore</a>
