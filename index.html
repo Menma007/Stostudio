@@ -171,9 +171,9 @@
             backdrop-filter: blur(5px); /* Efek blur untuk latar belakang modal */
             border-radius: 16px;
             padding: 20px; /* Menyesuaikan padding untuk layout gambar/teks */
-            width: 400px; /* Lebar tetap untuk desktop */
-            height: 100%; /* Mengisi tinggi penuh overlay */
-            max-height: 100vh; /* Pastikan tidak melebihi viewport */
+            width: 50vw; /* Lebar 50% dari viewport width */
+            height: auto; /* Tinggi otomatis berdasarkan konten */
+            max-height: 90vh; /* Batasi tinggi agar tidak keluar layar */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
             position: relative;
             display: flex; /* Menggunakan flexbox untuk layout gambar dan teks */
@@ -205,7 +205,8 @@
             flex-grow: 1; /* Memungkinkan teks mengambil ruang yang tersedia */
             text-align: left; /* Teks deskripsi rata kiri */
             overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi */
-            max-height: calc(100vh - 40px); /* Batasi tinggi agar tidak keluar modal (100vh - padding vertikal) */
+            /* max-height disesuaikan untuk tidak terlalu lebar vertikal */
+            max-height: calc(90vh - 40px - 120px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 120px (tinggi gambar) - 20px (gap) */
             padding-right: 10px; /* Tambahkan padding agar scrollbar tidak menempel teks */
         }
 
