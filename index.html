@@ -158,12 +158,11 @@
             bottom: 0;
             background: transparent; /* Latar belakang overlay sepenuhnya transparan */
             backdrop-filter: none; /* Hapus efek blur dari overlay */
-            justify-content: flex-end; /* Posisikan konten modal ke kanan */
-            align-items: center; /* Pusatkan konten modal secara vertikal */
+            /* align-items dan justify-content dipindahkan ke modal-content untuk positioning */
         }
 
         .modal-overlay.active {
-            display: flex;
+            display: block; /* Gunakan block untuk menampilkan overlay */
         }
 
         .modal-content {
@@ -175,7 +174,10 @@
             height: auto; /* Tinggi otomatis berdasarkan konten */
             max-height: 90vh; /* Batasi tinggi agar tidak keluar layar */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan halus */
-            position: relative;
+            position: absolute; /* Posisikan relatif terhadap viewport */
+            top: 50%; /* Pusatkan secara vertikal */
+            left: 75%; /* Posisikan untuk pemusatan di bagian kanan */
+            transform: translate(-50%, -50%); /* Sesuaikan untuk benar-benar di tengah */
             display: flex; /* Menggunakan flexbox untuk layout gambar dan teks */
             flex-direction: row-reverse; /* Gambar di kanan, teks di kiri */
             align-items: flex-start; /* Pusatkan secara vertikal di awal konten */
@@ -184,8 +186,8 @@
 
         .modal-image-container {
             flex-shrink: 0; /* Mencegah gambar menyusut */
-            width: 120px; /* Lebar tetap untuk gambar */
-            height: 120px; /* Tinggi tetap untuk gambar */
+            width: 150px; /* Lebar tetap untuk gambar */
+            height: 150px; /* Tinggi tetap untuk gambar */
             border-radius: 12px;
             overflow: hidden;
             background-color: #f0f0f0; /* Placeholder background */
@@ -205,7 +207,7 @@
             flex-grow: 1; /* Memungkinkan teks mengambil ruang yang tersedia */
             text-align: left; /* Teks deskripsi rata kiri */
             overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi */
-            max-height: calc(90vh - 40px - 120px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 120px (tinggi gambar) - 20px (gap) */
+            max-height: calc(90vh - 40px - 150px - 20px); /* 90vh (max-height modal) - 40px (padding modal) - 150px (tinggi gambar) - 20px (gap) */
             padding-right: 10px; /* Tambahkan padding agar scrollbar tidak menempel teks */
         }
 
@@ -284,6 +286,10 @@
                 align-items: flex-start; /* Pastikan wrapper tetap di kiri */
             }
             .modal-content {
+                /* Reset positioning for small screens to center it fully */
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
                 flex-direction: column; /* Tumpuk gambar dan teks secara vertikal */
                 width: 90%; /* Sesuaikan lebar modal untuk layar kecil */
                 height: auto; /* Tinggi otomatis */
@@ -292,12 +298,12 @@
                 border-radius: 16px; /* Pastikan sudut membulat tetap ada */
             }
             .modal-image-container {
-                width: 100px; /* Sesuaikan ukuran gambar */
-                height: 100px;
+                width: 120px; /* Sesuaikan ukuran gambar untuk mobile */
+                height: 120px;
             }
             .modal-text-content {
                 text-align: center; /* Pusatkan teks pada layar kecil */
-                max-height: calc(90vh - 30px - 100px - 20px); /* Sesuaikan tinggi scrollable: 90vh - (padding_top+padding_bottom) - image_height - gap */
+                max-height: calc(90vh - 30px - 120px - 20px); /* Sesuaikan tinggi scrollable: 90vh - (padding_top+padding_bottom) - image_height - gap */
                 padding-right: 0; /* Hapus padding kanan agar tidak ada scrollbar ganda */
             }
         }
@@ -439,37 +445,37 @@
                 <div class="floating-icons vertical-center">
                     <div class="icons-container-wrapper">
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik. Kami fokus pada estetika dan fungsionalitas untuk menciptakan produk yang indah dan mudah digunakan. Setiap detail diperhatikan untuk memastikan pengalaman yang mulus dan menyenangkan bagi pengguna akhir. Kami percaya bahwa desain yang baik adalah kunci untuk kesuksesan produk." data-image="https://placehold.co/120x120/FF5733/FFFFFF?text=Desain">
+                            <div class="icon-box" data-title="Fitur Desain" data-desc="Desain antarmuka yang intuitif dan modern untuk pengalaman pengguna terbaik. Kami fokus pada estetika dan fungsionalitas untuk menciptakan produk yang indah dan mudah digunakan. Setiap detail diperhatikan untuk memastikan pengalaman yang mulus dan menyenangkan bagi pengguna akhir. Kami percaya bahwa desain yang baik adalah kunci untuk kesuksesan produk." data-image="https://placehold.co/150x150/FF5733/FFFFFF?text=Desain">
                                 <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=D1" alt="Fitur Desain" />
                             </div>
                             <span class="icon-label">Fitur Desain</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru. Tim kami menggunakan metodologi agile untuk memastikan proyek selesai tepat waktu dan sesuai anggaran. Kami ahli dalam berbagai bahasa pemrograman dan framework, siap membangun solusi kustom untuk kebutuhan Anda." data-image="https://placehold.co/120x120/33FF57/FFFFFF?text=Pengembangan">
+                            <div class="icon-box" data-title="Fitur Pengembangan" data-desc="Pengembangan aplikasi yang cepat dan efisien dengan teknologi terbaru. Tim kami menggunakan metodologi agile untuk memastikan proyek selesai tepat waktu dan sesuai anggaran. Kami ahli dalam berbagai bahasa pemrograman dan framework, siap membangun solusi kustom untuk kebutuhan Anda." data-image="https://placehold.co/150x150/33FF57/FFFFFF?text=Pengembangan">
                                 <img src="https://placehold.co/48x48/33FF57/FFFFFF?text=P2" alt="Fitur Pengembangan" />
                             </div>
                             <span class="icon-label">Fitur Pengembangan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman. Kami menerapkan praktik terbaik dalam keamanan siber, termasuk enkripsi data, otentikasi multi-faktor, dan audit keamanan rutin. Keamanan informasi Anda adalah prioritas utama kami." data-image="https://placehold.co/120x120/3366FF/FFFFFF?text=Keamanan">
+                            <div class="icon-box" data-title="Fitur Keamanan" data-desc="Sistem keamanan berlapis untuk melindungi data Anda dari ancaman. Kami menerapkan praktik terbaik dalam keamanan siber, termasuk enkripsi data, otentikasi multi-faktor, dan audit keamanan rutin. Keamanan informasi Anda adalah prioritas utama kami." data-image="https://placehold.co/150x150/3366FF/FFFFFF?text=Keamanan">
                                 <img src="https://placehold.co/48x48/3366FF/FFFFFF?text=K3" alt="Fitur Keamanan" />
                             </div>
                             <span class="icon-label">Fitur Keamanan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan. Arsitektur kami dirancang untuk menangani peningkatan beban kerja dan volume data seiring dengan perkembangan bisnis Anda. Ini memastikan bahwa aplikasi Anda akan tetap berkinerja tinggi bahkan saat Anda berkembang." data-image="https://placehold.co/120x120/FF33CC/FFFFFF?text=Skalabilitas">
+                            <div class="icon-box" data-title="Fitur Skalabilitas" data-desc="Solusi yang dapat diskalakan untuk pertumbuhan bisnis Anda di masa depan. Arsitektur kami dirancang untuk menangani peningkatan beban kerja dan volume data seiring dengan perkembangan bisnis Anda. Ini memastikan bahwa aplikasi Anda akan tetap berkinerja tinggi bahkan saat Anda berkembang." data-image="https://placehold.co/150x150/FF33CC/FFFFFF?text=Skalabilitas">
                                 <img src="https://placehold.co/48x48/FF33CC/FFFFFF?text=S4" alt="Fitur Skalabilitas" />
                             </div>
                             <span class="icon-label">Fitur Skalabilitas</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda. Tim dukungan kami selalu siap membantu Anda dengan pertanyaan atau masalah apa pun yang mungkin timbul. Kami berkomitmen untuk memberikan layanan yang cepat dan efektif." data-image="https://placehold.co/120x120/FFFF33/000000?text=Dukungan">
+                            <div class="icon-box" data-title="Fitur Dukungan" data-desc="Dukungan pelanggan 24/7 untuk memastikan kelancaran operasi Anda. Tim dukungan kami selalu siap membantu Anda dengan pertanyaan atau masalah apa pun yang mungkin timbul. Kami berkomitmen untuk memberikan layanan yang cepat dan efektif." data-image="https://placehold.co/150x150/FFFF33/000000?text=Dukungan">
                                 <img src="https://placehold.co/48x48/FFFF33/000000?text=D5" alt="Fitur Dukungan" />
                             </div>
                             <span class="icon-label">Fitur Dukungan</span>
                         </div>
                         <div class="icon-item">
-                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain. Kami memastikan bahwa solusi kami dapat berinteraksi dengan lancar dengan alat dan layanan yang sudah Anda gunakan, menciptakan ekosistem yang terhubung dan efisien." data-image="https://placehold.co/120x120/33FFFF/000000?text=Integrasi">
+                            <div class="icon-box" data-title="Fitur Integrasi" data-desc="Kemampuan integrasi yang mulus dengan sistem dan platform lain. Kami memastikan bahwa solusi kami dapat berinteraksi dengan lancar dengan alat dan layanan yang sudah Anda gunakan, menciptakan ekosistem yang terhubung dan efisien." data-image="https://placehold.co/150x150/33FFFF/000000?text=Integrasi">
                                 <img src="https://placehold.co/48x48/33FFFF/000000?text=I6" alt="Fitur Integrasi" />
                             </div>
                             <span class="icon-label">Fitur Integrasi</span>
@@ -492,7 +498,6 @@
 
             <div class="modal-overlay" id="descModal">
                 <div class="modal-content">
-                    <button class="modal-close" id="closeModal">&times;</button>
                     <div class="modal-text-content">
                         <h3 id="modalTitle"></h3>
                         <p id="modalDesc"></p>
@@ -566,11 +571,6 @@
         document.getElementById('descModal').addEventListener('mouseenter', clearModalHideTimer);
         document.getElementById('descModal').addEventListener('mouseleave', startModalHideTimer);
 
-        // Menghapus event listener untuk tombol close modal karena tombol X dihapus
-        // document.getElementById('closeModal').addEventListener('click', function() {
-        //     document.getElementById('descModal').classList.remove('active');
-        // });
-
         // Event listener untuk menutup modal saat mengklik di luar modal (overlay)
         document.getElementById('descModal').addEventListener('click', function(e) {
             if (e.target === this) { // Jika target klik adalah overlay itu sendiri
@@ -578,8 +578,6 @@
                 clearModalHideTimer(); // Hapus timer saat ditutup manual
             }
         });
-
-        // ...existing slider/orientation scripts...
 
         let currentSlide = 0;
         let isAnimating = false;
