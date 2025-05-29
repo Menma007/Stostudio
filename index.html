@@ -1,348 +1,348 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soto Studio</title>
-    <style>
-        /* style.css */
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soto Studio</title>
+  <style>
+    /* style.css */
+    /* Reset */
+      .floating-icons {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          gap: 22px;
+          z-index: 10;
+      }
 
-        body {
-            font-family: 'Inter', sans-serif; /* Using Inter font for consistency */
-        }
+      .icon-item {
+          display: flex;
+          align-items: center;
+          position: relative;
+      }
 
-        /* Floating Icons */
-        .floating-icons {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            gap: 22px;
-            z-index: 10; /* Ensure icons are above background and spline */
-        }
+      .icon {
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: none; /* Tidak ada background kapsul di icon */
+          border-radius: 50%;
+          overflow: hidden;
+      }
 
-        .icon-item {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
+          .icon img {
+              width: 48px;
+              height: 48px;
+              border-radius: 50%;
+              object-fit: cover;
+              display: block;
+          }
 
-        .icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: none; /* No capsule background on icon */
-            border-radius: 50%;
-            overflow: hidden;
-        }
+      .icon-label {
+          opacity: 0;
+          visibility: hidden;
+          margin-left: 14px;
+          background: rgba(255,255,255,0.95);
+          color: #333;
+          border-radius: 24px;
+          padding: 7px 18px;
+          font-size: 1rem;
+          white-space: nowrap;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: opacity 0.25s cubic-bezier(.4,0,.2,1), visibility 0.25s, transform 0.25s cubic-bezier(.4,0,.2,1);
+          transform: scaleX(0.7);
+          transform-origin: left center;
+          display: flex;
+          align-items: center;
+      }
 
-        .icon img {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-        }
+          .icon-item:hover .icon-label,
+          .icon-label.show {
+              opacity: 1;
+              visibility: visible;
+              transform: scaleX(1);
+          }
 
-        .icon-label {
-            opacity: 0;
-            visibility: hidden;
-            margin-left: 14px;
-            background: rgba(255,255,255,0.95);
-            color: #333;
-            border-radius: 24px;
-            padding: 7px 18px;
-            font-size: 1rem;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: opacity 0.25s cubic-bezier(.4,0,.2,1), visibility 0.25s, transform 0.25s cubic-bezier(.4,0,.2,1);
-            transform: scaleX(0.7);
-            transform-origin: left center;
-            display: flex;
-            align-items: center;
-        }
+      .icon-desc {
+          font-size: 0.85rem;
+          color: #666;
+          margin-left: 8px;
+          opacity: 0.8;
+          line-height: 1.3;
+          display: inline;
+      }
+      .icon-box {
+          width: 70px;
+          height: 70px;
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: box-shadow 0.2s;
+          border: 2px solid transparent;
+          overflow: hidden;
+      }
 
-        .icon-item:hover .icon-label,
-        .icon-label.show {
-            opacity: 1;
-            visibility: visible;
-            transform: scaleX(1);
-        }
+          .icon-box:hover {
+              box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+              border-color: #0078d7;
+          }
 
-        .icon-desc {
-            font-size: 0.85rem;
-            color: #666;
-            margin-left: 8px;
-            opacity: 0.8;
-            line-height: 1.3;
-            display: inline;
-        }
+          .icon-box img {
+              width: 48px;
+              height: 48px;
+              object-fit: cover;
+              border-radius: 8px;
+              display: block;
+          }
+      /* Modal styles */
+      .modal-overlay {
+          display: none;
+          position: fixed;
+          z-index: 2000;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.65);
+          justify-content: center;
+          align-items: center;
+      }
 
-        .icon-box {
-            width: 70px;
-            height: 70px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: box-shadow 0.2s;
-            border: 2px solid transparent;
-            overflow: hidden;
-        }
+          .modal-overlay.active {
+              display: flex;
+          }
 
-        .icon-box:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-            border-color: #0078d7;
-        }
+      .modal-content {
+          background: #fff;
+          border-radius: 16px;
+          padding: 32px 24px;
+          max-width: 350px;
+          text-align: center;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+          position: relative;
+      }
 
-        .icon-box img {
-            width: 48px;
-            height: 48px;
-            object-fit: cover;
-            border-radius: 8px;
-            display: block;
-        }
+          .modal-content h3 {
+              margin-bottom: 12px;
+              font-size: 1.3rem;
+              color: #222;
+          }
 
-        /* Modal styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            z-index: 2000; /* Ensure modal is on top of everything */
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.65);
-            justify-content: center;
-            align-items: center;
-        }
+          .modal-content p {
+              color: #444;
+              font-size: 1rem;
+          }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+      .modal-close {
+          position: absolute;
+          top: 12px;
+          right: 16px;
+          background: none;
+          border: none;
+          font-size: 1.3rem;
+          cursor: pointer;
+          color: #888;
+      }
 
-        .modal-content {
-            background: #fff;
-            border-radius: 16px;
-            padding: 32px 24px;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-            position: relative;
-        }
+      .icon-item.hide {
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s;
+      }
 
-        .modal-content h3 {
-            margin-bottom: 12px;
-            font-size: 1.3rem;
-            color: #222;
-        }
 
-        .modal-content p {
-            color: #444;
-            font-size: 1rem;
-        }
 
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: #888;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .icon-item.hide {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
+    /* Orientation Alert */
+    .orientation-alert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
 
-        /* Orientation Alert */
-        .orientation-alert {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000; /* Ensure alert is on top */
-            justify-content: center;
-            align-items: center;
-        }
+    .blink-box {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      animation: blink 1.5s infinite;
+    }
 
-        .blink-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            animation: blink 1.5s infinite;
-        }
+    @keyframes blink {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
 
-        @keyframes blink {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
+    .orientation-alert img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
 
-        .orientation-alert img {
-            width: 80px;
-            margin-bottom: 15px;
-        }
+    @media (orientation: portrait) {
+      .orientation-alert { display: flex; }
+      .hero { display: none; }
+    }
 
-        /* Media query for portrait orientation */
-        @media (orientation: portrait) {
-            .orientation-alert { display: flex; }
-            .hero { display: none; }
-        }
+    @media (max-width: 768px) {
+      .slide-background {
+          background-size: contain; /* Sesuaikan untuk layar kecil */
+      }
+    }
 
-        /* Media query for smaller screens, adjust background size */
-        @media (max-width: 768px) {
-            .slide-background {
-                background-size: contain !important; /* Adjust for small screens */
-            }
-        }
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden !important;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
 
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden !important;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
+    /* FIX UTAMA: Spline container */
+    .spline-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
 
-        /* Spline container */
-        .spline-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 2; /* Below text/buttons, above background */
-        }
+    .slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
 
-        .slide.active {
-            opacity: 1;
-            z-index: 2; /* Active slide is visible */
-        }
+    .slide-background {
+      background-size: cover !important;
+      background-position: center center !important;
+      transform: translateZ(0);
+      width: 100%; /* Ensure it fills the slide */
+      height: 100%; /* Ensure it fills the slide */
+      position: absolute; /* Position it correctly within the slide */
+      top: 0;
+      left: 0;
+    }
 
-        .slide-background {
-            background-size: cover !important;
-            background-position: center center !important;
-            transform: translateZ(0); /* Helps with rendering */
-            width: 100%; /* Ensure it fills the slide */
-            height: 100%; /* Ensure it fills the slide */
-            position: absolute; /* Position it correctly within the slide */
-            top: 0;
-            left: 0;
-        }
+    /* .slide img is not used as backgrounds are set via background-image */
+    /* .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    } */
 
-        /* Slider Controls */
-        .slider-controls {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            z-index: 1000; /* Ensure controls are on top */
-        }
+    /* Slider Controls */
+    .slider-controls {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      z-index: 1000;
+    }
 
-        .arrow-btn {
-            background: rgba(255,255,255,0.9);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
+    .arrow-btn {
+      background: rgba(255,255,255,0.9);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s;
+    }
 
-        .arrow-btn:hover {
-            background: rgba(255,255,255,0.7);
-        }
+    .arrow-btn:hover {
+      background: rgba(255,255,255,0.7);
+    }
 
-        .arrow-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: #333;
-        }
+    .arrow-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #333;
+    }
 
-        .dots-container {
-            display: flex;
-            gap: 12px;
-        }
+    .dots-container {
+      display: flex;
+      gap: 12px;
+    }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
 
-        .dot.active {
-            background: #fff;
-            transform: scale(1.3);
-        }
+    .dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
 
-        /* Content */
-        .floating-text {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-            z-index: 3; /* Above spline and background */
-        }
+    /* Konten */
+    .floating-text {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 1.5rem;
+      text-align: center;
+      z-index: 3;
+    }
 
-        .floating-button {
-            position: absolute;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 30px;
-            background: rgba(255,255,255,0.9);
-            color: #333;
-            border-radius: 30px;
-            text-decoration: none;
-            z-index: 3; /* Above spline and background */
-        }
-    </style>
+    .floating-button {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 30px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      border-radius: 30px;
+      text-decoration: none;
+      z-index: 3;
+    }
+  </style>
 </head>
 <body>
     <div class="orientation-alert">
         <div class="blink-box">
-            <img src="https://placehold.co/80x80/cccccc/333333?text=Rotate" alt="Rotate Device">
+            <img src="assets/rotate-icon.png" alt="Rotate Device">
             <p>Please rotate to landscape mode!</p>
         </div>
     </div>
@@ -364,39 +364,33 @@
                 <div class="floating-icons">
                     <div class="icon-item">
                         <div class="icon-box" data-title="Fitur 1" data-desc="Deskripsi singkat fitur 1 di sini.">
-                            <img src="https://placehold.co/48x48/FF5733/FFFFFF?text=F1" alt="Fitur 1" />
+                            <img src="assets/your-icon1.png" alt="Fitur 1" />
                         </div>
-                        <span class="icon-label">Fitur 1 <span class="icon-desc">Deskripsi singkat fitur 1 di sini.</span></span>
                     </div>
                     <div class="icon-item">
                         <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
-                            <img src="https://placehold.co/48x48/33FF57/FFFFFF?text=F2" alt="Fitur 2" />
+                            <img src="assets/your-icon2.png" alt="Fitur 2" />
                         </div>
-                        <span class="icon-label">Fitur 2 <span class="icon-desc">Deskripsi singkat fitur 2 di sini.</span></span>
                     </div>
                     <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 3" data-desc="Deskripsi singkat fitur 3 di sini.">
-                            <img src="https://placehold.co/48x48/3357FF/FFFFFF?text=F3" alt="Fitur 3" />
+                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
+                            <img src="assets/your-icon2.png" alt="Fitur 2" />
                         </div>
-                        <span class="icon-label">Fitur 3 <span class="icon-desc">Deskripsi singkat fitur 3 di sini.</span></span>
                     </div>
                     <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 4" data-desc="Deskripsi singkat fitur 4 di sini.">
-                            <img src="https://placehold.co/48x48/FF33A1/FFFFFF?text=F4" alt="Fitur 4" />
+                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
+                            <img src="assets/your-icon2.png" alt="Fitur 2" />
                         </div>
-                        <span class="icon-label">Fitur 4 <span class="icon-desc">Deskripsi singkat fitur 4 di sini.</span></span>
                     </div>
                     <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 5" data-desc="Deskripsi singkat fitur 5 di sini.">
-                            <img src="https://placehold.co/48x48/33FFFF/FFFFFF?text=F5" alt="Fitur 5" />
+                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
+                            <img src="assets/your-icon2.png" alt="Fitur 2" />
                         </div>
-                        <span class="icon-label">Fitur 5 <span class="icon-desc">Deskripsi singkat fitur 5 di sini.</span></span>
                     </div>
                     <div class="icon-item">
-                        <div class="icon-box" data-title="Fitur 6" data-desc="Deskripsi singkat fitur 6 di sini.">
-                            <img src="https://placehold.co/48x48/FFB833/FFFFFF?text=F6" alt="Fitur 6" />
+                        <div class="icon-box" data-title="Fitur 2" data-desc="Deskripsi singkat fitur 2 di sini.">
+                            <img src="assets/your-icon2.png" alt="Fitur 2" />
                         </div>
-                        <span class="icon-label">Fitur 6 <span class="icon-desc">Deskripsi singkat fitur 6 di sini.</span></span>
                     </div>
                 </div>
                 <div class="floating-text">Lorem ipsum dolor sit amet</div>
@@ -440,134 +434,113 @@
     </div>
 
     <script>
-        // --- Slider Logic ---
+        // ...existing slider/orientation scripts...
+
+        // Modal logic for icon-box
+        document.querySelectorAll('.icon-box').forEach(function(box) {
+        box.addEventListener('click', function() {
+        document.getElementById('modalTitle').textContent = box.getAttribute('data-title');
+        document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
+        document.getElementById('descModal').classList.add('active');
+        });
+        });
+        document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('descModal').classList.remove('active');
+        });
+        document.getElementById('descModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('active');
+        });
+    </script>
+
+    <script>
+        // script.js
         let currentSlide = 0;
         let isAnimating = false;
-        const animationDuration = 800; // Duration of slide transition in milliseconds
+        const animationDuration = 800;
 
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         const prevBtn = document.querySelector('.prev');
         const nextBtn = document.querySelector('.next');
 
-        /**
-         * Navigates to a specific slide.
-         * @param {number} index - The index of the slide to go to.
-         */
-        function goToSlide(index) {
-            // Prevent navigation if an animation is already in progress or index is out of bounds
-            if (isAnimating || index < 0 || index >= slides.length) return;
-
-            isAnimating = true; // Set animation flag
-
-            // Fade out the current slide
-            slides[currentSlide].style.opacity = 0;
-            slides[currentSlide].classList.remove('active');
-
-            currentSlide = index; // Update current slide index
-
-            // Fade in the new slide
-            slides[currentSlide].style.opacity = 1;
-            slides[currentSlide].classList.add('active');
-
-            updateControls(); // Update dot and arrow button states
-
-            // Reset animation flag after the transition duration
-            setTimeout(() => {
-                isAnimating = false;
-            }, animationDuration);
-        }
-
-        /**
-         * Updates the active state of dots and visibility of arrow buttons.
-         */
-        function updateControls() {
-            // Update active dot
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-
-            // Update arrow visibility based on current slide
-            prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
-            nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
-        }
-
-        // --- Orientation Handler ---
-        /**
-         * Handles device orientation changes, showing an alert in portrait mode.
-         */
+        // Orientation Handler
         function handleOrientation() {
-            const orientationAlert = document.querySelector('.orientation-alert');
-            const hero = document.querySelector('.hero');
-            const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+        const orientationAlert = document.querySelector('.orientation-alert');
+        const hero = document.querySelector('.hero');
+        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
-            orientationAlert.style.display = isPortrait ? 'flex' : 'none';
-            hero.style.display = isPortrait ? 'none' : 'block';
+        orientationAlert.style.display = isPortrait ? 'flex' : 'none';
+        hero.style.display = isPortrait ? 'none' : 'block';
         }
 
-        // --- Event Listeners ---
-        // Previous slide button click
+        // Slide Navigation
+        function goToSlide(index) {
+        if (isAnimating || index < 0 || index >= slides.length) return;
+
+        isAnimating = true;
+
+        // Animate transition
+        slides[currentSlide].style.opacity = 0;
+        slides[currentSlide].classList.remove('active');
+
+        currentSlide = index;
+
+        slides[currentSlide].style.opacity = 1;
+        slides[currentSlide].classList.add('active');
+
+        updateControls();
+
+        setTimeout(() => {
+        isAnimating = false;
+        }, animationDuration);
+        }
+
+        // Update Controls
+        function updateControls() {
+        dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+        });
+
+        // Update arrow visibility
+        prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+        nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+        }
+
+        // Event Listeners
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-        // Next slide button click
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
-        // Dot navigation clicks
         dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => goToSlide(i));
+        dot.addEventListener('click', () => goToSlide(i));
         });
 
-        // --- Modal Logic for Icon Boxes ---
-        document.querySelectorAll('.icon-box').forEach(function(box) {
-            box.addEventListener('click', function() {
-                // Populate modal with data from the clicked icon-box
-                document.getElementById('modalTitle').textContent = box.getAttribute('data-title');
-                document.getElementById('modalDesc').textContent = box.getAttribute('data-desc');
-                document.getElementById('descModal').classList.add('active'); // Show the modal
-            });
-        });
-
-        // Close modal button click
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('descModal').classList.remove('active'); // Hide the modal
-        });
-
-        // Close modal when clicking outside the content
-        document.getElementById('descModal').addEventListener('click', function(e) {
-            if (e.target === this) { // Check if the click was directly on the overlay
-                this.classList.remove('active');
-            }
-        });
-
-        // --- Floating Icons Hover Effect (Corrected Logic) ---
-        document.querySelectorAll('.icon-item').forEach(function(item) {
-            const iconLabel = item.querySelector('.icon-label'); // Get the specific label for this item
-
-            item.addEventListener('mouseenter', function() {
-                if (iconLabel) {
-                    iconLabel.classList.add('show'); // Show only this item's label
-                }
-            });
-            item.addEventListener('mouseleave', function() {
-                if (iconLabel) {
-                    iconLabel.classList.remove('show'); // Hide only this item's label
-                }
-            });
-        });
-
-        // --- Initialization ---
-        // Run on page load
+        // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-            // Set initial states for slides
-            slides.forEach((slide, index) => {
-                slide.style.opacity = index === 0 ? 1 : 0; // Only first slide visible initially
-            });
-            updateControls(); // Update initial control states
-            handleOrientation(); // Check initial orientation
+        // Set initial states
+        slides.forEach((slide, index) => {
+        slide.style.opacity = index === 0 ? 1 : 0;
+        });
+        updateControls();
+        handleOrientation();
         });
 
-        // Listen for window resize and orientation changes
         window.addEventListener('resize', handleOrientation);
         window.addEventListener('orientationchange', handleOrientation);
+    </script>
+
+    <script>
+        document.querySelectorAll('.icon-item').forEach(function(item) {
+        item.addEventListener('mouseenter', function() {
+        document.querySelectorAll('.icon-label').forEach(function(label) {
+        label.classList.add('show');
+        });
+        });
+        item.addEventListener('mouseleave', function() {
+        document.querySelectorAll('.icon-label').forEach(function(label) {
+        label.classList.remove('show');
+        });
+        });
+        });
     </script>
 </body>
 </html>
